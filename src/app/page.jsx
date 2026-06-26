@@ -9,7 +9,7 @@ export default function Home() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/health')
+    fetch('http://localhost:5000/')
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch');
         return res.json();
@@ -72,7 +72,7 @@ export default function Home() {
         </Card>
 
         <div className="flex justify-center gap-4">
-          <Button 
+          <Button
             className="bg-primary text-on-primary font-semibold px-6 py-2 rounded-xl"
             onPress={() => window.location.reload()}
           >
