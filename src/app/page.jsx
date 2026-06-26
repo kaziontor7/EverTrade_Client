@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Button, Spinner, Card, CardBody } from '@heroui/react';
+import { Button, Spinner, Card } from '@heroui/react';
 
 export default function Home() {
   const [healthData, setHealthData] = useState(null);
@@ -36,7 +36,7 @@ export default function Home() {
         </p>
 
         <Card className="bg-surface border border-outline/10 shadow-lg">
-          <CardBody className="p-6 flex flex-col items-center gap-4">
+          <Card.Content className="p-6 flex flex-col items-center gap-4">
             <span className="text-sm font-semibold uppercase tracking-wider text-on-surface-variant">
               API Server Status
             </span>
@@ -68,7 +68,7 @@ export default function Home() {
                 </div>
               </div>
             )}
-          </CardBody>
+          </Card.Content>
         </Card>
 
         <div className="flex justify-center gap-4">
