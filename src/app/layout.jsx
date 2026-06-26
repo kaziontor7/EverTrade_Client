@@ -1,5 +1,4 @@
 import { Inter } from "next/font/google";
-import { Providers } from "../components/Providers";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./globals.css";
@@ -28,13 +27,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={`${inter.className} min-h-full flex flex-col bg-background text-on-surface`}>
-        <Providers>
-          <Navbar />
-          <main className="flex-grow flex flex-col">
-            {children}
-          </main>
-          <Footer />
-        </Providers>
+        <Navbar />
+        <main className="flex-grow flex flex-col">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
