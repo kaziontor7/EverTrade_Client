@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Button } from '@heroui/react';
 import { authClient } from '../lib/auth-client';
 
 export default function Navbar() {
@@ -46,139 +45,163 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline/10">
-      <nav className="max-w-[1440px] mx-auto flex justify-between items-center px-6 md:px-12 h-20">
-        
-        {/* Brand Logo */}
-        <div className="flex items-center gap-8">
-          <Link href="/">
-            <div className="flex items-center gap-2 cursor-pointer">
-              <span className="material-symbols-outlined text-secondary text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                eco
-              </span>
-              <span className="text-xl font-bold tracking-tight text-on-surface hover:text-secondary transition-colors">
-                Ever<span className="text-secondary">Trade</span>
-              </span>
-            </div>
-          </Link>
+    <header className="sticky top-0 left-0 w-full z-50">
+      <div className="bg-surface/80 backdrop-blur-xl border-b border-outline/10">
+        <nav className="max-w-[1440px] mx-auto flex justify-between items-center px-6 md:px-12 h-20">
+          
+          {/* Brand Logo */}
+          <div className="flex items-center gap-10">
+            <Link href="/">
+              <div className="flex items-center gap-2 cursor-pointer group">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 group-hover:bg-emerald-500/30 transition-colors">
+                  <span className="material-symbols-outlined text-emerald-400 text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    eco
+                  </span>
+                </div>
+                <span className="text-xl font-bold tracking-tight text-on-surface group-hover:text-emerald-400 transition-colors">
+                  Ever<span className="text-emerald-400">Trade</span>
+                </span>
+              </div>
+            </Link>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`font-medium text-sm transition-colors py-1 ${
-                    isActive
-                      ? 'text-secondary border-b-2 border-secondary'
-                      : 'text-on-surface-variant hover:text-secondary'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
+            {/* Desktop Nav Links */}
+            <div className="hidden md:flex items-center gap-8 mt-1">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`nav-link font-medium text-sm transition-colors py-1 ${
+                      isActive
+                        ? 'text-emerald-400 nav-link-active'
+                        : 'text-on-surface-variant hover:text-emerald-400'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        {/* Right Section (Auth / Call-To-Action) */}
-        <div className="hidden md:flex items-center gap-4">
-          {isPending ? (
-            <div className="w-24 h-9 bg-surface-container-high animate-pulse rounded-xl"></div>
-          ) : session ? (
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-on-surface-variant">
-                Hi, <span className="text-on-surface font-semibold">{session.user.name.split(' ')[0]}</span>
-              </span>
-              <Button
-                size="sm"
-                className="bg-primary hover:bg-primary-container text-on-primary font-semibold px-4 py-1.5 rounded-xl transition-all"
-                onPress={handleSignOut}
-              >
-                Sign Out
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Link href="/signin" className="text-sm font-medium text-on-surface-variant hover:text-secondary transition-colors">
-                Sign In
-              </Link>
-              <Link href="/signup">
-                <Button className="bg-secondary text-on-surface hover:bg-secondary-container font-semibold px-5 py-1.5 rounded-xl transition-all shadow-[0_0_15px_rgba(71,104,0,0.2)]">
-                  Get Started
-                </Button>
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-on-surface hover:text-secondary focus:outline-none"
-          >
-            <span className="material-symbols-outlined text-2xl">
-              {isMobileMenuOpen ? 'close' : 'menu'}
-            </span>
-          </button>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {isMobileMenuOpen && (
-          <div className="absolute top-[80px] left-0 w-full bg-surface border-b border-outline/10 flex flex-col p-6 gap-6 md:hidden z-50 shadow-xl">
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-sm font-medium text-on-surface-variant hover:text-secondary transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
+          {/* Right Section (Auth / Call-To-Action) */}
+          <div className="hidden md:flex items-center gap-6">
+            {isPending ? (
+              <div className="w-24 h-9 bg-surface-container-high animate-pulse rounded-xl"></div>
+            ) : session ? (
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
+                    <span className="text-xs font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
+                  </div>
+                  <span className="text-sm font-medium text-on-surface">
+                    {session.user.name.split(' ')[0]}
+                  </span>
+                </div>
+                <button
+                  className="text-sm font-medium text-on-surface-variant hover:text-error transition-colors flex items-center gap-1"
+                  onClick={handleSignOut}
                 >
-                  {link.name}
+                  <span className="material-symbols-outlined text-[18px]">logout</span>
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <Link href="/signin" className="text-sm font-medium text-on-surface-variant hover:text-emerald-400 transition-colors">
+                  Sign In
                 </Link>
-              ))}
+                <Link href="/signup">
+                  <button className="btn-primary py-2 px-5 text-sm animate-glow-pulse">
+                    Get Started
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface hover:text-emerald-400 transition-colors"
+            >
+              <span className="material-symbols-outlined text-2xl">
+                {isMobileMenuOpen ? 'close' : 'menu'}
+              </span>
+            </button>
+          </div>
+        </nav>
+      </div>
+      
+      {/* Decorative Gradient Line */}
+      <div className="gradient-line w-full"></div>
+
+      {/* Mobile Dropdown Menu (Glassmorphic) */}
+      {isMobileMenuOpen && (
+        <>
+          <div className="fixed inset-0 top-[82px] bg-background/80 backdrop-blur-md z-40 md:hidden animate-fade-in" onClick={() => setIsMobileMenuOpen(false)}></div>
+          <div className="absolute top-[82px] left-0 w-full bg-surface border-b border-outline/10 flex flex-col p-6 gap-6 md:hidden z-50 shadow-2xl animate-slide-down">
+            <div className="flex flex-col gap-4">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`text-lg font-medium transition-colors ${
+                      isActive ? 'text-emerald-400' : 'text-on-surface-variant hover:text-emerald-400'
+                    }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
             </div>
 
             <div className="w-full h-px bg-outline/10"></div>
 
             <div className="flex flex-col gap-4">
               {isPending ? (
-                <div className="w-full h-10 bg-surface-container-high animate-pulse rounded-xl"></div>
+                <div className="w-full h-12 bg-surface-container-high animate-pulse rounded-xl"></div>
               ) : session ? (
                 <>
-                  <span className="text-sm text-on-surface-variant">
-                    Hi, <span className="text-on-surface font-semibold">{session.user.name}</span>
-                  </span>
-                  <Button
-                    className="bg-primary text-on-primary font-semibold py-2 rounded-xl transition-all w-full"
-                    onPress={handleSignOut}
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
+                      <span className="text-sm font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <span className="text-lg font-medium text-on-surface">
+                      {session.user.name}
+                    </span>
+                  </div>
+                  <button
+                    className="btn-secondary w-full py-3 flex justify-center border-error/50 text-error hover:bg-error/10 hover:border-error"
+                    onClick={handleSignOut}
                   >
+                    <span className="material-symbols-outlined mr-2">logout</span>
                     Sign Out
-                  </Button>
+                  </button>
                 </>
               ) : (
                 <>
-                  <Link
-                    href="/signin"
-                    className="text-sm font-medium text-on-surface-variant hover:text-secondary transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign In
+                  <Link href="/signin" onClick={() => setIsMobileMenuOpen(false)}>
+                    <button className="btn-secondary w-full py-3 justify-center text-on-surface">
+                      Sign In
+                    </button>
                   </Link>
                   <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button className="bg-secondary text-on-surface font-semibold py-2 rounded-xl transition-all w-full shadow-[0_0_15px_rgba(71,104,0,0.2)]">
+                    <button className="btn-primary w-full py-3 justify-center shadow-[0_0_20px_rgba(16,185,129,0.2)]">
                       Get Started
-                    </Button>
+                    </button>
                   </Link>
                 </>
               )}
             </div>
           </div>
-        )}
-      </nav>
+        </>
+      )}
     </header>
   );
 }

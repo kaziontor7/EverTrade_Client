@@ -17,27 +17,24 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        default: "buyer", // buyer | seller | admin
+        defaultValue: "buyer", // buyer | seller | admin
       },
       phone: {
         type: "string",
-        default: "",
+        defaultValue: "",
       },
       location: {
         type: "string",
-        default: "",
+        defaultValue: "",
       },
       status: {
         type: "string",
-        default: "active", // active | suspended
+        defaultValue: "active", // active | suspended
       },
       isVerified: {
         type: "boolean",
-        default: false,
+        defaultValue: false,
       },
     },
   },
-  plugins: [
-    admin()
-  ]
 });
