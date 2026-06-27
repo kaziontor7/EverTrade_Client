@@ -51,7 +51,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex-grow flex min-h-[calc(100vh-80px)] bg-background relative overflow-hidden animate-fade-in">
+    <div className="flex-grow flex min-h-[calc(100vh-80px)] bg-gray-50 dark:bg-[#060e20] relative overflow-hidden animate-fade-in">
       {/* Decorative Orbs */}
       <div className="orb orb-emerald w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
       <div className="orb orb-lime w-[400px] h-[400px] bottom-[-50px] right-[-50px]"></div>
@@ -64,27 +64,27 @@ export default function SignUpPage() {
         {/* Right Side: Branding/Visuals (Hidden on Mobile) */}
         <div className="hidden lg:flex flex-1 flex-col justify-center items-start px-12 xl:px-24">
           <div className="animate-slide-up stagger-1">
-            <h1 className="text-5xl xl:text-6xl font-bold text-on-surface leading-tight mb-6">
+            <h1 className="text-5xl xl:text-6xl font-bold text-gray-900 dark:text-[#e2e8f0] leading-tight mb-6">
               Join the <br />
               <span className="text-gradient">Circular</span> Economy.
             </h1>
-            <p className="text-lg text-on-surface-variant max-w-md leading-relaxed">
+            <p className="text-lg text-gray-600 dark:text-[#94a3b8] max-w-md leading-relaxed">
               Create an account to discover premium pre-owned items or start selling your own sustainable products today.
             </p>
           </div>
           
           <div className="mt-12 animate-slide-up stagger-2 grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-2xl bg-surface/50 border border-outline/10 backdrop-blur-sm">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0d1527]/50 border border-gray-200 dark:border-[#475569]/10 backdrop-blur-sm">
                <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center mb-3">
                   <span className="material-symbols-outlined text-emerald-400 text-lg">shopping_bag</span>
                </div>
-               <p className="text-sm font-semibold text-on-surface">Curated Quality</p>
+               <p className="text-sm font-semibold text-gray-900 dark:text-[#e2e8f0]">Curated Quality</p>
             </div>
-            <div className="p-4 rounded-2xl bg-surface/50 border border-outline/10 backdrop-blur-sm">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0d1527]/50 border border-gray-200 dark:border-[#475569]/10 backdrop-blur-sm">
                <div className="w-10 h-10 rounded-full bg-lime-500/20 flex items-center justify-center mb-3">
                   <span className="material-symbols-outlined text-lime-400 text-lg">public</span>
                </div>
-               <p className="text-sm font-semibold text-on-surface">Eco Impact</p>
+               <p className="text-sm font-semibold text-gray-900 dark:text-[#e2e8f0]">Eco Impact</p>
             </div>
           </div>
         </div>
@@ -93,10 +93,10 @@ export default function SignUpPage() {
         <div className="flex-1 flex items-center justify-center p-6 sm:p-12 py-12">
           <div className="w-full max-w-[480px] glass-card glass-card-hover rounded-3xl p-8 sm:p-10 animate-scale-in">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold tracking-tight text-on-surface mb-2">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-[#e2e8f0] mb-2">
                 Create Account
               </h2>
-              <p className="text-sm text-on-surface-variant">
+              <p className="text-sm text-gray-600 dark:text-[#94a3b8]">
                 Sign up to get started with EverTrade.
               </p>
             </div>
@@ -120,13 +120,13 @@ export default function SignUpPage() {
                     className={`flex flex-col items-center p-4 rounded-2xl border transition-all ${
                       role === "buyer" 
                         ? "border-emerald-500 bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)]" 
-                        : "border-outline/20 bg-surface/40 hover:bg-surface hover:border-outline/40"
+                        : "border-gray-300 dark:border-[#475569]/20 bg-white dark:bg-[#0d1527]/40 hover:bg-white dark:bg-[#0d1527] hover:border-outline/40"
                     }`}
                   >
-                    <span className={`material-symbols-outlined mb-2 ${role === "buyer" ? "text-emerald-400" : "text-on-surface-variant"}`}>
+                    <span className={`material-symbols-outlined mb-2 ${role === "buyer" ? "text-emerald-400" : "text-gray-600 dark:text-[#94a3b8]"}`}>
                       shopping_cart
                     </span>
-                    <span className={`text-sm font-semibold ${role === "buyer" ? "text-emerald-400" : "text-on-surface-variant"}`}>
+                    <span className={`text-sm font-semibold ${role === "buyer" ? "text-emerald-400" : "text-gray-600 dark:text-[#94a3b8]"}`}>
                       Shop & Buy
                     </span>
                   </button>
@@ -136,13 +136,13 @@ export default function SignUpPage() {
                     className={`flex flex-col items-center p-4 rounded-2xl border transition-all ${
                       role === "seller" 
                         ? "border-emerald-500 bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)]" 
-                        : "border-outline/20 bg-surface/40 hover:bg-surface hover:border-outline/40"
+                        : "border-gray-300 dark:border-[#475569]/20 bg-white dark:bg-[#0d1527]/40 hover:bg-white dark:bg-[#0d1527] hover:border-outline/40"
                     }`}
                   >
-                    <span className={`material-symbols-outlined mb-2 ${role === "seller" ? "text-emerald-400" : "text-on-surface-variant"}`}>
+                    <span className={`material-symbols-outlined mb-2 ${role === "seller" ? "text-emerald-400" : "text-gray-600 dark:text-[#94a3b8]"}`}>
                       storefront
                     </span>
-                    <span className={`text-sm font-semibold ${role === "seller" ? "text-emerald-400" : "text-on-surface-variant"}`}>
+                    <span className={`text-sm font-semibold ${role === "seller" ? "text-emerald-400" : "text-gray-600 dark:text-[#94a3b8]"}`}>
                       List & Sell
                     </span>
                   </button>
@@ -229,9 +229,9 @@ export default function SignUpPage() {
             </form>
 
             <div className="relative flex py-6 items-center">
-              <div className="flex-grow border-t border-outline/20"></div>
-              <span className="flex-shrink mx-4 text-xs text-on-surface-variant font-medium tracking-wider uppercase">Or continue with</span>
-              <div className="flex-grow border-t border-outline/20"></div>
+              <div className="flex-grow border-t border-gray-300 dark:border-[#475569]/20"></div>
+              <span className="flex-shrink mx-4 text-xs text-gray-600 dark:text-[#94a3b8] font-medium tracking-wider uppercase">Or continue with</span>
+              <div className="flex-grow border-t border-gray-300 dark:border-[#475569]/20"></div>
             </div>
 
             <button
@@ -248,7 +248,7 @@ export default function SignUpPage() {
               Google
             </button>
 
-            <div className="text-center text-sm text-on-surface-variant pt-8">
+            <div className="text-center text-sm text-gray-600 dark:text-[#94a3b8] pt-8">
               Already have an account?{" "}
               <Link href="/signin" className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors">
                 Sign In

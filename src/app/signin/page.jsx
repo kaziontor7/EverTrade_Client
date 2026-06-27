@@ -53,7 +53,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex-grow flex min-h-[calc(100vh-80px)] bg-background relative overflow-hidden animate-fade-in">
+    <div className="flex-grow flex min-h-[calc(100vh-80px)] bg-gray-50 dark:bg-[#060e20] relative overflow-hidden animate-fade-in">
       {/* Decorative Orbs */}
       <div className="orb orb-emerald w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
       <div className="orb orb-lime w-[400px] h-[400px] bottom-[-50px] right-[-50px]"></div>
@@ -66,22 +66,22 @@ export default function SignInPage() {
         {/* Left Side: Branding/Visuals (Hidden on Mobile) */}
         <div className="hidden lg:flex flex-1 flex-col justify-center items-start px-12 xl:px-24">
           <div className="animate-slide-up stagger-1">
-            <h1 className="text-5xl xl:text-6xl font-bold text-on-surface leading-tight mb-6">
+            <h1 className="text-5xl xl:text-6xl font-bold text-gray-900 dark:text-[#e2e8f0] leading-tight mb-6">
               Welcome back to <br />
               <span className="text-gradient">Sustainable</span> Commerce.
             </h1>
-            <p className="text-lg text-on-surface-variant max-w-md leading-relaxed">
+            <p className="text-lg text-gray-600 dark:text-[#94a3b8] max-w-md leading-relaxed">
               Sign in to manage your listings, track your orders, and continue contributing to the circular economy.
             </p>
           </div>
           
-          <div className="mt-12 animate-slide-up stagger-2 flex items-center gap-4 p-4 rounded-2xl bg-surface/50 border border-outline/10 backdrop-blur-sm">
+          <div className="mt-12 animate-slide-up stagger-2 flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-[#0d1527]/50 border border-gray-200 dark:border-[#475569]/10 backdrop-blur-sm">
              <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
                 <span className="material-symbols-outlined text-emerald-400">shield_lock</span>
              </div>
              <div>
-               <p className="text-sm font-semibold text-on-surface">Secure Authentication</p>
-               <p className="text-xs text-on-surface-variant">Your data is encrypted and protected.</p>
+               <p className="text-sm font-semibold text-gray-900 dark:text-[#e2e8f0]">Secure Authentication</p>
+               <p className="text-xs text-gray-600 dark:text-[#94a3b8]">Your data is encrypted and protected.</p>
              </div>
           </div>
         </div>
@@ -90,10 +90,10 @@ export default function SignInPage() {
         <div className="flex-1 flex items-center justify-center p-6 sm:p-12">
           <div className="w-full max-w-[440px] glass-card glass-card-hover rounded-3xl p-8 sm:p-10 animate-scale-in">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold tracking-tight text-on-surface mb-2">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-[#e2e8f0] mb-2">
                 Sign In
               </h2>
-              <p className="text-sm text-on-surface-variant">
+              <p className="text-sm text-gray-600 dark:text-[#94a3b8]">
                 Enter your credentials to access your account.
               </p>
             </div>
@@ -110,7 +110,7 @@ export default function SignInPage() {
                 <label className="et-label" htmlFor="email">Email Address</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-on-surface-variant text-lg">mail</span>
+                    <span className="material-symbols-outlined text-gray-600 dark:text-[#94a3b8] text-lg">mail</span>
                   </div>
                   <input
                     id="email"
@@ -131,7 +131,7 @@ export default function SignInPage() {
                 </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-on-surface-variant text-lg">lock</span>
+                    <span className="material-symbols-outlined text-gray-600 dark:text-[#94a3b8] text-lg">lock</span>
                   </div>
                   <input
                     id="password"
@@ -162,9 +162,9 @@ export default function SignInPage() {
             </form>
 
             <div className="relative flex py-6 items-center">
-              <div className="flex-grow border-t border-outline/20"></div>
-              <span className="flex-shrink mx-4 text-xs text-on-surface-variant font-medium tracking-wider uppercase">Or continue with</span>
-              <div className="flex-grow border-t border-outline/20"></div>
+              <div className="flex-grow border-t border-gray-300 dark:border-[#475569]/20"></div>
+              <span className="flex-shrink mx-4 text-xs text-gray-600 dark:text-[#94a3b8] font-medium tracking-wider uppercase">Or continue with</span>
+              <div className="flex-grow border-t border-gray-300 dark:border-[#475569]/20"></div>
             </div>
 
             <button
@@ -181,7 +181,7 @@ export default function SignInPage() {
               Google
             </button>
 
-            <div className="text-center text-sm text-on-surface-variant pt-8">
+            <div className="text-center text-sm text-gray-600 dark:text-[#94a3b8] pt-8">
               Don't have an account?{" "}
               <Link href="/signup" className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors">
                 Sign Up

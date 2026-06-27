@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="relative bg-surface-container mt-auto overflow-hidden border-t border-outline/10 pt-16 pb-8">
+    <footer className="relative bg-gray-100 dark:bg-[#131b2e] mt-auto overflow-hidden border-t border-gray-200 dark:border-[#475569]/10 pt-16 pb-8">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[300px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -20,18 +20,18 @@ export default function Footer() {
                   eco
                 </span>
               </div>
-              <span className="text-2xl font-bold tracking-tight text-on-surface">
+              <span className="text-2xl font-bold tracking-tight text-gray-900 dark:text-[#e2e8f0]">
                 Ever<span className="text-emerald-400">Trade</span>
               </span>
             </div>
             
-            <p className="text-sm text-on-surface-variant leading-relaxed max-w-sm">
+            <p className="text-sm text-gray-600 dark:text-[#94a3b8] leading-relaxed max-w-sm">
               The premium circular economy platform. Buy and sell high-quality pre-owned items while contributing to a sustainable future.
             </p>
 
             {/* Newsletter Input */}
             <div className="pt-4 max-w-sm">
-              <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-3">Join our newsletter</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-[#94a3b8] mb-3">Join our newsletter</p>
               <div className="flex gap-2">
                 <input 
                   type="email" 
@@ -47,22 +47,22 @@ export default function Footer() {
 
           {/* Links: Marketplace */}
           <div className="space-y-6">
-            <h4 className="text-sm font-bold text-on-surface uppercase tracking-wider">Marketplace</h4>
+            <h4 className="text-sm font-bold text-gray-900 dark:text-[#e2e8f0] uppercase tracking-wider">Marketplace</h4>
             <ul className="space-y-4 text-sm">
               <li>
-                <Link href="/products" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/products" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   Browse Products
                 </Link>
               </li>
               <li>
-                <Link href="/categories" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/categories" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   Categories
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/pricing" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   Pricing
                 </Link>
@@ -72,22 +72,22 @@ export default function Footer() {
 
           {/* Links: Community */}
           <div className="space-y-6">
-            <h4 className="text-sm font-bold text-on-surface uppercase tracking-wider">Community</h4>
+            <h4 className="text-sm font-bold text-gray-900 dark:text-[#e2e8f0] uppercase tracking-wider">Community</h4>
             <ul className="space-y-4 text-sm">
               <li>
-                <Link href="/sustainability" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/sustainability" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   Sustainability Impact
                 </Link>
               </li>
               <li>
-                <Link href="/sellers" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/sellers" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   Trusted Sellers
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/faq" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   Help & FAQs
                 </Link>
@@ -97,16 +97,16 @@ export default function Footer() {
 
           {/* Links: Company & Socials */}
           <div className="space-y-6">
-            <h4 className="text-sm font-bold text-on-surface uppercase tracking-wider">Company</h4>
+            <h4 className="text-sm font-bold text-gray-900 dark:text-[#e2e8f0] uppercase tracking-wider">Company</h4>
             <ul className="space-y-4 text-sm">
               <li>
-                <Link href="/about" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/about" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-on-surface-variant hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
+                <Link href="/contact" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group">
                   <span className="material-symbols-outlined text-[16px] opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all text-emerald-400">chevron_right</span>
                   Contact
                 </Link>
@@ -115,13 +115,13 @@ export default function Footer() {
 
             {/* Social Icons */}
             <div className="flex items-center gap-4 pt-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-surface-container-high border border-outline/10 flex items-center justify-center text-on-surface-variant hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:-translate-y-1 transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-200 dark:bg-[#1a2340] border border-gray-200 dark:border-[#475569]/10 flex items-center justify-center text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:-translate-y-1 transition-all duration-300">
                 <span className="material-symbols-outlined text-lg">mail</span>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-surface-container-high border border-outline/10 flex items-center justify-center text-on-surface-variant hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:-translate-y-1 transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-200 dark:bg-[#1a2340] border border-gray-200 dark:border-[#475569]/10 flex items-center justify-center text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:-translate-y-1 transition-all duration-300">
                 <span className="material-symbols-outlined text-lg">call</span>
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-surface-container-high border border-outline/10 flex items-center justify-center text-on-surface-variant hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:-translate-y-1 transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-200 dark:bg-[#1a2340] border border-gray-200 dark:border-[#475569]/10 flex items-center justify-center text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:-translate-y-1 transition-all duration-300">
                 <span className="material-symbols-outlined text-lg">public</span>
               </a>
             </div>
@@ -129,18 +129,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-outline/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-on-surface-variant">
+        <div className="border-t border-gray-200 dark:border-[#475569]/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-gray-600 dark:text-[#94a3b8]">
             &copy; {new Date().getFullYear()} EverTrade. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs font-medium">
-            <Link href="/privacy" className="text-on-surface-variant hover:text-emerald-400 transition-colors">
+            <Link href="/privacy" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-on-surface-variant hover:text-emerald-400 transition-colors">
+            <Link href="/terms" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors">
               Terms of Service
             </Link>
-            <Link href="/cookies" className="text-on-surface-variant hover:text-emerald-400 transition-colors">
+            <Link href="/cookies" className="text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors">
               Cookie Settings
             </Link>
           </div>
