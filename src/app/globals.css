@@ -4,7 +4,7 @@
 /* Register HeroUI's theme path so Tailwind can scan it */
 @source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* ═══════════════════════════════════════════════════════════
    EVERTRADE DESIGN SYSTEM — Premium Dark Mode Theme
@@ -66,6 +66,43 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   DYNAMIC THEME VARIABLES (Light & Dark)
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* Surfaces & Backgrounds */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-container: #f1f5f9;
+  --color-surface-container-high: #e2e8f0;
+  --color-surface-container-highest: #cbd5e1;
+  --color-surface-dim: #f8fafc;
+
+  /* On-Surface Text */
+  --color-on-surface: #0f172a;
+  --color-on-surface-variant: #475569;
+  --color-outline: #cbd5e1;
+  --color-outline-variant: #e2e8f0;
+}
+
+.dark {
+  /* Surfaces & Backgrounds */
+  --color-background: #060e20;
+  --color-surface: #0d1527;
+  --color-surface-container: #131b2e;
+  --color-surface-container-high: #1a2340;
+  --color-surface-container-highest: #222c4a;
+  --color-surface-dim: #0a0f1e;
+
+  /* On-Surface Text */
+  --color-on-surface: #e2e8f0;
+  --color-on-surface-variant: #94a3b8;
+  --color-outline: #475569;
+  --color-outline-variant: #334155;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
    KEYFRAME ANIMATIONS
    ═══════════════════════════════════════════════════════════ */
 
@@ -124,8 +161,6 @@
    ═══════════════════════════════════════════════════════════ */
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-on-surface);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
@@ -423,4 +458,59 @@ html {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   display: inline-block;
   vertical-align: middle;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES FOR CUSTOM UI
+   ═══════════════════════════════════════════════════════════ */
+
+:root:not(.dark) .glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+:root:not(.dark) .et-input, 
+:root:not(.dark) .et-select {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #0f172a;
+}
+
+:root:not(.dark) .et-input::placeholder {
+  color: rgba(71, 85, 105, 0.5);
+}
+
+:root:not(.dark) .et-input:hover,
+:root:not(.dark) .et-select:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+:root:not(.dark) .et-input:focus,
+:root:not(.dark) .et-select:focus {
+  background: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+:root:not(.dark) .et-select option {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+:root:not(.dark) .btn-secondary {
+  color: #0f172a;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+:root:not(.dark) .btn-secondary:hover {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
+}
+
+:root:not(.dark) .grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
 }

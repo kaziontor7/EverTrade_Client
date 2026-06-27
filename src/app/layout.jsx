@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={`${inter.className} min-h-full flex flex-col bg-background text-on-surface`}>
+      <body className={`${inter.className} min-h-full flex flex-col bg-gray-50 dark:bg-[#060e20] text-gray-900 dark:text-[#e2e8f0] transition-colors duration-300`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <Navbar />
           <main className="flex-grow flex flex-col">
