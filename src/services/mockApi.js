@@ -1,5 +1,12 @@
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+let mockUsers = [
+  { _id: "user_123", name: "Vintage Vault", email: "vintage@example.com", role: "seller", isVerified: false, joinedAt: new Date(Date.now() - 86400000 * 30).toISOString() },
+  { _id: "user_456", name: "Tech Haven", email: "tech@example.com", role: "seller", isVerified: true, joinedAt: new Date(Date.now() - 86400000 * 60).toISOString() },
+  { _id: "buyer_789", name: "John Doe", email: "john@example.com", role: "buyer", joinedAt: new Date(Date.now() - 86400000 * 10).toISOString() },
+  { _id: "admin_001", name: "Admin Setup", email: "admin@evertrade.com", role: "admin", joinedAt: new Date(Date.now() - 86400000 * 365).toISOString() },
+];
+
 let mockProducts = [
   {
     _id: "1",
@@ -124,5 +131,26 @@ export const mockApi = {
     };
     mockOrders.unshift(newOrder); // Add to the top of the list
     return newOrder;
+  },
+
+  // Admin Endpoints
+  getAllUsers: async () => {
+    await delay(500);
+    return [...mockUsers];
+  },
+
+  verifySeller: async (userId) => {
+    await delay(400);
+    const index = mockUsers.findIndex((u) => u._id === userId);
+    if (index === -1) throw new Error("User not found");
+    
+    mockUsers[index] = { ...mockUsers[index], isVerified: true };
+    return mockUsers[index];
+  },
+
+  deleteUser: async (userId) => {
+    await delay(400);
+    mockUsers = mockUsers.filter((u) => u._id !== userId);
+    return { success: true };
   }
 };

@@ -36,12 +36,29 @@ export default function DashboardLayout({ children }) {
               Dashboard
             </h2>
             <nav className="space-y-2">
-              <Link 
-                href={`/dashboard/${role}`} 
-                className="flex items-center space-x-3 px-4 py-3 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-all font-medium border border-emerald-500/20"
-              >
-                <span>{role === 'seller' ? 'My Listings' : 'My Orders'}</span>
-              </Link>
+              {role === 'admin' ? (
+                <>
+                  <Link 
+                    href="/dashboard/admin" 
+                    className="flex items-center space-x-3 px-4 py-3 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-all font-medium border border-emerald-500/20"
+                  >
+                    <span>Overview</span>
+                  </Link>
+                  <Link 
+                    href="/dashboard/admin/users" 
+                    className="flex items-center space-x-3 px-4 py-3 text-gray-400 rounded-xl hover:bg-white/5 hover:text-white transition-all font-medium"
+                  >
+                    <span>User Management</span>
+                  </Link>
+                </>
+              ) : (
+                <Link 
+                  href={`/dashboard/${role}`} 
+                  className="flex items-center space-x-3 px-4 py-3 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-all font-medium border border-emerald-500/20"
+                >
+                  <span>{role === 'seller' ? 'My Listings' : 'My Orders'}</span>
+                </Link>
+              )}
               {role === 'buyer' && (
                 <Link 
                   href="/dashboard/buyer/wishlist" 
