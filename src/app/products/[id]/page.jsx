@@ -42,8 +42,7 @@ export default function ProductDetailsPage() {
       router.push("/signin");
       return;
     }
-    // Placeholder for Stripe Integration
-    alert("Stripe checkout flow will be integrated here.");
+    router.push(`/checkout/${id}`);
   };
 
   if (loading) {

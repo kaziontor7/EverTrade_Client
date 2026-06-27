@@ -112,5 +112,17 @@ export const mockApi = {
     await delay(500);
     // In a real app we'd filter by buyerId, but for mock purposes we just return all
     return [...mockOrders];
+  },
+  
+  createOrder: async (orderData) => {
+    await delay(500);
+    const newOrder = {
+      ...orderData,
+      _id: "ord_" + Math.random().toString(36).substr(2, 9),
+      status: "Processing",
+      date: new Date().toISOString(),
+    };
+    mockOrders.unshift(newOrder); // Add to the top of the list
+    return newOrder;
   }
 };
