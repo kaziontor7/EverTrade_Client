@@ -13,6 +13,10 @@ export default function SellerDashboard() {
   // Form state
   const [isAdding, setIsAdding] = useState(false);
   const [newProduct, setNewProduct] = useState({ title: "", price: "", category: "Electronics", condition: "Like New" });
+  
+  // Edit state
+  const [editingId, setEditingId] = useState(null);
+  const [editData, setEditData] = useState({ title: "", price: "", category: "", condition: "" });
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -51,9 +55,35 @@ export default function SellerDashboard() {
   };
 
   const handleDelete = async (id) => {
+    if (confirm("Are you sure you want to delete this listing?")) {
+      try {
+        await mockApi.deleteProduct(id);
+        setProducts(products.filter(p => p._id !== id));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleEditClick = (product) => {
+    setEditingId(product._id);
+    setEditData({ 
+      title: product.title, 
+      price: product.price, 
+      category: product.category, 
+      condition: product.condition 
+    });
+  };
+
+  const handleSaveEdit = async (e) => {
+    e.preventDefault();
     try {
-      await mockApi.deleteProduct(id);
-      setProducts(products.filter(p => p._id !== id));
+      const updated = await mockApi.updateProduct(editingId, {
+        ...editData,
+        price: Number(editData.price)
+      });
+      setProducts(products.map(p => p._id === editingId ? updated : p));
+      setEditingId(null);
     } catch (err) {
       console.error(err);
     }
@@ -170,7 +200,10 @@ export default function SellerDashboard() {
                     <span>{product.condition}</span>
                   </div>
                   <div className="flex gap-2">
-                    <button className="flex-1 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-sm font-medium transition-colors border border-white/5">
+                    <button 
+                      onClick={() => handleEditClick(product)}
+                      className="flex-1 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-sm font-medium transition-colors border border-white/5"
+                    >
                       Edit
                     </button>
                     <button 
@@ -186,6 +219,77 @@ export default function SellerDashboard() {
           </div>
         )}
       </div>
+
+      {/* Edit Modal */}
+      {editingId && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+          <div className="bg-gray-900 border border-white/10 rounded-2xl p-6 w-full max-w-2xl shadow-2xl relative">
+            <button 
+              onClick={() => setEditingId(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h2 className="text-xl font-bold text-white mb-6">Edit Listing</h2>
+            <form onSubmit={handleSaveEdit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-sm text-gray-400">Product Title</label>
+                <input 
+                  required
+                  type="text" 
+                  value={editData.title}
+                  onChange={e => setEditData({...editData, title: e.target.value})}
+                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm text-gray-400">Price ($)</label>
+                <input 
+                  required
+                  type="number" 
+                  value={editData.price}
+                  onChange={e => setEditData({...editData, price: e.target.value})}
+                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm text-gray-400">Category</label>
+                <select 
+                  value={editData.category}
+                  onChange={e => setEditData({...editData, category: e.target.value})}
+                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                >
+                  <option>Electronics</option>
+                  <option>Clothing</option>
+                  <option>Furniture</option>
+                  <option>Automotive</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm text-gray-400">Condition</label>
+                <select 
+                  value={editData.condition}
+                  onChange={e => setEditData({...editData, condition: e.target.value})}
+                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                >
+                  <option>New</option>
+                  <option>Like New</option>
+                  <option>Good</option>
+                  <option>Fair</option>
+                </select>
+              </div>
+              <div className="md:col-span-2 pt-4 flex gap-4">
+                <button type="submit" className="flex-1 py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 transition-colors">
+                  Save Changes
+                </button>
+                <button type="button" onClick={() => setEditingId(null)} className="flex-1 py-3 bg-white/5 text-white rounded-xl font-bold hover:bg-white/10 transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

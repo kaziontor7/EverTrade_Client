@@ -45,6 +45,21 @@ export default function ProductDetailsPage() {
     router.push(`/checkout/${id}`);
   };
 
+  const handleReport = async () => {
+    if (!session) {
+      router.push("/signin");
+      return;
+    }
+    if (confirm("Are you sure you want to report this listing to the admins?")) {
+      try {
+        await mockApi.reportProduct(id);
+        alert("Listing reported successfully. Our admins will review it shortly.");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-950 flex justify-center items-center">
@@ -65,8 +80,18 @@ export default function ProductDetailsPage() {
           Back to Marketplace
         </Link>
 
-        <div className="bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10">
+        <div className="bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 relative">
           
+          {/* Report Button */}
+          <button 
+            onClick={handleReport}
+            className="absolute top-6 right-6 text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-medium"
+            title="Report this listing"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
+            Report
+          </button>
+
           {/* Image Gallery */}
           <div className="w-full lg:w-1/2 flex-shrink-0">
             <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-black/50 border border-white/10">

@@ -107,9 +107,15 @@ export default function AdminOverview() {
                     <td className="py-4 text-sm">{product.category}</td>
                     <td className="py-4 text-sm text-emerald-400">{product.sellerName}</td>
                     <td className="py-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
-                        Clean
-                      </span>
+                      {product.isReported ? (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+                          Reported
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
+                          Clean
+                        </span>
+                      )}
                     </td>
                     <td className="py-4 text-right">
                       <button 

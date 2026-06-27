@@ -114,6 +114,15 @@ export const mockApi = {
     return { success: true };
   },
 
+  reportProduct: async (id) => {
+    await delay(300);
+    const index = mockProducts.findIndex((p) => p._id === id);
+    if (index === -1) throw new Error("Product not found");
+    
+    mockProducts[index] = { ...mockProducts[index], isReported: true };
+    return mockProducts[index];
+  },
+
   // Order/Buyer Endpoints
   getBuyerOrders: async (buyerId) => {
     await delay(500);
