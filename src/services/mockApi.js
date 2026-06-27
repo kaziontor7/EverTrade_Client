@@ -47,6 +47,19 @@ let mockProducts = [
     status: "available",
     createdAt: new Date().toISOString(),
   },
+  ...Array.from({ length: 25 }).map((_, i) => ({
+    _id: `mock_${i + 4}`,
+    title: `Premium Item ${i + 4}`,
+    description: "High quality pre-owned item verified by our team.",
+    price: Math.floor(Math.random() * 500) + 50,
+    category: ["Electronics", "Clothing", "Furniture", "Automotive", "Fashion"][Math.floor(Math.random() * 5)],
+    condition: ["Excellent", "Like New", "Good", "Fair"][Math.floor(Math.random() * 4)],
+    images: ["https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80"],
+    sellerId: "user_456",
+    sellerName: "Tech Haven",
+    status: "available",
+    createdAt: new Date(Date.now() - Math.random() * 10000000000).toISOString(),
+  }))
 ];
 
 let mockOrders = [
@@ -57,6 +70,7 @@ let mockOrders = [
     productTitle: "Sony PlayStation 5",
     price: 450,
     status: "Delivered",
+    transactionId: "TRX-9876543210",
     date: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
   },
   {
@@ -66,6 +80,7 @@ let mockOrders = [
     productTitle: "Vintage Leather Jacket",
     price: 150,
     status: "Processing",
+    transactionId: "TRX-1234567890",
     date: new Date().toISOString(),
   },
 ];
@@ -75,6 +90,41 @@ export const mockApi = {
   getProducts: async () => {
     await delay(500); // Simulate network latency
     return [...mockProducts];
+  },
+
+  getPaginatedProducts: async ({ page = 1, limit = 8, category = "All", search = "", sortBy = "" }) => {
+    await delay(600);
+    
+    let filtered = [...mockProducts];
+    
+    if (category && category !== "All") {
+      filtered = filtered.filter(p => p.category === category);
+    }
+    
+    if (search) {
+      const lowerSearch = search.toLowerCase();
+      filtered = filtered.filter(p => p.title.toLowerCase().includes(lowerSearch) || p.description.toLowerCase().includes(lowerSearch));
+    }
+    
+    if (sortBy === "price_asc") {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price_desc") {
+      filtered.sort((a, b) => b.price - a.price);
+    } else {
+      // Default sort by newest
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    const total = filtered.length;
+    const startIndex = (page - 1) * limit;
+    const paginated = filtered.slice(startIndex, startIndex + limit);
+
+    return {
+      data: paginated,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    };
   },
   
   getProductById: async (id) => {
@@ -136,6 +186,7 @@ export const mockApi = {
       ...orderData,
       _id: "ord_" + Math.random().toString(36).substr(2, 9),
       status: "Processing",
+      transactionId: "TRX-" + Math.floor(Math.random() * 10000000000),
       date: new Date().toISOString(),
     };
     mockOrders.unshift(newOrder); // Add to the top of the list
@@ -143,6 +194,11 @@ export const mockApi = {
   },
 
   // Admin Endpoints
+  getAllOrders: async () => {
+    await delay(500);
+    return [...mockOrders];
+  },
+
   getAllUsers: async () => {
     await delay(500);
     return [...mockUsers];
