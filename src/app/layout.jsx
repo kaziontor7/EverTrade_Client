@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -17,8 +18,8 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased dark`}
-      style={{ colorScheme: "dark" }}
+      className={`${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <link
@@ -27,11 +28,13 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={`${inter.className} min-h-full flex flex-col bg-background text-on-surface`}>
-        <Navbar />
-        <main className="flex-grow flex flex-col">
-          {children}
-        </main>
-        <Footer />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <Navbar />
+          <main className="flex-grow flex flex-col">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

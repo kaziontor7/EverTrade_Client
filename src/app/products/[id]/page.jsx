@@ -62,7 +62,7 @@ export default function ProductDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex justify-center items-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex justify-center items-center">
         <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
@@ -71,7 +71,7 @@ export default function ProductDetailsPage() {
   if (!product) return null;
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-200 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <Link href="/products" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium mb-8 transition-colors">
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,12 +80,12 @@ export default function ProductDetailsPage() {
           Back to Marketplace
         </Link>
 
-        <div className="bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 relative">
+        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 relative">
           
           {/* Report Button */}
           <button 
             onClick={handleReport}
-            className="absolute top-6 right-6 text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-medium"
+            className="absolute top-6 right-6 text-gray-500 dark:text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-medium"
             title="Report this listing"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
@@ -94,7 +94,7 @@ export default function ProductDetailsPage() {
 
           {/* Image Gallery */}
           <div className="w-full lg:w-1/2 flex-shrink-0">
-            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-black/50 border border-white/10">
+            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10">
               <Image 
                 src={product.images[0]} 
                 alt={product.title}
@@ -119,12 +119,12 @@ export default function ProductDetailsPage() {
           <div className="w-full flex flex-col">
             <div className="flex justify-between items-start gap-4">
               <div>
-                <h1 className="text-3xl lg:text-4xl font-bold text-white font-outfit mb-2">{product.title}</h1>
+                <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white font-outfit mb-2">{product.title}</h1>
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="bg-white/5 text-gray-300 px-3 py-1 rounded-full border border-white/10">
+                  <span className="bg-white/5 text-gray-800 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10">
                     {product.category}
                   </span>
-                  <span className="bg-white/5 text-gray-300 px-3 py-1 rounded-full border border-white/10">
+                  <span className="bg-white/5 text-gray-800 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10">
                     Condition: {product.condition}
                   </span>
                 </div>
@@ -137,21 +137,21 @@ export default function ProductDetailsPage() {
               </p>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-white/10 flex-1">
-              <h3 className="text-lg font-bold text-white mb-4">Description</h3>
-              <p className="text-gray-400 leading-relaxed whitespace-pre-wrap">
+            <div className="mt-8 pt-8 border-t border-gray-200 dark:border-white/10 flex-1">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Description</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">
                 {product.description}
               </p>
             </div>
 
-            <div className="mt-8 bg-black/40 rounded-2xl p-6 border border-white/5 flex items-center justify-between">
+            <div className="mt-8 bg-gray-100/60 dark:bg-black/40 rounded-2xl p-6 border border-gray-200 dark:border-white/5 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-gradient-to-tr from-emerald-500 to-lime-400 rounded-full flex items-center justify-center text-gray-950 font-bold text-lg">
                   {product.sellerName.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Listed by</p>
-                  <p className="text-white font-medium">{product.sellerName}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Listed by</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{product.sellerName}</p>
                 </div>
               </div>
               <button className="px-4 py-2 border border-emerald-500/30 text-emerald-400 rounded-xl hover:bg-emerald-500/10 transition-colors font-medium text-sm">
@@ -162,14 +162,14 @@ export default function ProductDetailsPage() {
             <div className="mt-8">
               <button 
                 onClick={handleCheckout}
-                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center justify-center gap-2 text-lg"
+                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-gray-900 dark:text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center justify-center gap-2 text-lg"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
                 Secure Checkout
               </button>
-              <p className="text-center text-xs text-gray-500 mt-4">Protected by Stripe Payments</p>
+              <p className="text-center text-xs text-gray-500 dark:text-gray-500 mt-4">Protected by Stripe Payments</p>
             </div>
           </div>
         </div>

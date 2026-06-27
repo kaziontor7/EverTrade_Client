@@ -26,24 +26,24 @@ export default function SellerOrdersPage() {
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-emerald-900/40 to-gray-900 border border-emerald-500/20 rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-white font-outfit">Sales History</h1>
-        <p className="text-gray-400 mt-2">Track orders placed by buyers for your listings.</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit">Sales History</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Track orders placed by buyers for your listings.</p>
       </div>
 
-      <div className="bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6">
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : orders.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-400">You haven't made any sales yet.</p>
+            <p className="text-gray-600 dark:text-gray-400">You haven't made any sales yet.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-white/10 text-gray-400 text-sm">
+                <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
                   <th className="pb-4 font-medium">Order ID</th>
                   <th className="pb-4 font-medium">Product</th>
                   <th className="pb-4 font-medium">Buyer ID</th>
@@ -52,11 +52,11 @@ export default function SellerOrdersPage() {
                   <th className="pb-4 font-medium">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-gray-200 dark:divide-white/5">
                 {orders.map((order) => (
-                  <tr key={order._id} className="text-gray-300 hover:bg-white/5 transition-colors">
-                    <td className="py-4 font-mono text-sm text-gray-500">{order._id}</td>
-                    <td className="py-4 font-medium text-white">{order.productTitle}</td>
+                  <tr key={order._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
+                    <td className="py-4 font-mono text-sm text-gray-500 dark:text-gray-500">{order._id}</td>
+                    <td className="py-4 font-medium text-gray-900 dark:text-white">{order.productTitle}</td>
                     <td className="py-4 font-mono text-sm">{order.buyerId}</td>
                     <td className="py-4 text-sm">{new Date(order.date).toLocaleDateString()}</td>
                     <td className="py-4 text-emerald-400 font-bold">${order.price}</td>

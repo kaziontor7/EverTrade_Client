@@ -45,24 +45,24 @@ export default function AdminUsersManagement() {
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-emerald-900/40 to-gray-900 border border-emerald-500/20 rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-white font-outfit">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit">
           User Management
         </h1>
-        <p className="text-gray-400 mt-2">Manage buyers, verify sellers, and moderate accounts.</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage buyers, verify sellers, and moderate accounts.</p>
       </div>
 
-      <div className="bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6">
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : users.length === 0 ? (
-          <div className="text-center py-12 text-gray-400">No users found.</div>
+          <div className="text-center py-12 text-gray-600 dark:text-gray-400">No users found.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-white/10 text-gray-400 text-sm">
+                <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
                   <th className="pb-4 font-medium">User</th>
                   <th className="pb-4 font-medium">Email</th>
                   <th className="pb-4 font-medium">Role</th>
@@ -70,23 +70,23 @@ export default function AdminUsersManagement() {
                   <th className="pb-4 font-medium text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-gray-200 dark:divide-white/5">
                 {users.map((user) => (
-                  <tr key={user._id} className="text-gray-300 hover:bg-white/5 transition-colors">
+                  <tr key={user._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
                     <td className="py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-gradient-to-tr from-emerald-500 to-lime-400 rounded-full flex items-center justify-center text-gray-950 font-bold text-xs">
                           {user.name.charAt(0)}
                         </div>
-                        <span className="font-medium text-white">{user.name}</span>
+                        <span className="font-medium text-gray-900 dark:text-white">{user.name}</span>
                       </div>
                     </td>
-                    <td className="py-4 text-sm text-gray-400">{user.email}</td>
+                    <td className="py-4 text-sm text-gray-600 dark:text-gray-400">{user.email}</td>
                     <td className="py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium uppercase ${
                         user.role === 'admin' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
                         user.role === 'seller' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                        'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                        'bg-gray-500/10 text-gray-600 dark:text-gray-400 border-gray-500/20'
                       } border`}>
                         {user.role}
                       </span>
@@ -105,7 +105,7 @@ export default function AdminUsersManagement() {
                           </span>
                         )
                       ) : (
-                        <span className="text-gray-500 text-sm">-</span>
+                        <span className="text-gray-500 dark:text-gray-500 text-sm">-</span>
                       )}
                     </td>
                     <td className="py-4 text-right">

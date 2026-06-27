@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { authClient } from '../lib/auth-client';
+import { ThemeToggle } from './ThemeToggle';
 
 export default function Navbar() {
   const router = useRouter();
@@ -87,6 +88,7 @@ export default function Navbar() {
 
           {/* Right Section (Auth / Call-To-Action) */}
           <div className="hidden md:flex items-center gap-6">
+            <ThemeToggle />
             {isPending ? (
               <div className="w-24 h-9 bg-surface-container-high animate-pulse rounded-xl"></div>
             ) : session ? (
@@ -121,8 +123,9 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          {/* Mobile Menu Button & Theme Toggle */}
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface hover:text-emerald-400 transition-colors"
