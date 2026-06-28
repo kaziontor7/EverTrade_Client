@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
@@ -34,4 +35,8 @@ export const serverMutation = async (endpoint, data, method = "POST") => {
     return handleStatus(res);
 }
 
+export const revalidate = async (path) => {
+    'use server'
+    return revalidatePath(path);
+}
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { mockApi } from "@/services/mockApi";
+import { getProductById } from "@/lib/api/products";
 import { useSession } from "@/lib/auth-client";
 
 export default function ProductDetailsPage() {
@@ -19,8 +19,8 @@ export default function ProductDetailsPage() {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        const data = await mockApi.getProductById(id);
-        if (data) {
+        const data = await getProductById(id);
+        if (data && data._id) {
           setProduct(data);
         } else {
           router.push("/products"); // Redirect if not found
@@ -96,7 +96,7 @@ export default function ProductDetailsPage() {
           <div className="w-full lg:w-1/2 flex-shrink-0">
             <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10">
               <Image 
-                src={product.images[0]} 
+                src={typeof product.images === 'string' ? product.images : (product.images?.[0] || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80")} 
                 alt={product.title}
                 fill
                 className="object-cover"
@@ -104,7 +104,7 @@ export default function ProductDetailsPage() {
               />
             </div>
             {/* Thumbnails placeholder for multiple images */}
-            {product.images.length > 1 && (
+            {Array.isArray(product.images) && product.images.length > 1 && (
               <div className="flex gap-4 mt-4">
                 {product.images.map((img, idx) => (
                   <div key={idx} className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 cursor-pointer ${idx === 0 ? 'border-emerald-500' : 'border-transparent opacity-50 hover:opacity-100'}`}>

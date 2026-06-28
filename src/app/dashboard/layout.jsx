@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }) {
     );
   }
 
-  const role = session?.user?.role || "buyer";
+  const role = (session?.user?.role || "buyer").toLowerCase();
 
   const getLinkClasses = (path) => {
     const isActive = pathname === path;
@@ -79,16 +79,26 @@ export default function DashboardLayout({ children }) {
               ) : (
                 <>
                   <Link href="/dashboard/buyer" className={getLinkClasses("/dashboard/buyer")}>
+                    <span className="material-symbols-outlined text-xl">dashboard</span>
+                    <span>Overview</span>
+                  </Link>
+                  <Link href="/dashboard/buyer/orders" className={getLinkClasses("/dashboard/buyer/orders")}>
+                    <span className="material-symbols-outlined text-xl">shopping_bag</span>
                     <span>My Orders</span>
                   </Link>
                   <Link href="/dashboard/buyer/wishlist" className={getLinkClasses("/dashboard/buyer/wishlist")}>
+                    <span className="material-symbols-outlined text-xl">favorite</span>
                     <span>Wishlist</span>
+                  </Link>
+                  <Link href="/dashboard/buyer/payments" className={getLinkClasses("/dashboard/buyer/payments")}>
+                    <span className="material-symbols-outlined text-xl">payments</span>
+                    <span>Payment History</span>
                   </Link>
                 </>
               )}
               
               <Link href="/dashboard/settings" className={getLinkClasses("/dashboard/settings")}>
-                {role === 'seller' && <span className="material-symbols-outlined text-xl">settings</span>}
+                <span className="material-symbols-outlined text-xl">settings</span>
                 <span>Settings</span>
               </Link>
             </nav>

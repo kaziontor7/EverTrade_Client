@@ -15,3 +15,8 @@ export const getProducts = async () => {
     const res = await serverFetch(`products`)
     return res;
 }
+
+export const getProductById = async (id) => {
+    const res = await serverFetch(`products/${id}`)
+    return res;
+}
