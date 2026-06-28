@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { authClient } from '../lib/auth-client';
 import { ThemeToggle } from './ThemeToggle';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cartCount, isLoaded } = useCart();
 
   // Fetch the active session from Better Auth
   const { data: session, isPending } = authClient.useSession();
@@ -88,6 +90,14 @@ export default function Navbar() {
 
           {/* Right Section (Auth / Call-To-Action) */}
           <div className="hidden md:flex items-center gap-6">
+            <Link href="/cart" className="relative p-2 text-gray-600 dark:text-[#94a3b8] hover:text-emerald-500 transition-colors flex items-center justify-center">
+              <span className="material-symbols-outlined text-[22px]">shopping_cart</span>
+              {isLoaded && cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 text-white text-[11px] font-bold flex items-center justify-center rounded-full border-2 border-white dark:border-[#0d1527]">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <ThemeToggle />
             {isPending ? (
               <div className="w-24 h-9 bg-gray-200 dark:bg-[#1a2340] animate-pulse rounded-xl"></div>
@@ -125,6 +135,14 @@ export default function Navbar() {
 
           {/* Mobile Menu Button & Theme Toggle */}
           <div className="md:hidden flex items-center gap-4">
+            <Link href="/cart" className="relative p-2 text-gray-600 dark:text-[#e2e8f0] hover:text-emerald-500 transition-colors flex items-center justify-center">
+              <span className="material-symbols-outlined text-[22px]">shopping_cart</span>
+              {isLoaded && cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 text-white text-[11px] font-bold flex items-center justify-center rounded-full border-2 border-gray-50 dark:border-[#0d1527]">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

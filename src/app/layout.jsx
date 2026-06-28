@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { CartProvider } from "@/contexts/CartContext";
 import "./globals.css";
 import { Toast } from "@heroui/react";
 
@@ -30,11 +31,13 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.className} min-h-full flex flex-col bg-gray-50 dark:bg-[#060e20] text-gray-900 dark:text-[#e2e8f0] transition-colors duration-300`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Navbar />
-          <main className="flex-grow flex flex-col">
-            {children}
-          </main>
-          <Footer />
+          <CartProvider>
+            <Navbar />
+            <main className="flex-grow flex flex-col">
+              {children}
+            </main>
+            <Footer />
+          </CartProvider>
         </ThemeProvider>
         <Toast.Provider />
       </body>

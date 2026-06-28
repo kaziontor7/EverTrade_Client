@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ClearCartOnMount from "@/components/ClearCartOnMount";
 
 export const metadata = {
   title: "Payment Successful | EverTrade",
@@ -7,7 +8,9 @@ export const metadata = {
 
 export default function CheckoutSuccessPage() {
   return (
-    <div className="flex-grow flex flex-col items-center justify-center min-h-[80vh] text-center px-6 relative overflow-hidden">
+    <>
+      <ClearCartOnMount />
+      <div className="flex-grow flex flex-col items-center justify-center min-h-[80vh] text-center px-6 relative overflow-hidden">
       
       {/* Background Ambient Orbs */}
       <div className="absolute inset-0 grid-pattern pointer-events-none opacity-40"></div>
@@ -43,6 +46,6 @@ export default function CheckoutSuccessPage() {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }

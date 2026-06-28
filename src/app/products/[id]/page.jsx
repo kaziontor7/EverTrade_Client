@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProductById } from "@/lib/api/products";
 import { useSession } from "@/lib/auth-client";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "@heroui/react";
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
@@ -37,12 +39,21 @@ export default function ProductDetailsPage() {
     }
   }, [id, router]);
 
+  const { addToCart } = useCart();
+
   const handleCheckout = () => {
     if (!session) {
       router.push("/signin");
       return;
     }
-    router.push(`/checkout/${id}`);
+    // Directly adding to cart and redirecting to the generic checkout
+    addToCart(product);
+    router.push(`/checkout`);
+  };
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    toast.success(`${product.title} added to cart!`);
   };
 
   const handleReport = async () => {
@@ -159,18 +170,23 @@ export default function ProductDetailsPage() {
               </button>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <button 
+                onClick={handleAddToCart}
+                className="w-full sm:w-1/2 py-4 bg-white dark:bg-[#1a2340] border-2 border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-lg"
+              >
+                <span className="material-symbols-outlined">add_shopping_cart</span>
+                Add to Cart
+              </button>
               <button 
                 onClick={handleCheckout}
-                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-gray-900 dark:text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center justify-center gap-2 text-lg"
+                className="w-full sm:w-1/2 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2 text-lg"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                Secure Checkout
+                <span className="material-symbols-outlined">shopping_bag</span>
+                Buy Now
               </button>
-              <p className="text-center text-xs text-gray-500 dark:text-gray-500 mt-4">Protected by Stripe Payments</p>
             </div>
+            <p className="text-center text-xs text-gray-500 dark:text-gray-500 mt-4">Protected by Stripe Payments</p>
           </div>
         </div>
       </div>
