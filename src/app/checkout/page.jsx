@@ -35,24 +35,33 @@ export default function GlobalCheckoutPage() {
   }
 
   const shippingCost = 15;
-  const tax = Math.round(cartTotal * 0.08 * 100) / 100;
-  const total = cartTotal + shippingCost + tax;
+  const total = cartTotal + shippingCost;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
     
     try {
-      // TODO: Implement actual Stripe Checkout Session redirect here
-      // This is where you will send cart details to your backend and redirect the user
+      const response = await fetch('/api/checkout_sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          cartItems,
+          customerEmail: session?.user?.email,
+          userId: session?.user?.id
+        })
+      });
       
-      // Simulate network delay for the placeholder
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const data = await response.json();
       
-      router.push("/checkout/success");
-      
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
     } catch (error) {
       console.error(error);
+      alert("Error initiating checkout: " + error.message);
       setIsProcessing(false);
     }
   };
@@ -77,13 +86,9 @@ export default function GlobalCheckoutPage() {
               <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-sm">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Shipping Address</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">First Name</label>
-                    <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="John" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">Last Name</label>
-                    <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="Doe" />
+                  <div className="md:col-span-2 space-y-2">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">Full Name</label>
+                    <input type="text" disabled value={session?.user?.name || ""} className="w-full bg-gray-100 dark:bg-black/80 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed" />
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <label className="text-sm text-gray-600 dark:text-gray-400">Street Address</label>
@@ -94,8 +99,8 @@ export default function GlobalCheckoutPage() {
                     <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="New York" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">ZIP / Postal Code</label>
-                    <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="10001" />
+                    <label className="text-sm text-gray-600 dark:text-gray-400">Phone Number</label>
+                    <input type="text" disabled value={session?.user?.phone || "N/A"} className="w-full bg-gray-100 dark:bg-black/80 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed" />
                   </div>
                 </div>
               </div>
@@ -125,7 +130,7 @@ export default function GlobalCheckoutPage() {
                     Redirecting to Stripe...
                   </>
                 ) : (
-                  `Proceed to Payment (৳${total.toLocaleString()})`
+                  `Proceed to Payment ($${total.toLocaleString()})`
                 )}
               </button>
             </form>
@@ -146,7 +151,7 @@ export default function GlobalCheckoutPage() {
                       <h3 className="font-medium text-gray-900 dark:text-white line-clamp-1 text-sm">{item.title}</h3>
                       <div className="flex justify-between items-center mt-1">
                         <span className="text-xs text-gray-500">Qty: {item.cartQuantity}</span>
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">৳{(item.price * item.cartQuantity).toLocaleString()}</span>
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">${(item.price * item.cartQuantity).toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
@@ -156,21 +161,21 @@ export default function GlobalCheckoutPage() {
               <div className="space-y-4 py-6 border-t border-b border-gray-200 dark:border-white/10">
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Subtotal</span>
-                  <span className="font-medium text-gray-900 dark:text-white">৳{cartTotal.toLocaleString()}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">${cartTotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Shipping</span>
-                  <span className="font-medium text-gray-900 dark:text-white">৳{shippingCost.toLocaleString()}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">${shippingCost.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                  <span>Estimated Tax</span>
-                  <span className="font-medium text-gray-900 dark:text-white">৳{tax.toLocaleString()}</span>
-                </div>
+                  <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                    <span>Estimated Delivery</span>
+                    <span className="font-medium text-gray-900 dark:text-white">3-5 Business Days</span>
+                  </div>
               </div>
 
               <div className="flex justify-between items-end mt-6">
                 <span className="text-lg font-bold text-gray-900 dark:text-white">Total</span>
-                <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">৳{total.toLocaleString()}</span>
+                <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">${total.toLocaleString()}</span>
               </div>
             </div>
           </div>

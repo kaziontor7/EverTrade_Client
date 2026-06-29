@@ -1,18 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { mockApi } from "@/services/mockApi";
+import { useSession } from "@/lib/auth-client";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export default function SellerOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchOrders = async () => {
+      if (!session?.user?.id) return;
       try {
-        // Mocking seller orders by using the same mock orders array
-        const allOrders = await mockApi.getBuyerOrders();
-        setOrders(allOrders);
+        const res = await fetch(`${API_URL}/orders/seller/${session.user.id}`);
+        if (res.ok) {
+          const sellerOrders = await res.json();
+          setOrders(sellerOrders);
+        }
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
@@ -21,7 +27,21 @@ export default function SellerOrdersPage() {
     };
 
     fetchOrders();
-  }, []);
+  }, [session]);
+
+  const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+      await fetch(`${API_URL}/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const updatedOrders = orders.map(o => o._id === orderId ? { ...o, orderStatus: newStatus } : o);
+      setOrders(updatedOrders);
+    } catch (error) {
+      console.error("Error updating order:", error);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -47,6 +67,7 @@ export default function SellerOrdersPage() {
                 <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
                   <th className="pb-4 font-medium px-2">Order ID</th>
                   <th className="pb-4 font-medium px-2">Product</th>
+                  <th className="pb-4 font-medium px-2">Qty</th>
                   <th className="pb-4 font-medium px-2">Buyer ID</th>
                   <th className="pb-4 font-medium px-2">Date</th>
                   <th className="pb-4 font-medium px-2">Earnings</th>
@@ -65,32 +86,30 @@ export default function SellerOrdersPage() {
                     return null;
                   };
                   
-                  const nextStatus = getNextStatus(order.status || 'Pending');
+                  const nextStatus = getNextStatus(order.orderStatus || 'Pending');
 
                   return (
                     <tr key={order._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
                       <td className="py-4 px-2 font-mono text-sm text-gray-500 dark:text-gray-500">{order._id}</td>
-                      <td className="py-4 px-2 font-medium text-gray-900 dark:text-white">{order.productTitle}</td>
-                      <td className="py-4 px-2 font-mono text-sm">{order.buyerId}</td>
-                      <td className="py-4 px-2 text-sm">{new Date(order.date).toLocaleDateString()}</td>
-                      <td className="py-4 px-2 text-emerald-600 dark:text-emerald-400 font-bold">৳{order.price.toLocaleString()}</td>
+                      <td className="py-4 px-2 font-medium text-gray-900 dark:text-white">{order.title}</td>
+                      <td className="py-4 px-2 text-center">{order.quantity || 1}</td>
+                      <td className="py-4 px-2 font-mono text-sm">{order.buyerInfo?.userId || 'Unknown'}</td>
+                      <td className="py-4 px-2 text-sm">{new Date(order.createdAt).toLocaleDateString()}</td>
+                      <td className="py-4 px-2 text-emerald-600 dark:text-emerald-400 font-bold">${order.price.toLocaleString()}</td>
                       <td className="py-4 px-2">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          order.status === 'Delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' :
-                          order.status === 'Declined' ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' :
+                          order.orderStatus === 'Delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' :
+                          order.orderStatus === 'Declined' ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' :
                           'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'
                         }`}>
-                          {order.status || 'Pending'}
+                          {order.orderStatus || 'Pending'}
                         </span>
                       </td>
                       <td className="py-4 px-2 text-right">
                         <div className="flex justify-end gap-2">
-                          {nextStatus && order.status !== 'Declined' && (
+                          {nextStatus && order.orderStatus !== 'Declined' && (
                             <button
-                              onClick={() => {
-                                const updatedOrders = orders.map(o => o._id === order._id ? { ...o, status: nextStatus } : o);
-                                setOrders(updatedOrders);
-                              }}
+                              onClick={() => updateOrderStatus(order._id, nextStatus)}
                               className="px-3 py-1 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium rounded-lg transition-colors"
                             >
                               Mark as {nextStatus}

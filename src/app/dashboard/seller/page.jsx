@@ -12,12 +12,33 @@ export default async function SellerDashboard() {
     );
   }
 
-  // Fake overview data
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  
+  let products = [];
+  let orders = [];
+  
+  try {
+    const [productsRes, ordersRes] = await Promise.all([
+      fetch(`${API_URL}/products?sellerId=${session.id}`),
+      fetch(`${API_URL}/orders/seller/${session.id}`)
+    ]);
+    
+    if (productsRes.ok) products = await productsRes.json();
+    if (ordersRes.ok) orders = await ordersRes.json();
+  } catch (error) {
+    console.error("Failed to fetch seller dashboard data:", error);
+  }
+
+  const totalProducts = products.length;
+  const totalSales = orders.filter(o => o.paymentStatus === 'paid' || o.paymentStatus === 'success').length;
+  const totalRevenue = orders.filter(o => o.paymentStatus === 'paid' || o.paymentStatus === 'success').reduce((acc, curr) => acc + (curr.price * (curr.quantity || 1)), 0);
+  const pendingOrders = orders.filter(o => !o.orderStatus || o.orderStatus === 'processing' || o.orderStatus === 'pending').length;
+
   const stats = [
-    { title: "Total Products", value: "24", icon: "inventory_2", color: "from-blue-500/20 to-blue-500/5", text: "text-blue-500" },
-    { title: "Total Sales", value: "156", icon: "shopping_cart", color: "from-emerald-500/20 to-emerald-500/5", text: "text-emerald-500" },
-    { title: "Total Revenue", value: "$4,250", icon: "account_balance_wallet", color: "from-purple-500/20 to-purple-500/5", text: "text-purple-500" },
-    { title: "Pending Orders", value: "8", icon: "pending_actions", color: "from-amber-500/20 to-amber-500/5", text: "text-amber-500" },
+    { title: "Total Products", value: totalProducts.toString(), icon: "inventory_2", color: "from-blue-500/20 to-blue-500/5", text: "text-blue-500" },
+    { title: "Total Sales", value: totalSales.toString(), icon: "shopping_cart", color: "from-emerald-500/20 to-emerald-500/5", text: "text-emerald-500" },
+    { title: "Total Revenue", value: `$${totalRevenue.toLocaleString()}`, icon: "account_balance_wallet", color: "from-purple-500/20 to-purple-500/5", text: "text-purple-500" },
+    { title: "Pending Orders", value: pendingOrders.toString(), icon: "pending_actions", color: "from-amber-500/20 to-amber-500/5", text: "text-amber-500" },
   ];
 
   return (

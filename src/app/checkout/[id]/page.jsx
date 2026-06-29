@@ -135,7 +135,7 @@ function CheckoutForm({ product, session, onSuccess, isProcessing, setIsProcessi
             Processing Secure Payment...
           </>
         ) : (
-          `Pay ৳${(product.price + 15 + Math.round(product.price * 0.08 * 100) / 100).toLocaleString()}`
+          `Pay $${(product.price + 15 + Math.round(product.price * 0.08 * 100) / 100).toLocaleString()}`
         )}
       </button>
     </form>
@@ -190,8 +190,7 @@ export default function CheckoutPage() {
   if (!product) return null;
 
   const shippingCost = 15;
-  const tax = Math.round(product.price * 0.08 * 100) / 100; // 8% mock tax
-  const total = product.price + shippingCost + tax;
+  const total = product.price + shippingCost;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200 py-12 px-4 sm:px-6 lg:px-8 relative">
@@ -231,28 +230,28 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <h3 className="font-medium text-gray-900 dark:text-white line-clamp-2 leading-snug">{product.title}</h3>
-                  <p className="text-emerald-600 dark:text-emerald-400 font-bold mt-1">৳{product.price.toLocaleString()}</p>
+                  <p className="text-emerald-600 dark:text-emerald-400 font-bold mt-1">${product.price.toLocaleString()}</p>
                 </div>
               </div>
 
               <div className="space-y-4 py-6 border-t border-b border-gray-200 dark:border-white/10">
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Subtotal</span>
-                  <span className="font-medium text-gray-900 dark:text-white">৳{product.price.toLocaleString()}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">${product.price.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Shipping</span>
-                  <span className="font-medium text-gray-900 dark:text-white">৳{shippingCost.toLocaleString()}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">${shippingCost.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                  <span>Estimated Tax</span>
-                  <span className="font-medium text-gray-900 dark:text-white">৳{tax.toLocaleString()}</span>
+                  <span>Estimated Delivery</span>
+                  <span className="font-medium text-gray-900 dark:text-white">3-5 Business Days</span>
                 </div>
               </div>
 
               <div className="flex justify-between items-end mt-6">
                 <span className="text-lg font-bold text-gray-900 dark:text-white">Total</span>
-                <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">৳{total.toLocaleString()}</span>
+                <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">${total.toLocaleString()}</span>
               </div>
             </div>
           </div>

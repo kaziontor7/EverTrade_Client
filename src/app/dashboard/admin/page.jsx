@@ -60,7 +60,7 @@ export default function AdminOverview() {
           <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 text-emerald-500 dark:text-emerald-400">
             <span className="material-symbols-outlined">payments</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">৳{totalRevenue.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">${totalRevenue.toLocaleString()}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Platform Revenue (5%)</p>
         </div>
         <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
@@ -113,9 +113,9 @@ export default function AdminOverview() {
                   {orders.map((order) => (
                     <tr key={order._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
                       <td className="py-4 px-2 font-mono text-sm text-gray-500">{order._id}</td>
-                      <td className="py-4 px-2 font-medium">৳{order.price.toLocaleString()}</td>
+                      <td className="py-4 px-2 font-medium">${order.price.toLocaleString()}</td>
                       <td className="py-4 px-2 text-emerald-600 dark:text-emerald-400 font-bold">
-                        +৳{(order.price * 0.05).toLocaleString()}
+                        +${(order.price * 0.05).toLocaleString()}
                       </td>
                       <td className="py-4 px-2">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${

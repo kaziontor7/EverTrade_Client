@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
-import { mockApi } from "@/services/mockApi";
 import Link from "next/link";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export default function BuyerDashboard() {
   const { data: session } = useSession();
@@ -15,9 +16,19 @@ export default function BuyerDashboard() {
     const fetchData = async () => {
       if (session?.user?.id) {
         try {
-          const userOrders = await mockApi.getBuyerOrders(session.user.id);
-          setOrders(userOrders);
-          setWishlistCount(3); // Mocking wishlist count for now
+          const [ordersRes, wishlistRes] = await Promise.all([
+            fetch(`${API_URL}/orders/buyer/${session.user.id}`),
+            fetch(`${API_URL}/wishlist/${session.user.id}`)
+          ]);
+          
+          if (ordersRes.ok) {
+            const userOrders = await ordersRes.json();
+            setOrders(userOrders);
+          }
+          if (wishlistRes.ok) {
+            const wishlistItems = await wishlistRes.json();
+            setWishlistCount(wishlistItems.length);
+          }
         } catch (error) {
           console.error("Failed to fetch dashboard data:", error);
         } finally {
@@ -90,13 +101,13 @@ export default function BuyerDashboard() {
                     <span className="material-symbols-outlined">inventory_2</span>
                   </div>
                   <div>
-                    <p className="text-gray-900 dark:text-white font-medium">{order.productTitle}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(order.date).toLocaleDateString()}</p>
+                    <p className="text-gray-900 dark:text-white font-medium">{order.title}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-emerald-600 dark:text-emerald-400 font-bold">৳{order.price.toLocaleString()}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{order.status}</p>
+                  <p className="text-emerald-600 dark:text-emerald-400 font-bold">${order.price?.toLocaleString()}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{order.orderStatus}</p>
                 </div>
               </div>
             ))}

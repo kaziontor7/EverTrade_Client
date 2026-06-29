@@ -102,7 +102,7 @@ export function ProductCard({ product, index = 0, user, wishList }) {
               {product.category}
             </span>
             <span className="text-lg font-bold text-gray-900 dark:text-white">
-              ৳{product.price.toLocaleString()}
+              ${product.price.toLocaleString()}
             </span>
           </div>
 
