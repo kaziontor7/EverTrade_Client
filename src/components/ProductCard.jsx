@@ -22,19 +22,24 @@ export function ProductCard({ product, index = 0, user, wishList }) {
   const onClickHandler = async () => {
 
     if (!user) {
-      toast.error("Please login to add to wishlist");
+      toast.danger("Please login to add to wishlist");
+      return;
+    }
+
+    if (user.role === 'seller' || user.role === 'admin') {
+      toast.danger("Sellers and Admins cannot add products to wishlist");
       return;
     }
 
     if (checkExist) {
       const deleteWishList = await deleteWish(checkExist._id);
       if (deleteWishList.acknowledged) {
-        toast.info("Product removed from wishlist");
+        toast("Product removed from wishlist");
         await revalidate('/products');
         await revalidate('/dashboard/buyer/wishlist');
       }
       else {
-        toast.error("Failed to remove product from wishlist");
+        toast.danger("Failed to remove product from wishlist");
       }
       return;
     }
@@ -54,10 +59,10 @@ export function ProductCard({ product, index = 0, user, wishList }) {
 
     if (res.acknowledged) {
       toast.success("Product added to wishlist");
-      await revalidate("/products");
+      await revalidate('/products');
       await revalidate('/dashboard/buyer/wishlist');
     } else {
-      toast.error("Failed to add product to wishlist");
+      toast.danger("Failed to add product to wishlist");
     }
 
   }

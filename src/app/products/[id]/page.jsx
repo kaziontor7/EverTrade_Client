@@ -47,12 +47,20 @@ export default function ProductDetailsPage() {
       router.push("/signin");
       return;
     }
+    if (session?.user?.role === 'seller' || session?.user?.role === 'admin') {
+      toast.danger("Sellers and Admins cannot purchase products");
+      return;
+    }
     // Directly adding to cart and redirecting to the generic checkout
     addToCart(product);
     router.push(`/checkout`);
   };
 
   const handleAddToCart = () => {
+    if (session?.user?.role === 'seller' || session?.user?.role === 'admin') {
+      toast.danger("Sellers and Admins cannot add products to cart");
+      return;
+    }
     addToCart(product);
     toast.success(`${product.title} added to cart!`);
   };
