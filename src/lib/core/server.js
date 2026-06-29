@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { auth } from "../auth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -20,12 +22,31 @@ export const serverFetch = async (path) => {
     return res.json();
 }
 
+export const protectedFetch = async (path) => {
+    const { token } = await auth.api.getToken({
+        headers: await headers()
+    })
+
+    const options = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    };
+    const res = await fetch(`${API_URL}/${path}`, options);
+    return handleStatus(res);
+}
+
 
 export const serverMutation = async (endpoint, data, method = "POST") => {
+    const { token } = await auth.api.getToken({
+        headers: await headers()
+    })
+
     const options = {
         method: method,
         headers: {
             'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`
         },
     };
     if (data) {

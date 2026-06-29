@@ -1,13 +1,13 @@
 'use server'
 
-import { serverFetch } from "../core/server";
+import { serverFetch, protectedFetch } from "../core/server";
 
 
 
 
 
 export const getProductsBySellerId = async (sellerId) => {
-    const res = await serverFetch(`products?sellerId=${sellerId}`)
+    const res = await protectedFetch(`products?sellerId=${sellerId}`)
     return res;
 }
 

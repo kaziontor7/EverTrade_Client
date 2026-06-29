@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AlertDialog, Button } from "@heroui/react";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getAdminOrders, forceUpdateOrderStatus } from "@/lib/api/admin";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -14,9 +13,8 @@ export default function AdminOrdersPage() {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/admin/orders`);
-      if (res.ok) {
-        const data = await res.json();
+      const data = await getAdminOrders();
+      if (data) {
         setOrders(data);
       }
     } catch (error) {
@@ -32,11 +30,7 @@ export default function AdminOrdersPage() {
 
   const handleUpdateStatus = async (orderId, status) => {
     try {
-      await fetch(`${API_URL}/orders/${orderId}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status })
-      });
+      await forceUpdateOrderStatus(orderId, status);
       fetchOrders();
     } catch (error) {
       console.error("Failed to force update order status:", error);

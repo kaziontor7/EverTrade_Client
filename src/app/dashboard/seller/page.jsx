@@ -1,4 +1,5 @@
 import { getUserSession } from "@/lib/core/session";
+import { protectedFetch } from "@/lib/core/server";
 import Link from "next/link";
 
 export default async function SellerDashboard() {
@@ -19,12 +20,12 @@ export default async function SellerDashboard() {
   
   try {
     const [productsRes, ordersRes] = await Promise.all([
-      fetch(`${API_URL}/products?sellerId=${session.id}`),
-      fetch(`${API_URL}/orders/seller/${session.id}`)
+      protectedFetch(`products?sellerId=${session.id}`),
+      protectedFetch(`orders/seller/${session.id}`)
     ]);
     
-    if (productsRes.ok) products = await productsRes.json();
-    if (ordersRes.ok) orders = await ordersRes.json();
+    if (productsRes) products = productsRes;
+    if (ordersRes) orders = ordersRes;
   } catch (error) {
     console.error("Failed to fetch seller dashboard data:", error);
   }

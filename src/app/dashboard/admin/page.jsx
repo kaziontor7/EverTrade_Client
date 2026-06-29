@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getAdminStats, deleteProduct } from "@/lib/api/admin";
 
 export default function AdminOverview() {
   const [stats, setStats] = useState({
@@ -20,9 +19,8 @@ export default function AdminOverview() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${API_URL}/admin/stats`);
-        if (res.ok) {
-          const data = await res.json();
+        const data = await getAdminStats();
+        if (data) {
           setStats(data);
         }
       } catch (error) {
@@ -38,7 +36,7 @@ export default function AdminOverview() {
   const handleDeleteProduct = async (id) => {
     if (confirm("Are you sure you want to delete this listing?")) {
       try {
-        await fetch(`${API_URL}/products/${id}`, { method: 'DELETE' });
+        await deleteProduct(id);
         setStats(prev => ({
           ...prev,
           recentProducts: prev.recentProducts.filter(p => p._id !== id)

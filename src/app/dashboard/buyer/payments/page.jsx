@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "@/lib/auth-client";
+import { getUserPayments } from "@/lib/api/payments";
 
 export default function PaymentHistoryPage() {
   const { data: session } = useSession();
@@ -13,10 +14,8 @@ export default function PaymentHistoryPage() {
     const fetchPayments = async () => {
       if (session?.user?.id) {
         try {
-          const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-          const res = await fetch(`${API_URL}/payments/${session.user.id}`);
-          if (res.ok) {
-            const userPayments = await res.json();
+          const userPayments = await getUserPayments(session.user.id);
+          if (userPayments) {
             setPayments(userPayments);
           }
         } catch (error) {

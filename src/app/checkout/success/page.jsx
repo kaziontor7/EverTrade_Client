@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from 'next/navigation';
 import { stripe } from '../../../lib/stripe';
 import SyncCheckoutOnMount from '../../../components/SyncCheckoutOnMount';
-import { serverFetch } from '../../../lib/core/server';
+import { protectedFetch } from '../../../lib/core/server';
 export const metadata = {
   title: "Payment Successful | EverTrade",
   description: "Your payment was processed successfully.",
@@ -41,7 +41,7 @@ export default async function CheckoutSuccessPage({ searchParams }) {
 
   let orders = [];
   try {
-    orders = await serverFetch(`orders/transaction/${transactionId}`);
+    orders = await protectedFetch(`orders/transaction/${transactionId}`);
   } catch (error) {
     console.error("Failed to fetch orders for transaction", error);
   }

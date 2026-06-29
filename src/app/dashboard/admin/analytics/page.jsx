@@ -5,8 +5,7 @@ import {
   LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from "recharts";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getAdminAnalytics } from "@/lib/api/admin";
 
 const COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'];
 
@@ -21,9 +20,8 @@ export default function AdminAnalyticsPage() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch(`${API_URL}/admin/analytics`);
-        if (res.ok) {
-          const analyticsData = await res.json();
+        const analyticsData = await getAdminAnalytics();
+        if (analyticsData) {
           setData(analyticsData);
         }
       } catch (error) {

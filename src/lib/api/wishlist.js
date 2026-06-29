@@ -1,6 +1,6 @@
-import { serverFetch } from "../core/server";
+import { protectedFetch } from "../core/server";
 
 export const getWishList = async (userId) => {
-    return await serverFetch(`wishlist/${userId}`);
+    return await protectedFetch(`wishlist/${userId}`);
 }
 

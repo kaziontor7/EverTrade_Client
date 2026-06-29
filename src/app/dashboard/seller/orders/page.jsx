@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import { AlertDialog, Button } from "@heroui/react";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getSellerOrders, updateOrderStatus } from "@/lib/api/orders";
 
 export default function SellerOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -15,9 +14,8 @@ export default function SellerOrdersPage() {
     const fetchOrders = async () => {
       if (!session?.user?.id) return;
       try {
-        const res = await fetch(`${API_URL}/orders/seller/${session.user.id}`);
-        if (res.ok) {
-          const sellerOrders = await res.json();
+        const sellerOrders = await getSellerOrders(session.user.id);
+        if (sellerOrders) {
           setOrders(sellerOrders);
         }
       } catch (error) {
@@ -30,13 +28,9 @@ export default function SellerOrdersPage() {
     fetchOrders();
   }, [session]);
 
-  const updateOrderStatus = async (orderId, newStatus) => {
+  const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
-      await fetch(`${API_URL}/orders/${orderId}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      await updateOrderStatus(orderId, newStatus);
       const updatedOrders = orders.map(o => o._id === orderId ? { ...o, orderStatus: newStatus } : o);
       setOrders(updatedOrders);
     } catch (error) {
@@ -115,7 +109,7 @@ export default function SellerOrdersPage() {
                         <div className="flex justify-end gap-2">
                           {nextStatus && !isDeclined && (
                             <button
-                              onClick={() => updateOrderStatus(order._id, nextStatus)}
+                              onClick={() => handleUpdateOrderStatus(order._id, nextStatus)}
                               className="px-3 py-1 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium rounded-lg transition-colors"
                             >
                               {nextStatus === 'Accepted' ? 'Accept' : nextStatus}
@@ -141,7 +135,7 @@ export default function SellerOrdersPage() {
                                       <Button slot="close" variant="tertiary">
                                         Cancel
                                       </Button>
-                                      <Button slot="close" variant="danger" onPress={() => updateOrderStatus(order._id, 'Refund in Progress')}>
+                                      <Button slot="close" variant="danger" onPress={() => handleUpdateOrderStatus(order._id, 'Refund in Progress')}>
                                         Yes, Decline Order
                                       </Button>
                                     </AlertDialog.Footer>

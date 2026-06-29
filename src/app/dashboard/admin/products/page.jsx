@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AlertDialog, Button } from "@heroui/react";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { moderateProduct, deleteProduct } from "@/lib/api/admin";
+import { getProducts } from "@/lib/api/products";
 
 export default function ManageProductsPage() {
   const [products, setProducts] = useState([]);
@@ -14,9 +14,8 @@ export default function ManageProductsPage() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/products`);
-      if (res.ok) {
-        const data = await res.json();
+      const data = await getProducts();
+      if (data && Array.isArray(data)) {
         setProducts(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       }
     } catch (error) {
@@ -32,11 +31,7 @@ export default function ManageProductsPage() {
 
   const handleModerate = async (productId, status) => {
     try {
-      await fetch(`${API_URL}/products/${productId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ moderationStatus: status })
-      });
+      await moderateProduct(productId, status);
       fetchProducts();
     } catch (error) {
       console.error("Failed to moderate product:", error);
@@ -45,7 +40,7 @@ export default function ManageProductsPage() {
 
   const handleDeleteProduct = async (productId) => {
     try {
-      await fetch(`${API_URL}/products/${productId}`, { method: "DELETE" });
+      await deleteProduct(productId);
       fetchProducts();
     } catch (error) {
       console.error("Failed to delete product:", error);

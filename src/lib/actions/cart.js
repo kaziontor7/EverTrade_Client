@@ -1,9 +1,9 @@
 "use server";
 
-import { serverMutation, serverFetch, revalidate } from "../core/server";
+import { serverMutation, protectedFetch, revalidate } from "../core/server";
 
 export const getCartAction = async (userId) => {
-    return await serverFetch(`cart?userId=${userId}`);
+    return await protectedFetch(`cart?userId=${userId}`);
 };
 
 export const addToCartAction = async (cartData) => {

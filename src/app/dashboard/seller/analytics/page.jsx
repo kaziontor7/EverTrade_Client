@@ -6,8 +6,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, LineChart, Line, Legend 
 } from "recharts";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getSellerOrders } from "@/lib/api/orders";
 
 const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
 
@@ -20,9 +19,8 @@ export default function SalesAnalyticsPage() {
     const fetchOrders = async () => {
       if (!session?.user?.id) return;
       try {
-        const res = await fetch(`${API_URL}/orders/seller/${session.user.id}`);
-        if (res.ok) {
-          const data = await res.json();
+        const data = await getSellerOrders(session.user.id);
+        if (data) {
           setOrders(data);
         }
       } catch (error) {

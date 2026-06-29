@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import { AlertDialog, Button } from "@heroui/react";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getBuyerOrders, updateOrderStatus } from "@/lib/api/orders";
 
 export default function MyOrdersPage() {
   const { data: session } = useSession();
@@ -15,9 +14,8 @@ export default function MyOrdersPage() {
     const fetchOrders = async () => {
       if (session?.user?.id) {
         try {
-          const res = await fetch(`${API_URL}/orders/buyer/${session.user.id}`);
-          if (res.ok) {
-            const userOrders = await res.json();
+          const userOrders = await getBuyerOrders(session.user.id);
+          if (userOrders) {
             setOrders(userOrders);
           }
         } catch (error) {
@@ -33,11 +31,7 @@ export default function MyOrdersPage() {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      await fetch(`${API_URL}/orders/${orderId}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: 'Refund in Progress' })
-      });
+      await updateOrderStatus(orderId, 'Refund in Progress');
       const updatedOrders = orders.map(o => o._id === orderId ? { ...o, orderStatus: 'Refund in Progress' } : o);
       setOrders(updatedOrders);
     } catch (error) {

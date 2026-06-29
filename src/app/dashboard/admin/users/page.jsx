@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { AlertDialog, Button } from "@heroui/react";
+import { toggleSellerVerification } from "@/lib/api/admin";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -51,11 +52,7 @@ export default function ManageUsersPage() {
 
   const handleVerifySeller = async (userId, currentVerification) => {
     try {
-      await fetch(`${API_URL}/admin/users/${userId}/verify`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isVerified: !currentVerification })
-      });
+      await toggleSellerVerification(userId, !currentVerification);
       fetchUsers();
     } catch (error) {
       console.error("Failed to verify seller:", error);
