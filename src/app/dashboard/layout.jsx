@@ -47,10 +47,24 @@ export default function DashboardLayout({ children }) {
               {role === 'admin' ? (
                 <>
                   <Link href="/dashboard/admin" className={getLinkClasses("/dashboard/admin")}>
+                    <span className="material-symbols-outlined text-xl">dashboard</span>
                     <span>Overview</span>
                   </Link>
                   <Link href="/dashboard/admin/users" className={getLinkClasses("/dashboard/admin/users")}>
-                    <span>User Management</span>
+                    <span className="material-symbols-outlined text-xl">group</span>
+                    <span>Manage Users</span>
+                  </Link>
+                  <Link href="/dashboard/admin/products" className={getLinkClasses("/dashboard/admin/products")}>
+                    <span className="material-symbols-outlined text-xl">inventory</span>
+                    <span>Manage Products</span>
+                  </Link>
+                  <Link href="/dashboard/admin/orders" className={getLinkClasses("/dashboard/admin/orders")}>
+                    <span className="material-symbols-outlined text-xl">receipt_long</span>
+                    <span>Manage Orders</span>
+                  </Link>
+                  <Link href="/dashboard/admin/analytics" className={getLinkClasses("/dashboard/admin/analytics")}>
+                    <span className="material-symbols-outlined text-xl">insights</span>
+                    <span>Platform Analytics</span>
                   </Link>
                 </>
               ) : role === 'seller' ? (

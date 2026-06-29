@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Modal, Button, Spinner, Checkbox } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { mockApi } from "@/services/mockApi";
+import { updateProductAction } from "@/lib/actions/products";
 
 export default function EditProductModal({ product }) {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function EditProductModal({ product }) {
         stock: isSold ? 0 : Number(data.stock),
       };
 
-      await mockApi.updateProduct(product._id, finalData);
+      await updateProductAction(product._id, finalData);
       setIsOpen(false);
       router.refresh();
     } catch (err) {

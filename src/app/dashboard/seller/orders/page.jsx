@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
+import { AlertDialog, Button } from "@heroui/react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -79,27 +80,32 @@ export default function SellerOrdersPage() {
                 {orders.map((order) => {
                   
                   const getNextStatus = (current) => {
-                    if (current === 'Pending') return 'Accepted';
-                    if (current === 'Accepted') return 'Processing';
-                    if (current === 'Processing') return 'Shipped';
-                    if (current === 'Shipped') return 'Delivered';
+                    if (!current) return 'Accepted';
+                    const normalized = current.toLowerCase();
+                    if (normalized === 'pending') return 'Accepted';
+                    if (normalized === 'accepted') return 'Processing';
+                    if (normalized === 'processing') return 'Shipped';
+                    if (normalized === 'shipped') return 'Delivered';
                     return null;
                   };
                   
-                  const nextStatus = getNextStatus(order.orderStatus || 'Pending');
+                  const nextStatus = getNextStatus(order.orderStatus);
+                  const isPending = !order.orderStatus || order.orderStatus.toLowerCase() === 'pending';
+                  const isDeclined = ['declined', 'cancelled', 'canceled', 'refund in progress'].includes(order.orderStatus?.toLowerCase());
 
                   return (
                     <tr key={order._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
-                      <td className="py-4 px-2 font-mono text-sm text-gray-500 dark:text-gray-500">{order._id}</td>
-                      <td className="py-4 px-2 font-medium text-gray-900 dark:text-white">{order.title}</td>
+                      <td className="py-4 px-2 font-mono text-sm text-gray-500 dark:text-gray-500 max-w-[100px] truncate" title={order._id}>{order._id}</td>
+                      <td className="py-4 px-2 font-medium text-gray-900 dark:text-white truncate max-w-[150px]" title={order.title}>{order.title}</td>
                       <td className="py-4 px-2 text-center">{order.quantity || 1}</td>
-                      <td className="py-4 px-2 font-mono text-sm">{order.buyerInfo?.userId || 'Unknown'}</td>
+                      <td className="py-4 px-2 font-mono text-sm max-w-[100px] truncate" title={order.buyerInfo?.userId || 'Unknown'}>{order.buyerInfo?.userId || 'Unknown'}</td>
                       <td className="py-4 px-2 text-sm">{new Date(order.createdAt).toLocaleDateString()}</td>
                       <td className="py-4 px-2 text-emerald-600 dark:text-emerald-400 font-bold">${order.price.toLocaleString()}</td>
                       <td className="py-4 px-2">
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          order.orderStatus === 'Delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' :
-                          order.orderStatus === 'Declined' ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' :
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${
+                          order.orderStatus?.toLowerCase() === 'delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' :
+                          ['declined', 'cancelled', 'canceled'].includes(order.orderStatus?.toLowerCase()) ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' :
+                          order.orderStatus?.toLowerCase() === 'refund in progress' ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20' :
                           'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'
                         }`}>
                           {order.orderStatus || 'Pending'}
@@ -107,24 +113,42 @@ export default function SellerOrdersPage() {
                       </td>
                       <td className="py-4 px-2 text-right">
                         <div className="flex justify-end gap-2">
-                          {nextStatus && order.orderStatus !== 'Declined' && (
+                          {nextStatus && !isDeclined && (
                             <button
                               onClick={() => updateOrderStatus(order._id, nextStatus)}
                               className="px-3 py-1 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-medium rounded-lg transition-colors"
                             >
-                              Mark as {nextStatus}
+                              {nextStatus === 'Accepted' ? 'Accept' : nextStatus}
                             </button>
                           )}
-                          {(!order.status || order.status === 'Pending') && (
-                            <button
-                              onClick={() => {
-                                const updatedOrders = orders.map(o => o._id === order._id ? { ...o, status: 'Declined' } : o);
-                                setOrders(updatedOrders);
-                              }}
-                              className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-xs font-medium rounded-lg transition-colors"
-                            >
-                              Decline
-                            </button>
+                          {isPending && (
+                            <AlertDialog>
+                              <Button variant="danger" size="sm">Decline</Button>
+                              <AlertDialog.Backdrop>
+                                <AlertDialog.Container>
+                                  <AlertDialog.Dialog className="sm:max-w-[400px]">
+                                    <AlertDialog.CloseTrigger />
+                                    <AlertDialog.Header>
+                                      <AlertDialog.Icon status="danger" />
+                                      <AlertDialog.Heading>Decline this order?</AlertDialog.Heading>
+                                    </AlertDialog.Header>
+                                    <AlertDialog.Body>
+                                      <p>
+                                        Are you sure you want to decline this order? It will be marked as <strong>Refund in Progress</strong> and the buyer will be notified.
+                                      </p>
+                                    </AlertDialog.Body>
+                                    <AlertDialog.Footer>
+                                      <Button slot="close" variant="tertiary">
+                                        Cancel
+                                      </Button>
+                                      <Button slot="close" variant="danger" onPress={() => updateOrderStatus(order._id, 'Refund in Progress')}>
+                                        Yes, Decline Order
+                                      </Button>
+                                    </AlertDialog.Footer>
+                                  </AlertDialog.Dialog>
+                                </AlertDialog.Container>
+                              </AlertDialog.Backdrop>
+                            </AlertDialog>
                           )}
                         </div>
                       </td>

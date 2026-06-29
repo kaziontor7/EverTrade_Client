@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
+import { AlertDialog, Button } from "@heroui/react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -31,13 +32,16 @@ export default function MyOrdersPage() {
   }, [session]);
 
   const handleCancelOrder = async (orderId) => {
-    if (confirm("Are you sure you want to cancel this order?")) {
-      try {
-        const updatedOrders = orders.map(o => o._id === orderId ? { ...o, orderStatus: 'cancelled' } : o);
-        setOrders(updatedOrders);
-      } catch (error) {
-        console.error("Failed to cancel order:", error);
-      }
+    try {
+      await fetch(`${API_URL}/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: 'Refund in Progress' })
+      });
+      const updatedOrders = orders.map(o => o._id === orderId ? { ...o, orderStatus: 'Refund in Progress' } : o);
+      setOrders(updatedOrders);
+    } catch (error) {
+      console.error("Failed to cancel order:", error);
     }
   };
 
@@ -83,25 +87,50 @@ export default function MyOrdersPage() {
                     <td className="py-4 px-4 text-emerald-600 dark:text-emerald-400 font-bold text-right">${order.price?.toLocaleString()}</td>
                     <td className="py-4 px-4 text-center">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium inline-block capitalize ${
-                        order.orderStatus === 'completed' || order.orderStatus === 'delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' :
-                        order.orderStatus === 'cancelled' ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' :
+                        (order.orderStatus?.toLowerCase() === 'completed' || order.orderStatus?.toLowerCase() === 'delivered') ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' :
+                        (order.orderStatus?.toLowerCase() === 'cancelled' || order.orderStatus?.toLowerCase() === 'declined' || order.orderStatus?.toLowerCase() === 'canceled') ? 'bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20' :
+                        (order.orderStatus?.toLowerCase() === 'refund in progress') ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20' :
                         'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'
                       }`}>
-                        {order.orderStatus || 'processing'}
+                        {order.orderStatus || 'Pending'}
                       </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      {(!order.orderStatus || order.orderStatus === 'processing' || order.orderStatus === 'pending') && (
-                        <button 
-                          onClick={() => handleCancelOrder(order._id)}
-                          className="text-sm px-3 py-1 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg font-medium transition-colors"
-                        >
-                          Cancel
-                        </button>
-                      )}
-                      {(order.orderStatus && order.orderStatus !== 'processing' && order.orderStatus !== 'pending') && (
-                        <span className="text-sm text-gray-400 italic">No actions</span>
-                      )}
+                      {(() => {
+                        const s = order.orderStatus?.toLowerCase() || 'pending';
+                        if (['shipped', 'delivered', 'declined', 'cancelled', 'canceled', 'refund in progress'].includes(s)) {
+                          return null;
+                        }
+                        return (
+                          <AlertDialog>
+                            <Button variant="danger" size="sm">Cancel</Button>
+                            <AlertDialog.Backdrop>
+                              <AlertDialog.Container>
+                                <AlertDialog.Dialog className="sm:max-w-[400px]">
+                                  <AlertDialog.CloseTrigger />
+                                  <AlertDialog.Header>
+                                    <AlertDialog.Icon status="danger" />
+                                    <AlertDialog.Heading>Cancel this order?</AlertDialog.Heading>
+                                  </AlertDialog.Header>
+                                  <AlertDialog.Body>
+                                    <p>
+                                      Are you sure you want to cancel this order? It will be marked as <strong>Refund in Progress</strong>.
+                                    </p>
+                                  </AlertDialog.Body>
+                                  <AlertDialog.Footer>
+                                    <Button slot="close" variant="tertiary">
+                                      Keep Order
+                                    </Button>
+                                    <Button slot="close" variant="danger" onPress={() => handleCancelOrder(order._id)}>
+                                      Yes, Cancel Order
+                                    </Button>
+                                  </AlertDialog.Footer>
+                                </AlertDialog.Dialog>
+                              </AlertDialog.Container>
+                            </AlertDialog.Backdrop>
+                          </AlertDialog>
+                        );
+                      })()}
                     </td>
                   </tr>
                 ))}

@@ -113,7 +113,12 @@ export function ProductCard({ product, index = 0, user, wishList }) {
           <div className="mt-auto pt-4 border-t border-gray-200 dark:border-white/10 flex items-center justify-between text-sm text-gray-600 dark:text-[#94a3b8]">
             <div className="flex items-center gap-1.5">
               <span className="material-symbols-outlined text-[16px]">location_on</span>
-              <span className="truncate max-w-[100px]">{product.location || 'Dhaka'}</span>
+              <span className="truncate max-w-[80px]">{product.location || 'Dhaka'}</span>
+              {product.sellerVerified && (
+                <span className="flex items-center text-blue-500" title="Verified Seller">
+                  <span className="material-symbols-outlined text-[16px]">verified</span>
+                </span>
+              )}
             </div>
             <Link href={`/products/${product._id}`} className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium hover:underline cursor-pointer">
               <span>View Details</span>

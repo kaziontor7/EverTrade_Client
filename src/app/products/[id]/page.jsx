@@ -8,6 +8,7 @@ import { getProductById } from "@/lib/api/products";
 import { useSession } from "@/lib/auth-client";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "@heroui/react";
+import ProductReviews from "@/components/ProductReviews";
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
@@ -162,7 +163,14 @@ export default function ProductDetailsPage() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Listed by</p>
-                  <p className="text-gray-900 dark:text-white font-medium">{product.sellerName}</p>
+                  <p className="text-gray-900 dark:text-white font-medium flex items-center gap-1.5">
+                    {product.sellerName}
+                    {product.sellerVerified && (
+                      <span className="flex items-center text-blue-500" title="Verified Seller">
+                        <span className="material-symbols-outlined text-[16px]">verified</span>
+                      </span>
+                    )}
+                  </p>
                 </div>
               </div>
               <button className="px-4 py-2 border border-emerald-500/30 text-emerald-400 rounded-xl hover:bg-emerald-500/10 transition-colors font-medium text-sm">
@@ -189,6 +197,9 @@ export default function ProductDetailsPage() {
             <p className="text-center text-xs text-gray-500 dark:text-gray-500 mt-4">Protected by Stripe Payments</p>
           </div>
         </div>
+
+        {/* Product Reviews */}
+        <ProductReviews productId={product._id} />
       </div>
     </div>
   );

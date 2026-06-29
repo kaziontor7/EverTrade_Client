@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AlertDialog, Button, Spinner } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { mockApi } from "@/services/mockApi";
+import { deleteProductAction } from "@/lib/actions/products";
 
 export default function DeleteProductAlert({ product }) {
   const router = useRouter();
@@ -13,8 +13,9 @@ export default function DeleteProductAlert({ product }) {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await mockApi.deleteProduct(product._id);
+      await deleteProductAction(product._id);
       setIsOpen(false);
+      // Wait for revalidation then refresh router to be safe
       router.refresh();
     } catch (err) {
       console.error(err);

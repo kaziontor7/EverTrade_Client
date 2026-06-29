@@ -1,28 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { mockApi } from "@/services/mockApi";
 import Image from "next/image";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
 export default function AdminOverview() {
-  const [products, setProducts] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    pendingSellers: 0,
+    totalProducts: 0,
+    totalOrders: 0,
+    totalRevenue: 0,
+    recentOrders: [],
+    recentProducts: []
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [allProducts, allUsers, allOrders] = await Promise.all([
-          mockApi.getProducts(),
-          mockApi.getAllUsers(),
-          mockApi.getAllOrders()
-        ]);
-        setProducts(allProducts);
-        setUsers(allUsers);
-        setOrders(allOrders);
+        const res = await fetch(`${API_URL}/admin/stats`);
+        if (res.ok) {
+          const data = await res.json();
+          setStats(data);
+        }
       } catch (error) {
-        console.error("Error fetching admin data:", error);
+        console.error("Error fetching admin stats:", error);
       } finally {
         setLoading(false);
       }
@@ -33,17 +37,17 @@ export default function AdminOverview() {
 
   const handleDeleteProduct = async (id) => {
     if (confirm("Are you sure you want to delete this listing?")) {
-      await mockApi.deleteProduct(id);
-      setProducts(products.filter(p => p._id !== id));
+      try {
+        await fetch(`${API_URL}/products/${id}`, { method: 'DELETE' });
+        setStats(prev => ({
+          ...prev,
+          recentProducts: prev.recentProducts.filter(p => p._id !== id)
+        }));
+      } catch (error) {
+        console.error("Failed to delete product:", error);
+      }
     }
   };
-
-  const pendingSellers = users.filter(u => u.role === 'seller' && !u.isVerified).length;
-  
-  // Calculate Platform Revenue (e.g. 5% fee on all Delivered orders)
-  const totalRevenue = orders
-    .filter(o => o.status === 'Delivered')
-    .reduce((sum, order) => sum + (order.price * 0.05), 0);
 
   return (
     <div className="space-y-6">
@@ -60,28 +64,28 @@ export default function AdminOverview() {
           <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 text-emerald-500 dark:text-emerald-400">
             <span className="material-symbols-outlined">payments</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">${totalRevenue.toLocaleString()}</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">${stats.totalRevenue.toLocaleString()}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Platform Revenue (5%)</p>
         </div>
         <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
           <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mb-4 text-blue-500 dark:text-blue-400">
             <span className="material-symbols-outlined">group</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">{users.length}</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalUsers}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total Users</p>
         </div>
         <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
           <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mb-4 text-purple-500 dark:text-purple-400">
             <span className="material-symbols-outlined">inventory_2</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">{products.length}</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalProducts}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Active Listings</p>
         </div>
         <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-yellow-500/20 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
           <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mb-4 text-yellow-500 dark:text-yellow-400">
             <span className="material-symbols-outlined">pending_actions</span>
           </div>
-          <p className="text-3xl font-bold text-yellow-500 dark:text-yellow-400">{pendingSellers}</p>
+          <p className="text-3xl font-bold text-yellow-500 dark:text-yellow-400">{stats.pendingSellers}</p>
           <p className="text-sm text-yellow-500 dark:text-yellow-400 mt-1">Pending Sellers</p>
         </div>
       </div>
@@ -96,11 +100,11 @@ export default function AdminOverview() {
             <div className="flex justify-center py-12">
               <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-          ) : orders.length === 0 ? (
+          ) : stats.recentOrders.length === 0 ? (
             <div className="text-center py-12 text-gray-600 dark:text-gray-400">No orders placed yet.</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left">
+              <table className="w-full text-left min-w-max">
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
                     <th className="pb-4 font-medium px-2">Order ID</th>
@@ -110,20 +114,20 @@ export default function AdminOverview() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-white/5">
-                  {orders.map((order) => (
+                  {stats.recentOrders.map((order) => (
                     <tr key={order._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
-                      <td className="py-4 px-2 font-mono text-sm text-gray-500">{order._id}</td>
-                      <td className="py-4 px-2 font-medium">${order.price.toLocaleString()}</td>
+                      <td className="py-4 px-2 font-mono text-sm text-gray-500 max-w-[80px] truncate" title={order._id}>{order._id}</td>
+                      <td className="py-4 px-2 font-medium">${order.price?.toLocaleString()}</td>
                       <td className="py-4 px-2 text-emerald-600 dark:text-emerald-400 font-bold">
-                        +${(order.price * 0.05).toLocaleString()}
+                        +${((order.price || 0) * 0.05).toLocaleString()}
                       </td>
                       <td className="py-4 px-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          order.status === 'Delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
-                          order.status === 'Cancelled' || order.status === 'Declined' ? 'bg-red-500/10 text-red-600 dark:text-red-400' :
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
+                          order.orderStatus?.toLowerCase() === 'delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
+                          ['cancelled', 'declined', 'canceled'].includes(order.orderStatus?.toLowerCase()) ? 'bg-red-500/10 text-red-600 dark:text-red-400' :
                           'bg-blue-500/10 text-blue-600 dark:text-blue-400'
                         }`}>
-                          {order.status || 'Pending'}
+                          {order.orderStatus || 'Pending'}
                         </span>
                       </td>
                     </tr>
@@ -142,11 +146,11 @@ export default function AdminOverview() {
             <div className="flex justify-center py-12">
               <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
-          ) : products.length === 0 ? (
+          ) : stats.recentProducts.length === 0 ? (
             <div className="text-center py-12 text-gray-600 dark:text-gray-400">No active products to moderate.</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left">
+              <table className="w-full text-left min-w-max">
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
                     <th className="pb-4 font-medium px-2">Product</th>
@@ -155,14 +159,21 @@ export default function AdminOverview() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-white/5">
-                  {products.slice(0, 8).map((product) => (
+                  {stats.recentProducts.map((product) => (
                     <tr key={product._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
                       <td className="py-4 px-2">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 relative rounded-md overflow-hidden bg-gray-100/80 dark:bg-black/50">
-                            <Image src={product.images[0]} alt="" fill className="object-cover" />
+                            {product.images && (
+                              <Image 
+                                src={typeof product.images === 'string' ? product.images : (product.images[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80')} 
+                                alt="" 
+                                fill 
+                                className="object-cover" 
+                              />
+                            )}
                           </div>
-                          <span className="font-medium text-gray-900 dark:text-white line-clamp-1">{product.title}</span>
+                          <span className="font-medium text-gray-900 dark:text-white max-w-[150px] truncate" title={product.title}>{product.title}</span>
                         </div>
                       </td>
                       <td className="py-4 px-2">

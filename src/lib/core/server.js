@@ -22,15 +22,16 @@ export const serverFetch = async (path) => {
 
 
 export const serverMutation = async (endpoint, data, method = "POST") => {
-    const res = await fetch(`${API_URL}/${endpoint}`,
-        {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        }
-    )
+    const options = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    if (data) {
+        options.body = JSON.stringify(data);
+    }
+    const res = await fetch(`${API_URL}/${endpoint}`, options);
 
     return handleStatus(res);
 }
