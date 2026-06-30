@@ -16,15 +16,29 @@ export default function DashboardLayout({ children }) {
     }
   }, [session, isPending, router]);
 
-  if (isPending || !session) {
+  if (isPending) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex justify-center items-center">
+      <div className="min-h-[80vh] flex justify-center items-center">
         <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
+  if (!session) return null;
+
   const role = (session?.user?.role || "buyer").toLowerCase();
+
+  // Role Protection
+  if (pathname.startsWith("/dashboard/admin") && role !== "admin") {
+    router.push("/unauthorized");
+    return null;
+  }
+  if (pathname.startsWith("/dashboard/seller") && role !== "seller" && role !== "admin") {
+    router.push("/unauthorized");
+    return null;
+  }
+
+
 
   const getLinkClasses = (path) => {
     const isActive = pathname === path;

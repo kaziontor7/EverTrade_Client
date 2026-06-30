@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="flex-grow flex flex-col items-center justify-center min-h-[70vh] text-center px-6 relative overflow-hidden">
+    <div className="flex-grow flex flex-col items-center justify-center min-h-[80vh] py-24 text-center px-6 relative overflow-hidden bg-transparent">
       
       {/* Background Ambient Orbs */}
       <div className="absolute inset-0 grid-pattern pointer-events-none opacity-40"></div>

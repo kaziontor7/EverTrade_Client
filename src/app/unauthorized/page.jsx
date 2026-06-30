@@ -6,7 +6,7 @@ import { Button, Card } from "@heroui/react";
 
 export default function UnauthorizedPage() {
   return (
-    <div className="flex-grow flex items-center justify-center py-12 px-4 bg-gray-50 dark:bg-[#060e20]">
+    <div className="flex-grow flex items-center justify-center min-h-[80vh] py-24 px-4 bg-transparent">
       <Card className="w-full max-w-md bg-white dark:bg-[#0d1527] border border-gray-200 dark:border-[#475569]/10 shadow-2xl rounded-2xl p-6 text-center">
         <Card.Content className="space-y-6 py-8">
           <div className="w-16 h-16 rounded-full bg-error/10 border border-error/20 flex items-center justify-center mx-auto text-error">
