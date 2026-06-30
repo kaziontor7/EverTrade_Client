@@ -28,6 +28,7 @@ export default function SignUpPage() {
       role,
       phone,
       location,
+      onboarded: true,
       fetchOptions: {
         onSuccess: () => {
           setLoading(false);
@@ -46,7 +47,7 @@ export default function SignUpPage() {
     setErrorMsg("");
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: role === "seller" ? "/dashboard/seller" : "/dashboard/buyer"
+      callbackURL: "/onboarding"
     });
   };
 

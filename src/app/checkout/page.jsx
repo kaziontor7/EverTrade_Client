@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
 import { useSession } from "@/lib/auth-client";
+import { toast } from "@heroui/react";
 
 export default function GlobalCheckoutPage() {
   const router = useRouter();
@@ -20,33 +21,40 @@ export default function GlobalCheckoutPage() {
     }
   }, [session, isPending, router]);
 
-  if (!isLoaded || isPending) {
+  if (isPending || !isLoaded) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex justify-center items-center">
-        <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
+        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
-  // Redirect if cart is empty
   if (cartItems.length === 0) {
-    router.push("/cart");
-    return null;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200">
+        <span className="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-700 mb-4">shopping_bag</span>
+        <h2 className="text-2xl font-bold font-outfit mb-2">Your Cart is Empty</h2>
+        <p className="text-gray-500 mb-6 text-center max-w-md">You need to add some products to your cart before you can checkout.</p>
+        <Link href="/products" className="btn-primary py-3 px-8 rounded-xl font-medium">
+          Start Shopping
+        </Link>
+      </div>
+    );
   }
 
   const shippingCost = 15;
   const total = cartTotal + shippingCost;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleStripeCheckout = async () => {
     setIsProcessing(true);
-    
     try {
-      const response = await fetch('/api/checkout_sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          cartItems,
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/create-checkout-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: cartItems,
           customerEmail: session?.user?.email,
           userId: session?.user?.id
         })
@@ -61,7 +69,7 @@ export default function GlobalCheckoutPage() {
       }
     } catch (error) {
       console.error(error);
-      alert("Error initiating checkout: " + error.message);
+      toast.danger("Error initiating checkout: " + error.message);
       setIsProcessing(false);
     }
   };

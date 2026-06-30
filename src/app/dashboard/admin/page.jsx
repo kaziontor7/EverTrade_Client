@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getAdminStats, deleteProduct } from "@/lib/api/admin";
+import { AlertDialog, Button, toast } from "@heroui/react";
 
 export default function AdminOverview() {
   const [stats, setStats] = useState({
@@ -34,16 +35,16 @@ export default function AdminOverview() {
   }, []);
 
   const handleDeleteProduct = async (id) => {
-    if (confirm("Are you sure you want to delete this listing?")) {
-      try {
-        await deleteProduct(id);
-        setStats(prev => ({
-          ...prev,
-          recentProducts: prev.recentProducts.filter(p => p._id !== id)
-        }));
-      } catch (error) {
-        console.error("Failed to delete product:", error);
-      }
+    try {
+      await deleteProduct(id);
+      setStats(prev => ({
+        ...prev,
+        recentProducts: prev.recentProducts.filter(p => p._id !== id)
+      }));
+      toast.success("Product deleted successfully");
+    } catch (error) {
+      console.error("Failed to delete product:", error);
+      toast.danger("Failed to delete product");
     }
   };
 
@@ -186,12 +187,37 @@ export default function AdminOverview() {
                         )}
                       </td>
                       <td className="py-4 px-2 text-right">
-                        <button 
-                          onClick={() => handleDeleteProduct(product._id)}
-                          className="px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-500 dark:text-red-400 rounded-lg text-xs font-medium transition-colors border border-red-500/20"
-                        >
-                          Delete
-                        </button>
+                        <AlertDialog>
+                          <Button 
+                            variant="flat"
+                            color="danger"
+                            size="sm"
+                          >
+                            Delete
+                          </Button>
+                          <AlertDialog.Backdrop>
+                            <AlertDialog.Container>
+                              <AlertDialog.Dialog className="sm:max-w-[400px]">
+                                <AlertDialog.CloseTrigger />
+                                <AlertDialog.Header>
+                                  <AlertDialog.Icon status="danger" />
+                                  <AlertDialog.Heading>Delete Listing?</AlertDialog.Heading>
+                                </AlertDialog.Header>
+                                <AlertDialog.Body>
+                                  <p>
+                                    This will permanently remove <strong>{product.title}</strong> from the platform.
+                                  </p>
+                                </AlertDialog.Body>
+                                <AlertDialog.Footer>
+                                  <Button slot="close" variant="tertiary">Cancel</Button>
+                                  <Button slot="close" variant="danger" onPress={() => handleDeleteProduct(product._id)}>
+                                    Yes, Delete
+                                  </Button>
+                                </AlertDialog.Footer>
+                              </AlertDialog.Dialog>
+                            </AlertDialog.Container>
+                          </AlertDialog.Backdrop>
+                        </AlertDialog>
                       </td>
                     </tr>
                   ))}

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { getReviews, checkReviewEligibility, submitReview, updateReview, deleteReview, addSellerResponse } from "@/lib/api/reviews";
 import { useSession } from "@/lib/auth-client";
-import { AlertDialog, Button } from "@heroui/react";
+import { AlertDialog, Button, toast } from "@heroui/react";
 
 export default function ProductReviews({ product }) {
   const productId = product?._id;
@@ -80,11 +80,11 @@ export default function ProductReviews({ product }) {
       if (data.success) {
         setImageState(data.data.display_url);
       } else {
-        alert("Image upload failed");
+        toast.danger("Image upload failed");
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("Error uploading image");
+      toast.danger("Error uploading image");
     } finally {
       setUploadingImage(false);
     }
@@ -93,7 +93,7 @@ export default function ProductReviews({ product }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!rating || !comment.trim()) {
-      alert("Please provide a rating and a comment.");
+      toast.warning("Please provide a rating and a comment.");
       return;
     }
 
@@ -165,6 +165,7 @@ export default function ProductReviews({ product }) {
       await fetchReviewsAndEligibility();
     } catch (error) {
       console.error("Error adding seller response:", error);
+      toast.error("Failed to add seller response. Please try again.");
     } finally {
       setSubmitting(false);
     }

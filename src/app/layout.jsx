@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CartProvider } from "@/contexts/CartContext";
+import OnboardingGuard from "@/components/OnboardingGuard";
 import "./globals.css";
 import { Toast } from "@heroui/react";
 
@@ -34,7 +35,9 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <Navbar />
             <main className="flex-grow flex flex-col">
-              {children}
+              <OnboardingGuard>
+                {children}
+              </OnboardingGuard>
             </main>
             <Footer />
           </CartProvider>

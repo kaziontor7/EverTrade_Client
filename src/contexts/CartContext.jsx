@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { getCartAction, addToCartAction, updateCartAction, deleteFromCartAction, clearCartAction } from "@/lib/actions/cart";
+import { toast } from "@heroui/react";
 
 const CartContext = createContext(undefined);
 
@@ -37,7 +38,7 @@ export function CartProvider({ children }) {
 
   const addToCart = async (product) => {
     if (!session?.user?.id) {
-      alert("Please sign in to add to cart");
+      toast.warning("Please sign in to add to cart");
       return;
     }
 

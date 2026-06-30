@@ -104,8 +104,12 @@ export default function Navbar() {
             ) : session ? (
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
-                    <span className="text-xs font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
+                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 overflow-hidden relative">
+                    {session.user.image ? (
+                      <img src={session.user.image} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-xs font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
+                    )}
                   </div>
                   <span className="text-sm font-medium text-gray-900 dark:text-[#e2e8f0]">
                     {session.user.name.split(' ')[0]}
@@ -190,8 +194,12 @@ export default function Navbar() {
               ) : session ? (
                 <>
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
-                      <span className="text-sm font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
+                    <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 overflow-hidden relative">
+                      {session.user.image ? (
+                        <img src={session.user.image} alt="Avatar" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-sm font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
+                      )}
                     </div>
                     <span className="text-lg font-medium text-gray-900 dark:text-[#e2e8f0]">
                       {session.user.name}

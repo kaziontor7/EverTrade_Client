@@ -9,6 +9,7 @@ import { useSession } from "@/lib/auth-client";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useTheme } from "next-themes";
+import { toast } from "@heroui/react";
 
 // Load stripe with a dummy public key for the assessment
 const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
@@ -34,7 +35,7 @@ function CheckoutForm({ product, session, onSuccess, isProcessing, setIsProcessi
 
       if (error) {
         console.error("Payment error:", error);
-        alert(error.message);
+        toast.danger(error.message);
         setIsProcessing(false);
         return;
       }

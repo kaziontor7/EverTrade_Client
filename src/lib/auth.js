@@ -14,6 +14,12 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+  },
   database: mongodbAdapter(db, {
     client,
   }),
@@ -22,6 +28,10 @@ export const auth = betterAuth({
       role: {
         type: "string",
         defaultValue: "buyer", // buyer | seller | admin
+      },
+      onboarded: {
+        type: "boolean",
+        defaultValue: false,
       },
       phone: {
         type: "string",

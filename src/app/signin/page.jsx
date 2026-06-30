@@ -48,7 +48,7 @@ export default function SignInPage() {
     setErrorMsg("");
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/" // Google signin defaults to home where navbar will redirect them
+      callbackURL: "/onboarding"
     });
   };
 

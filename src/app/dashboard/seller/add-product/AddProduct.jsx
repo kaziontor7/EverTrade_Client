@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { Button, Form, Input, Select, Label, ListBox, TextArea, Spinner } from "@heroui/react";
 import { uploadToImgBB } from "@/lib/api/uploadToImgBB";
@@ -71,16 +72,16 @@ export default function AddProduct() {
       // 3. Save product via API
       const res = await createProduct(productData);
       console.log(res)
-      if (res.acknowledged) {
-        alert("Product successfully created!");
+      if (res.success) {
+        toast.success("Product successfully created!");
         router.push("/dashboard/seller/products");
       } else {
-        alert(res.message);
+        toast.danger(res.message);
       }
 
     } catch (error) {
       console.error(error);
-      alert(`Error: ${error.message}`);
+      toast.danger(`Error: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
