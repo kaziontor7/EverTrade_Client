@@ -111,9 +111,17 @@ export function ProductCard({ product, index = 0, user, wishList }) {
             </span>
           </div>
 
-          <h3 className="text-lg font-bold text-gray-900 dark:text-[#e2e8f0] mb-2 line-clamp-2 leading-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-[#e2e8f0] mb-1 line-clamp-2 leading-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
             {product.title}
           </h3>
+
+          {product.averageRating > 0 && (
+            <div className="flex items-center gap-1 mb-2">
+              <span className="material-symbols-outlined text-[14px] text-yellow-400" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+              <span className="text-sm font-bold text-gray-700 dark:text-gray-300">{product.averageRating.toFixed(1)}</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">({product.reviewCount})</span>
+            </div>
+          )}
 
           <div className="mt-auto pt-4 border-t border-gray-200 dark:border-white/10 flex items-center justify-between text-sm text-gray-600 dark:text-[#94a3b8]">
             <div className="flex items-center gap-1.5">

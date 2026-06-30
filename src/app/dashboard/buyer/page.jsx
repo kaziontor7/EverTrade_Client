@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getBuyerOrders } from "@/lib/api/orders";
+import { getWishList } from "@/lib/api/wishlist";
 
 export default function BuyerDashboard() {
   const { data: session } = useSession();
@@ -16,18 +17,16 @@ export default function BuyerDashboard() {
     const fetchData = async () => {
       if (session?.user?.id) {
         try {
-          const [ordersRes, wishlistRes] = await Promise.all([
-            fetch(`${API_URL}/orders/buyer/${session.user.id}`),
-            fetch(`${API_URL}/wishlist/${session.user.id}`)
+          const [ordersData, wishlistData] = await Promise.all([
+            getBuyerOrders(session.user.id),
+            getWishList(session.user.id)
           ]);
           
-          if (ordersRes.ok) {
-            const userOrders = await ordersRes.json();
-            setOrders(userOrders);
+          if (ordersData) {
+            setOrders(ordersData);
           }
-          if (wishlistRes.ok) {
-            const wishlistItems = await wishlistRes.json();
-            setWishlistCount(wishlistItems.length);
+          if (wishlistData) {
+            setWishlistCount(wishlistData.length);
           }
         } catch (error) {
           console.error("Failed to fetch dashboard data:", error);

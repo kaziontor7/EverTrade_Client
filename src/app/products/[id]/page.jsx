@@ -140,6 +140,15 @@ export default function ProductDetailsPage() {
             <div className="flex justify-between items-start gap-4">
               <div>
                 <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white font-outfit mb-2">{product.title}</h1>
+                
+                {product.averageRating > 0 && (
+                  <div className="flex items-center gap-1.5 mb-4">
+                    <span className="material-symbols-outlined text-[18px] text-yellow-400" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                    <span className="text-base font-bold text-gray-800 dark:text-gray-200">{product.averageRating.toFixed(1)}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">({product.reviewCount} {product.reviewCount === 1 ? 'review' : 'reviews'})</span>
+                  </div>
+                )}
+
                 <div className="flex items-center gap-4 text-sm">
                   <span className="bg-white/5 text-gray-800 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10">
                     {product.category}
@@ -207,7 +216,7 @@ export default function ProductDetailsPage() {
         </div>
 
         {/* Product Reviews */}
-        <ProductReviews productId={product._id} />
+        <ProductReviews product={product} />
       </div>
     </div>
   );
