@@ -6,18 +6,36 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Counter } from '@/components/Counter';
 import { ProductCard } from '@/components/ProductCard';
-import { mockApi } from '@/services/mockApi';
+import { getProducts } from '@/lib/api/products';
+import { useSession } from '@/lib/auth-client';
+import { getWishList } from '@/lib/api/wishlist';
 
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
 
+  const { data: session } = useSession();
+  const [wishList, setWishList] = useState([]);
+
   useEffect(() => {
-    // Fetch 4 recently published products for Section 2
-    mockApi.getProducts().then(products => {
-      // Sort by some logic or just take first 4 (mocking "recently published")
-      setFeaturedProducts(products.slice(0, 4));
-    });
+    // Fetch real products
+    getProducts().then(products => {
+      if (Array.isArray(products)) {
+        // Sort by newest and take first 4
+        const sorted = products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setFeaturedProducts(sorted.slice(0, 4));
+      }
+    }).catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      getWishList(session.user.id).then(list => {
+        if (Array.isArray(list)) {
+          setWishList(list);
+        }
+      }).catch(err => console.error(err));
+    }
+  }, [session]);
 
   return (
     <div className="flex-grow flex flex-col min-h-screen bg-gray-50 dark:bg-[#060e20] relative overflow-hidden">
@@ -140,7 +158,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product, index) => (
-              <ProductCard key={product._id || index} product={product} index={index} />
+              <ProductCard key={product._id || index} product={product} index={index} user={session?.user} wishList={wishList} />
             ))}
             {featuredProducts.length === 0 && (
               // Skeletons
