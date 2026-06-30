@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getProductById } from "@/lib/api/products";
+import { getProductById, reportProduct } from "@/lib/api/products";
 import { useSession } from "@/lib/auth-client";
 import { useCart } from "@/contexts/CartContext";
-import { toast } from "@heroui/react";
+import { toast, AlertDialog, Button } from "@heroui/react";
 import ProductReviews from "@/components/ProductReviews";
 
 export default function ProductDetailsPage() {
@@ -70,13 +70,14 @@ export default function ProductDetailsPage() {
       router.push("/signin");
       return;
     }
-    if (confirm("Are you sure you want to report this listing to the admins?")) {
-      try {
-        await mockApi.reportProduct(id);
-        alert("Listing reported successfully. Our admins will review it shortly.");
-      } catch (error) {
-        console.error(error);
-      }
+    
+    try {
+      await reportProduct(id);
+      setProduct(prev => ({ ...prev, reported: true }));
+      toast.success("Listing reported successfully. Our admins will review it shortly.");
+    } catch (error) {
+      console.error(error);
+      toast.danger("Failed to report listing.");
     }
   };
 
@@ -103,14 +104,47 @@ export default function ProductDetailsPage() {
         <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 relative">
           
           {/* Report Button */}
-          <button 
-            onClick={handleReport}
-            className="absolute top-6 right-6 text-gray-500 dark:text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-medium"
-            title="Report this listing"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
-            Report
-          </button>
+          {!product.reported ? (
+            <div className="absolute top-6 right-6">
+              <AlertDialog>
+                <Button 
+                  variant="light"
+                  className="min-w-0 p-0 bg-transparent data-[hover=true]:bg-transparent text-gray-500 dark:text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-medium"
+                  title="Report this listing"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
+                  Report
+                </Button>
+                <AlertDialog.Backdrop>
+                  <AlertDialog.Container>
+                    <AlertDialog.Dialog className="sm:max-w-[400px]">
+                      <AlertDialog.CloseTrigger />
+                      <AlertDialog.Header>
+                        <AlertDialog.Icon status="danger" />
+                        <AlertDialog.Heading>Report Listing?</AlertDialog.Heading>
+                      </AlertDialog.Header>
+                      <AlertDialog.Body>
+                        <p>
+                          Are you sure you want to report <strong>{product.title}</strong>? Our admins will review this listing shortly.
+                        </p>
+                      </AlertDialog.Body>
+                      <AlertDialog.Footer>
+                        <Button slot="close" variant="tertiary">Cancel</Button>
+                        <Button slot="close" variant="danger" onPress={handleReport}>
+                          Yes, Report
+                        </Button>
+                      </AlertDialog.Footer>
+                    </AlertDialog.Dialog>
+                  </AlertDialog.Container>
+                </AlertDialog.Backdrop>
+              </AlertDialog>
+            </div>
+          ) : (
+            <div className="absolute top-6 right-6 text-red-500 flex items-center gap-1 text-sm font-medium">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+              Reported
+            </div>
+          )}
 
           {/* Image Gallery */}
           <div className="w-full lg:w-1/2 flex-shrink-0">

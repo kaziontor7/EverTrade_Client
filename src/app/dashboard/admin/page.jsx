@@ -175,8 +175,8 @@ export default function AdminOverview() {
                         </div>
                       </td>
                       <td className="py-4 px-2">
-                        {product.isReported ? (
-                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">
+                        {product.reported ? (
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.3)]">
                             Reported
                           </span>
                         ) : (

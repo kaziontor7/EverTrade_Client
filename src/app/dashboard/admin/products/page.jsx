@@ -122,8 +122,8 @@ export default function ManageProductsPage() {
                       }`}>
                         {product.moderationStatus || 'Pending'}
                       </span>
-                      {product.isReported && (
-                        <span className="ml-2 px-2 py-1 rounded-full text-[10px] font-bold bg-red-500 text-white">
+                      {product.reported && (
+                        <span className="ml-2 px-2 py-1 rounded-full text-[10px] font-bold bg-red-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.5)]">
                           REPORTED
                         </span>
                       )}
