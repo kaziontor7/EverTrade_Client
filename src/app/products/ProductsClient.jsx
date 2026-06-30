@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { motion, AnimatePresence } from "framer-motion";
+import { TextField, Input, Select, ListBox } from "@heroui/react";
 
 export default function ProductsClient({ initialProducts = [], wishList = [], user }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,34 +62,50 @@ export default function ProductsClient({ initialProducts = [], wishList = [], us
             <p className="text-gray-600 dark:text-[#94a3b8]">Discover premium second-hand items</p>
           </div>
           <div className="w-full md:w-auto flex-1 max-w-xl relative">
-            <input
-              type="text"
-              placeholder="Search products by name or keywords..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="et-input pl-12 py-4 w-full text-lg shadow-sm"
-            />
-            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 z-20 pointer-events-none">search</span>
+            <TextField 
+              value={searchTerm} 
+              onChange={(val) => setSearchTerm(typeof val === 'string' ? val : (val?.target?.value || ""))}
+              aria-label="Search products"
+              className="w-full"
+            >
+              <Input
+                type="text"
+                placeholder="Search products by name or keywords..."
+                className="et-input pl-12 py-4 w-full text-lg shadow-sm"
+              />
+            </TextField>
           </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Sidebar / Filters */}
-          <aside className="w-full lg:w-72 flex-shrink-0 sticky top-24 space-y-6">
+          <aside className="w-full lg:w-72 flex-shrink-0 lg:sticky lg:top-24 space-y-6">
 
             <div className="glass-card border border-gray-200 dark:border-white/10 rounded-3xl p-6 bg-white/80 dark:bg-transparent">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Sort Results</h2>
               <div className="relative">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="et-select w-full appearance-none pr-10"
+                <Select
+                  selectedKey={sortBy}
+                  onSelectionChange={(key) => {
+                    // React Aria / HeroUI v3 passes the key directly, or a Set. Handle both.
+                    const val = (key && typeof key === 'object' && key.has) ? Array.from(key)[0] : key;
+                    if (val) setSortBy(val);
+                  }}
+                  aria-label="Sort by"
                 >
-                  <option value="newest">Newest Arrivals</option>
-                  <option value="price_asc">Price: Low to High</option>
-                  <option value="price_desc">Price: High to Low</option>
-                </select>
-                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">expand_more</span>
+                  <Select.Trigger className="et-select w-full pr-10 flex justify-between items-center text-left">
+                    <Select.Value />
+                    <span className="material-symbols-outlined text-gray-500 pointer-events-none text-sm">expand_more</span>
+                  </Select.Trigger>
+                  <Select.Popover>
+                    <ListBox className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-white/10 rounded-xl p-1 shadow-xl">
+                      <ListBox.Item id="newest" textValue="Newest Arrivals" className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg cursor-pointer">Newest Arrivals</ListBox.Item>
+                      <ListBox.Item id="price_asc" textValue="Price: Low to High" className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg cursor-pointer">Price: Low to High</ListBox.Item>
+                      <ListBox.Item id="price_desc" textValue="Price: High to Low" className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg cursor-pointer">Price: High to Low</ListBox.Item>
+                    </ListBox>
+                  </Select.Popover>
+                </Select>
               </div>
             </div>
 

@@ -57,6 +57,10 @@ export default function ProductDetailsPage() {
   };
 
   const handleAddToCart = () => {
+    if (!session) {
+      router.push("/signin");
+      return;
+    }
     if (session?.user?.role === 'seller' || session?.user?.role === 'admin') {
       toast.danger("Sellers and Admins cannot add products to cart");
       return;

@@ -22,7 +22,15 @@ export default async function ProductsPage() {
   }
 
   const user = await getUserSession();
-  const wishList = await getWishList(user?.id);
+  let wishList = [];
+  
+  if (user && user.id) {
+    try {
+      wishList = await getWishList(user.id);
+    } catch (error) {
+      console.error("Failed to fetch wishlist:", error);
+    }
+  }
 
   return (
     <ProductsClient initialProducts={initialProducts} wishList={wishList} user={user} />
