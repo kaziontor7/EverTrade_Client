@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { getReviews, checkReviewEligibility, submitReview, updateReview, deleteReview, addSellerResponse } from "@/lib/api/reviews";
 import { useSession } from "@/lib/auth-client";
-import { AlertDialog, Button, toast } from "@heroui/react";
+import { AlertDialog, Button, toast, Form, TextArea, TextField } from "@heroui/react";
 
 export default function ProductReviews({ product }) {
   const productId = product?._id;
@@ -210,21 +210,24 @@ export default function ProductReviews({ product }) {
               <p className="font-medium">You have already reviewed this product.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <Form onSubmit={handleSubmit} className="space-y-4" validationBehavior="native">
               <div className="mb-2">
                 {renderStars(hoverRating || rating, isEligible, setHoverRating, setRating)}
               </div>
               
-              <textarea
-                className={`w-full bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors min-h-[120px] ${!isEligible ? "cursor-not-allowed opacity-75" : ""}`}
-                placeholder={isEligible ? "Share your experience with this product..." : "You can only review this product after purchasing and receiving it."}
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                disabled={!isEligible || submitting}
-              />
+              <TextField>
+                <TextArea
+                  minRows={4}
+                  className={`w-full bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3 text-gray-900 dark:text-white ${!isEligible ? "cursor-not-allowed opacity-75" : ""}`}
+                  placeholder={isEligible ? "Share your experience with this product..." : "You can only review this product after purchasing and receiving it."}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  isDisabled={!isEligible || submitting}
+                />
+              </TextField>
               
               {isEligible && (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
                   <div className="flex items-center gap-3">
                     <button
                       type="button"
@@ -252,16 +255,17 @@ export default function ProductReviews({ product }) {
                     )}
                   </div>
                   
-                  <button
+                  <Button
                     type="submit"
-                    disabled={submitting || !rating || !comment.trim()}
-                    className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-xl transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                    isDisabled={submitting || !rating || !comment.trim()}
+                    isLoading={submitting}
+                    className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-xl transition-colors shadow-lg shadow-emerald-500/20"
                   >
-                    {submitting ? "Submitting..." : "Submit Review"}
-                  </button>
+                    Submit Review
+                  </Button>
                 </div>
               )}
-            </form>
+            </Form>
           )}
         </div>
       )}
@@ -286,8 +290,8 @@ export default function ProductReviews({ product }) {
               return (
                 <div key={review._id} className="pb-6 border-b border-gray-200 dark:border-white/5 last:border-0 last:pb-0">
                   {isEditing ? (
-                    <form onSubmit={(e) => handleEditSubmit(e, review._id)} className="space-y-4 bg-gray-50 dark:bg-black/20 p-4 rounded-xl border border-emerald-500/30">
-                      <div className="flex justify-between items-center mb-2">
+                    <Form onSubmit={(e) => handleEditSubmit(e, review._id)} className="space-y-4 bg-gray-50 dark:bg-black/20 p-4 rounded-xl border border-emerald-500/30" validationBehavior="native">
+                      <div className="flex justify-between items-center mb-2 w-full">
                         <h5 className="font-bold text-gray-900 dark:text-white">Edit Review</h5>
                         <button type="button" onClick={() => setEditingReviewId(null)} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                           <span className="material-symbols-outlined text-sm">close</span>
@@ -296,13 +300,16 @@ export default function ProductReviews({ product }) {
                       <div className="mb-2">
                         {renderStars(hoverRating || editRating, true, setHoverRating, setEditRating)}
                       </div>
-                      <textarea
-                        className="w-full bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors min-h-[100px]"
-                        value={editComment}
-                        onChange={(e) => setEditComment(e.target.value)}
-                        disabled={submitting}
-                      />
-                      <div className="flex justify-between items-center">
+                      <TextField>
+                        <TextArea
+                          minRows={3}
+                          value={editComment}
+                          onChange={(e) => setEditComment(e.target.value)}
+                          isDisabled={submitting}
+                          className="w-full bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3 text-gray-900 dark:text-white"
+                        />
+                      </TextField>
+                      <div className="flex justify-between items-center w-full">
                         <div className="flex items-center gap-3">
                           <label className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 rounded-lg transition-colors text-xs font-medium cursor-pointer">
                             <span className="material-symbols-outlined text-[16px]">add_a_photo</span>
@@ -324,11 +331,11 @@ export default function ProductReviews({ product }) {
                           )}
                         </div>
                         <div className="flex gap-2">
-                          <button type="button" onClick={() => setEditingReviewId(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">Cancel</button>
-                          <button type="submit" disabled={submitting || !editRating || !editComment.trim()} className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50">Save Changes</button>
+                          <Button type="button" onPress={() => setEditingReviewId(null)} variant="light" size="sm">Cancel</Button>
+                          <Button type="submit" isDisabled={submitting || !editRating || !editComment.trim()} isLoading={submitting} color="success" size="sm" className="bg-emerald-500 text-white">Save Changes</Button>
                         </div>
                       </div>
-                    </form>
+                    </Form>
                   ) : (
                     <>
                       <div className="flex items-start justify-between mb-2">
@@ -418,19 +425,22 @@ export default function ProductReviews({ product }) {
                       
                       {/* Seller Reply Form */}
                       {isReplying && (
-                        <form onSubmit={(e) => handleSellerResponse(e, review._id)} className="mt-4 ml-6 space-y-3">
-                          <textarea
-                            className="w-full bg-white dark:bg-black/50 border border-blue-200 dark:border-blue-500/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 transition-colors min-h-[80px] text-sm"
-                            placeholder="Write your response to the buyer..."
-                            value={sellerResponseText}
-                            onChange={(e) => setSellerResponseText(e.target.value)}
-                            disabled={submitting}
-                          />
-                          <div className="flex gap-2 justify-end">
-                            <button type="button" onClick={() => setReplyingToId(null)} className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">Cancel</button>
-                            <button type="submit" disabled={submitting || !sellerResponseText.trim()} className="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-50">Post Reply</button>
+                        <Form onSubmit={(e) => handleSellerResponse(e, review._id)} className="mt-4 ml-6 space-y-3" validationBehavior="native">
+                          <TextField>
+                            <TextArea
+                              placeholder="Write your response to the buyer..."
+                              value={sellerResponseText}
+                              onChange={(e) => setSellerResponseText(e.target.value)}
+                              isDisabled={submitting}
+                              minRows={2}
+                              className="w-full bg-white dark:bg-black/50 border border-blue-200 dark:border-blue-500/20 hover:border-blue-500/50 focus-within:border-blue-500 transition-colors shadow-sm rounded-lg py-2 px-3 text-gray-900 dark:text-white text-sm"
+                            />
+                          </TextField>
+                          <div className="flex gap-2 justify-end w-full">
+                            <Button type="button" onPress={() => setReplyingToId(null)} variant="light" size="sm">Cancel</Button>
+                            <Button type="submit" isDisabled={submitting || !sellerResponseText.trim()} isLoading={submitting} color="primary" size="sm" className="bg-blue-500 text-white">Post Reply</Button>
                           </div>
-                        </form>
+                        </Form>
                       )}
                     </>
                   )}

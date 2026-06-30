@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Form, Input, Button, TextField, Label } from "@heroui/react";
 import { authClient } from "../../lib/auth-client";
 
 export default function SignUpPage() {
@@ -109,19 +110,19 @@ export default function SignUpPage() {
               </div>
             )}
 
-            <form onSubmit={handleSignUp} className="space-y-5">
+            <Form onSubmit={handleSignUp} className="space-y-5" validationBehavior="native">
               
               {/* Role Selection Toggle */}
-              <div className="space-y-2 mb-6">
-                <label className="et-label">I want to...</label>
-                <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2 mb-6 w-full">
+                <label className="text-sm font-medium text-gray-900 dark:text-gray-200">I want to...</label>
+                <div className="grid grid-cols-2 gap-3 w-full">
                   <button
                     type="button"
                     onClick={() => setRole("buyer")}
                     className={`flex flex-col items-center p-4 rounded-2xl border transition-all ${
                       role === "buyer" 
                         ? "border-emerald-500 bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)]" 
-                        : "border-gray-300 dark:border-[#475569]/20 bg-white dark:bg-[#0d1527]/40 hover:bg-white dark:bg-[#0d1527] hover:border-outline/40"
+                        : "border-gray-300 dark:border-[#475569]/20 bg-white dark:bg-[#0d1527]/40 hover:bg-white dark:bg-[#0d1527] hover:border-emerald-500/40"
                     }`}
                   >
                     <span className={`material-symbols-outlined mb-2 ${role === "buyer" ? "text-emerald-400" : "text-gray-600 dark:text-[#94a3b8]"}`}>
@@ -137,7 +138,7 @@ export default function SignUpPage() {
                     className={`flex flex-col items-center p-4 rounded-2xl border transition-all ${
                       role === "seller" 
                         ? "border-emerald-500 bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)]" 
-                        : "border-gray-300 dark:border-[#475569]/20 bg-white dark:bg-[#0d1527]/40 hover:bg-white dark:bg-[#0d1527] hover:border-outline/40"
+                        : "border-gray-300 dark:border-[#475569]/20 bg-white dark:bg-[#0d1527]/40 hover:bg-white dark:bg-[#0d1527] hover:border-emerald-500/40"
                     }`}
                   >
                     <span className={`material-symbols-outlined mb-2 ${role === "seller" ? "text-emerald-400" : "text-gray-600 dark:text-[#94a3b8]"}`}>
@@ -150,84 +151,81 @@ export default function SignUpPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="space-y-1">
-                  <label className="et-label" htmlFor="name">Full Name</label>
-                  <input
-                    id="name"
-                    required
-                    placeholder="John Doe"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="et-input"
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
+                <TextField isRequired name="name" value={name} onChange={setName}>
+                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Full Name</Label>
+                  <div className="relative flex items-center">
+                    <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">person</span>
+                    <Input
+                      id="name"
+                      type="text"
+                      placeholder="John Doe"
+                      className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                    />
+                  </div>
+                </TextField>
+                <TextField isRequired name="phone" value={phone} onChange={setPhone}>
+                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Phone Number</Label>
+                  <div className="relative flex items-center">
+                    <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">call</span>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="+88017..."
+                      className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                    />
+                  </div>
+                </TextField>
+              </div>
+
+              <TextField isRequired name="email" value={email} onChange={setEmail}>
+                <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Email Address</Label>
+                <div className="relative flex items-center">
+                  <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">mail</span>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="name@example.com"
+                    className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
                   />
                 </div>
-                <div className="space-y-1">
-                  <label className="et-label" htmlFor="phone">Phone Number</label>
-                  <input
-                    id="phone"
-                    required
-                    placeholder="+88017..."
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="et-input"
+              </TextField>
+
+              <TextField isRequired name="password" value={password} onChange={setPassword}>
+                <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Password</Label>
+                <div className="relative flex items-center">
+                  <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">lock</span>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Min 6 characters"
+                    className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
                   />
                 </div>
-              </div>
+              </TextField>
 
-              <div className="space-y-1">
-                <label className="et-label" htmlFor="email">Email Address</label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="et-input"
-                />
-              </div>
+              <TextField isRequired name="location" value={location} onChange={setLocation}>
+                <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Location</Label>
+                <div className="relative flex items-center">
+                  <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">location_on</span>
+                  <Input
+                    id="location"
+                    type="text"
+                    placeholder="City, Country"
+                    className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                  />
+                </div>
+              </TextField>
 
-              <div className="space-y-1">
-                <label className="et-label" htmlFor="password">Password</label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  placeholder="Min 6 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="et-input"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="et-label" htmlFor="location">Location</label>
-                <input
-                  id="location"
-                  required
-                  placeholder="City, Country"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="et-input"
-                />
-              </div>
-
-              <button
+              <Button
                 type="submit"
-                disabled={loading}
-                className="btn-primary w-full mt-4"
+                isLoading={loading}
+                className="w-full mt-4 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 font-medium"
+                endContent={!loading && <span className="material-symbols-outlined text-lg">arrow_forward</span>}
               >
-                {loading ? (
-                   <span className="material-symbols-outlined animate-spin">progress_activity</span>
-                ) : (
-                   <>
-                     Create Account
-                     <span className="material-symbols-outlined text-lg">arrow_forward</span>
-                   </>
-                )}
-              </button>
-            </form>
+                Create Account
+              </Button>
+            </Form>
 
             <div className="relative flex py-6 items-center">
               <div className="flex-grow border-t border-gray-300 dark:border-[#475569]/20"></div>

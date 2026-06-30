@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSession, authClient } from "@/lib/auth-client";
-import { toast } from "@heroui/react";
+import { toast, Form, Input, Button, TextField, Label, Description } from "@heroui/react";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
@@ -143,44 +143,44 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <form onSubmit={handleSave} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm text-gray-600 dark:text-gray-400">Full Name</label>
-              <input 
-                type="text" 
-                value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
-                className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" 
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm text-gray-600 dark:text-gray-400">Email Address</label>
-              <input 
-                type="email" 
-                value={formData.email}
-                disabled
-                className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-500 dark:text-gray-500 cursor-not-allowed" 
-              />
-              <p className="text-xs text-gray-500 dark:text-gray-500">Email cannot be changed directly.</p>
-            </div>
+        <Form onSubmit={handleSave} className="space-y-6" validationBehavior="native">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            <TextField name="name" value={formData.name} onChange={(val) => setFormData({...formData, name: val})}>
+              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Full Name</Label>
+              <div className="relative flex items-center">
+                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">person</span>
+                <Input
+                  id="name"
+                  type="text"
+                  className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                />
+              </div>
+            </TextField>
+            <TextField name="email" value={formData.email} isDisabled>
+              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Email Address</Label>
+              <div className="relative flex items-center">
+                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">mail</span>
+                <Input
+                  id="email"
+                  type="email"
+                  className="pl-10 w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 shadow-sm opacity-70 rounded-lg py-2"
+                />
+              </div>
+              <Description>Email cannot be changed directly.</Description>
+            </TextField>
           </div>
 
           <div className="pt-4 flex items-center gap-4">
-            <button 
-              type="submit" 
-              disabled={isSaving}
-              className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-gray-900 dark:text-white font-medium rounded-xl transition-colors disabled:opacity-70 flex items-center gap-2"
+            <Button
+              type="submit"
+              isLoading={isSaving}
+              className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-xl shadow-lg shadow-emerald-500/20"
+              endContent={!isSaving && <span className="material-symbols-outlined text-sm">save</span>}
             >
-              {isSaving ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Saving...
-                </>
-              ) : "Save Changes"}
-            </button>
+              Save Changes
+            </Button>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );

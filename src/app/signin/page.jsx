@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Form, Input, Button, TextField, Label } from "@heroui/react";
 import { authClient } from "../../lib/auth-client";
 
 export default function SignInPage() {
@@ -105,61 +106,47 @@ export default function SignInPage() {
               </div>
             )}
 
-            <form onSubmit={handleSignIn} className="space-y-5">
-              <div className="space-y-1">
-                <label className="et-label" htmlFor="email">Email Address</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-gray-600 dark:text-[#94a3b8] text-lg">mail</span>
-                  </div>
-                  <input
+            <Form onSubmit={handleSignIn} className="space-y-5" validationBehavior="native">
+              <TextField isRequired name="email" value={email} onChange={setEmail}>
+                <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Email Address</Label>
+                <div className="relative flex items-center">
+                  <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">mail</span>
+                  <Input
                     id="email"
                     type="email"
-                    required
                     placeholder="name@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="et-input pl-11"
+                    className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
                   />
                 </div>
-              </div>
+              </TextField>
 
-              <div className="space-y-1">
+              <div className="w-full space-y-1">
                 <div className="flex justify-between items-center mb-1">
-                  <label className="et-label mb-0" htmlFor="password">Password</label>
-                  <a href="#" className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">Forgot password?</a>
+                  <label className="text-sm font-medium text-gray-900 dark:text-gray-200" htmlFor="password">Password</label>
+                  <a href="#" className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors z-10 relative">Forgot password?</a>
                 </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-gray-600 dark:text-[#94a3b8] text-lg">lock</span>
+                <TextField isRequired name="password" value={password} onChange={setPassword}>
+                  <div className="relative flex items-center">
+                    <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">lock</span>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="Enter your password"
+                      className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                    />
                   </div>
-                  <input
-                    id="password"
-                    type="password"
-                    required
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="et-input pl-11"
-                  />
-                </div>
+                </TextField>
               </div>
 
-              <button
+              <Button
                 type="submit"
-                disabled={loading}
-                className="btn-primary w-full mt-2"
+                isLoading={loading}
+                className="w-full mt-2 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 font-medium"
+                endContent={!loading && <span className="material-symbols-outlined text-lg">arrow_forward</span>}
               >
-                {loading ? (
-                   <span className="material-symbols-outlined animate-spin">progress_activity</span>
-                ) : (
-                   <>
-                     Sign In
-                     <span className="material-symbols-outlined text-lg">arrow_forward</span>
-                   </>
-                )}
-              </button>
-            </form>
+                Sign In
+              </Button>
+            </Form>
 
             <div className="relative flex py-6 items-center">
               <div className="flex-grow border-t border-gray-300 dark:border-[#475569]/20"></div>

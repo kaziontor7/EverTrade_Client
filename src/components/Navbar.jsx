@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
+import { Dropdown, Label, Header, Separator } from '@heroui/react';
 import { authClient } from '../lib/auth-client';
 import { ThemeToggle } from './ThemeToggle';
 import { useCart } from '@/contexts/CartContext';
@@ -102,27 +103,64 @@ export default function Navbar() {
             {isPending ? (
               <div className="w-24 h-9 bg-gray-200 dark:bg-[#1a2340] animate-pulse rounded-xl"></div>
             ) : session ? (
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 overflow-hidden relative">
-                    {session.user.image ? (
-                      <img src={session.user.image} alt="Avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-xs font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
-                    )}
+              <Dropdown placement="bottom-end">
+                <Dropdown.Trigger>
+                  <div className="flex items-center gap-3 outline-none hover:opacity-80 transition-opacity cursor-pointer">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 overflow-hidden relative">
+                      {session.user.image ? (
+                        <img src={session.user.image} alt="Avatar" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs font-bold text-emerald-400">{session.user.name.charAt(0).toUpperCase()}</span>
+                      )}
+                    </div>
+                    <span className="text-sm font-medium text-gray-900 dark:text-[#e2e8f0]">
+                      {session.user.name.split(' ')[0]}
+                    </span>
+                    <span className="material-symbols-outlined text-gray-500 text-sm">expand_more</span>
                   </div>
-                  <span className="text-sm font-medium text-gray-900 dark:text-[#e2e8f0]">
-                    {session.user.name.split(' ')[0]}
-                  </span>
-                </div>
-                <button
-                  className="text-sm font-medium text-gray-600 dark:text-[#94a3b8] hover:text-error transition-colors flex items-center gap-1"
-                  onClick={handleSignOut}
-                >
-                  <span className="material-symbols-outlined text-[18px]">logout</span>
-                  Sign Out
-                </button>
-              </div>
+                </Dropdown.Trigger>
+                <Dropdown.Popover className="bg-white dark:bg-[#0d1527] border border-gray-200 dark:border-white/10 shadow-xl rounded-2xl min-w-[200px]">
+                  <Dropdown.Menu aria-label="Profile Actions" className="p-2 flex flex-col gap-1">
+                    <Dropdown.Section>
+                      <Header className="px-2 flex flex-col items-start text-sm pb-1">
+                        <p className="font-semibold text-gray-900 dark:text-white">Signed in as</p>
+                        <p className="text-gray-500 dark:text-gray-400 truncate w-[160px]">{session.user.email}</p>
+                      </Header>
+                    </Dropdown.Section>
+                    
+                    <Separator className="bg-gray-200 dark:bg-white/10 h-px w-full" />
+                    
+                    <Dropdown.Item 
+                      textValue="Dashboard"
+                      className="px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl cursor-pointer flex items-center gap-3 transition-colors"
+                      onPress={() => router.push(dashboardLinks[session.user.role] || '/dashboard/buyer')}
+                    >
+                      <span className="material-symbols-outlined text-[18px] text-gray-500 dark:text-gray-400">dashboard</span>
+                      <Label className="cursor-pointer text-gray-700 dark:text-gray-300 font-medium">Dashboard</Label>
+                    </Dropdown.Item>
+                    
+                    <Dropdown.Item 
+                      textValue="Settings"
+                      className="px-2 py-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl cursor-pointer flex items-center gap-3 transition-colors"
+                      onPress={() => router.push('/dashboard/settings')}
+                    >
+                      <span className="material-symbols-outlined text-[18px] text-gray-500 dark:text-gray-400">settings</span>
+                      <Label className="cursor-pointer text-gray-700 dark:text-gray-300 font-medium">Settings</Label>
+                    </Dropdown.Item>
+
+                    <Separator className="bg-gray-200 dark:bg-white/10 h-px w-full" />
+
+                    <Dropdown.Item 
+                      textValue="Log Out"
+                      className="px-2 py-2 hover:bg-danger/10 rounded-xl cursor-pointer flex items-center gap-3 transition-colors group"
+                      onPress={handleSignOut}
+                    >
+                      <span className="material-symbols-outlined text-[18px] text-danger group-hover:text-danger-500">logout</span>
+                      <Label className="cursor-pointer font-medium text-danger group-hover:text-danger-500">Log Out</Label>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown.Popover>
+              </Dropdown>
             ) : (
               <div className="flex items-center gap-4">
                 <Link href="/signin" className="text-sm font-medium text-gray-600 dark:text-[#94a3b8] hover:text-emerald-400 transition-colors">

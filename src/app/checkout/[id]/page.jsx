@@ -9,7 +9,7 @@ import { useSession } from "@/lib/auth-client";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useTheme } from "next-themes";
-import { toast } from "@heroui/react";
+import { toast, Form, Input, Button, TextField, Label } from "@heroui/react";
 
 // Load stripe with a dummy public key for the assessment
 const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
@@ -79,36 +79,56 @@ function CheckoutForm({ product, session, onSuccess, isProcessing, setIsProcessi
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <Form onSubmit={handleSubmit} className="space-y-8" validationBehavior="native">
       {/* Shipping Information */}
-      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8">
+      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 w-full">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Shipping Address</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-sm text-gray-600 dark:text-gray-400">First Name</label>
-            <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="John" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm text-gray-600 dark:text-gray-400">Last Name</label>
-            <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="Doe" />
-          </div>
-          <div className="md:col-span-2 space-y-2">
-            <label className="text-sm text-gray-600 dark:text-gray-400">Street Address</label>
-            <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="123 Main St" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm text-gray-600 dark:text-gray-400">City</label>
-            <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="New York" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm text-gray-600 dark:text-gray-400">ZIP / Postal Code</label>
-            <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="10001" />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <TextField isRequired name="firstName">
+            <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">First Name</Label>
+            <Input 
+              type="text" 
+              placeholder="John"
+              className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+            />
+          </TextField>
+          <TextField isRequired name="lastName">
+            <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Last Name</Label>
+            <Input 
+              type="text" 
+              placeholder="Doe"
+              className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+            />
+          </TextField>
+          <TextField isRequired name="street" className="md:col-span-2">
+            <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Street Address</Label>
+            <Input 
+              type="text" 
+              placeholder="123 Main St"
+              className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+            />
+          </TextField>
+          <TextField isRequired name="city">
+            <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">City</Label>
+            <Input 
+              type="text" 
+              placeholder="New York"
+              className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+            />
+          </TextField>
+          <TextField isRequired name="zip">
+            <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">ZIP / Postal Code</Label>
+            <Input 
+              type="text" 
+              placeholder="10001"
+              className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+            />
+          </TextField>
         </div>
       </div>
 
       {/* Stripe Payment Elements */}
-      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8">
+      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 w-full">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Payment Method</h2>
         
         <div className="space-y-4">
@@ -125,21 +145,14 @@ function CheckoutForm({ product, session, onSuccess, isProcessing, setIsProcessi
         </div>
       </div>
 
-      <button 
+      <Button 
         type="submit" 
-        disabled={isProcessing || !stripe}
-        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+        isLoading={isProcessing || !stripe}
+        className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4 h-14 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.2)]"
       >
-        {isProcessing ? (
-          <>
-            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-            Processing Secure Payment...
-          </>
-        ) : (
-          `Pay $${(product.price + 15 + Math.round(product.price * 0.08 * 100) / 100).toLocaleString()}`
-        )}
-      </button>
-    </form>
+        {isProcessing ? "Processing Secure Payment..." : `Pay $${(product.price + 15 + Math.round(product.price * 0.08 * 100) / 100).toLocaleString()}`}
+      </Button>
+    </Form>
   );
 }
 

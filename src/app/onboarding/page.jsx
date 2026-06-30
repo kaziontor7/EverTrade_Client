@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, authClient } from "@/lib/auth-client";
 import { completeOnboarding } from "@/lib/actions/user";
-import { toast } from "@heroui/react";
+import { Form, Input, Button, TextField, Label, toast } from "@heroui/react";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -66,7 +66,7 @@ export default function OnboardingPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <Form onSubmit={handleSubmit} className="space-y-8" validationBehavior="native">
           <div className="space-y-4">
             <label className="text-sm font-semibold text-gray-900 dark:text-gray-200">What brings you here today?</label>
             <div className="grid grid-cols-2 gap-4">
@@ -118,54 +118,48 @@ export default function OnboardingPage() {
             </div>
           </div>
 
-          <div className="space-y-5 animate-fade-in">
+          <div className="space-y-5 animate-fade-in w-full">
             <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-sm text-blue-700 dark:text-blue-300 flex items-start gap-3">
                <span className="material-symbols-outlined text-[20px]">info</span>
                <p>To keep our marketplace safe and ensure smooth deliveries, all users must provide their contact details.</p>
             </div>
 
-            <div className="space-y-2">
-              <label className="et-label">Phone Number</label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">call</span>
-                <input
+            <TextField isRequired name="phone" value={phone} onChange={setPhone}>
+              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Phone Number</Label>
+              <div className="relative flex items-center">
+                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">call</span>
+                <Input
+                  id="phone"
                   type="tel"
-                  required
                   placeholder="+8801XXXXXXXXX"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="et-input pl-11"
+                  className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
                 />
               </div>
-            </div>
-            <div className="space-y-2">
-              <label className="et-label">{role === 'seller' ? 'Store Location' : 'Delivery Location'}</label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">location_on</span>
-                <input
+            </TextField>
+            
+            <TextField isRequired name="location" value={location} onChange={setLocation}>
+              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">{role === 'seller' ? 'Store Location' : 'Delivery Location'}</Label>
+              <div className="relative flex items-center">
+                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">location_on</span>
+                <Input
+                  id="location"
                   type="text"
-                  required
                   placeholder="Dhaka, Bangladesh"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="et-input pl-11"
+                  className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
                 />
               </div>
-            </div>
+            </TextField>
           </div>
 
-          <button
+          <Button
             type="submit"
-            disabled={loading}
-            className="btn-primary w-full py-4 text-lg mt-6"
+            isLoading={loading}
+            className="w-full py-4 text-lg mt-6 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 font-medium h-14"
+            endContent={!loading && <span className="material-symbols-outlined">arrow_forward</span>}
           >
-            {loading ? (
-              <span className="material-symbols-outlined animate-spin">progress_activity</span>
-            ) : (
-              "Complete Profile"
-            )}
-          </button>
-        </form>
+            Complete Profile
+          </Button>
+        </Form>
       </div>
     </div>
   );

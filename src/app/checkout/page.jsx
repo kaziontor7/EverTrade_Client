@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
 import { useSession } from "@/lib/auth-client";
-import { toast } from "@heroui/react";
+import { toast, Form, Input, Button, TextField, Label } from "@heroui/react";
 
 export default function GlobalCheckoutPage() {
   const router = useRouter();
@@ -45,16 +45,17 @@ export default function GlobalCheckoutPage() {
   const shippingCost = 15;
   const total = cartTotal + shippingCost;
 
-  const handleStripeCheckout = async () => {
+  const handleStripeCheckout = async (e) => {
+    e.preventDefault();
     setIsProcessing(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/create-checkout-session`, {
+      const response = await fetch("/api/checkout_sessions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          items: cartItems,
+          cartItems: cartItems,
           customerEmail: session?.user?.email,
           userId: session?.user?.id
         })
@@ -89,32 +90,46 @@ export default function GlobalCheckoutPage() {
           <div className="w-full lg:w-2/3 space-y-8">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white font-outfit">Secure Checkout</h1>
             
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <Form onSubmit={handleStripeCheckout} className="space-y-8" validationBehavior="native">
               {/* Shipping Information */}
-              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-sm">
+              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-sm w-full">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Shipping Address</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="md:col-span-2 space-y-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">Full Name</label>
-                    <input type="text" disabled value={session?.user?.name || ""} className="w-full bg-gray-100 dark:bg-black/80 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed" />
-                  </div>
-                  <div className="md:col-span-2 space-y-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">Street Address</label>
-                    <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="123 Main St" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">City</label>
-                    <input required type="text" className="w-full bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="New York" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm text-gray-600 dark:text-gray-400">Phone Number</label>
-                    <input type="text" disabled value={session?.user?.phone || "N/A"} className="w-full bg-gray-100 dark:bg-black/80 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed" />
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                  <TextField isDisabled value={session?.user?.name || ""} className="md:col-span-2">
+                    <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Full Name</Label>
+                    <Input 
+                      type="text" 
+                      className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 shadow-sm opacity-70 rounded-lg py-2 px-3"
+                    />
+                  </TextField>
+                  <TextField isRequired name="street" className="md:col-span-2">
+                    <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Street Address</Label>
+                    <Input 
+                      type="text" 
+                      placeholder="123 Main St"
+                      className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+                    />
+                  </TextField>
+                  <TextField isRequired name="city">
+                    <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">City</Label>
+                    <Input 
+                      type="text"
+                      placeholder="New York"
+                      className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+                    />
+                  </TextField>
+                  <TextField isDisabled value={session?.user?.phone || "N/A"}>
+                    <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Phone Number</Label>
+                    <Input 
+                      type="text" 
+                      className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 shadow-sm opacity-70 rounded-lg py-2 px-3"
+                    />
+                  </TextField>
                 </div>
               </div>
 
               {/* Stripe Payment Integration Note */}
-              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-sm">
+              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-sm w-full">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Payment Method</h2>
                 
                 <div className="space-y-4">
@@ -127,21 +142,14 @@ export default function GlobalCheckoutPage() {
                 </div>
               </div>
 
-              <button 
+              <Button 
                 type="submit" 
-                disabled={isProcessing}
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+                isLoading={isProcessing}
+                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4 h-14 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.2)]"
               >
-                {isProcessing ? (
-                  <>
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Redirecting to Stripe...
-                  </>
-                ) : (
-                  `Proceed to Payment ($${total.toLocaleString()})`
-                )}
-              </button>
-            </form>
+                {isProcessing ? "Redirecting to Stripe..." : "Proceed to Payment"}
+              </Button>
+            </Form>
           </div>
 
           {/* Order Summary (Right side) */}
