@@ -50,12 +50,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/categories" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
+                <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
                   Categories
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
+                <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
                   Pricing
                 </Link>
               </li>
@@ -67,17 +67,17 @@ export default function Footer() {
             <h4 className="text-sm font-black text-[var(--text-primary)] uppercase tracking-wider">Community</h4>
             <ul className="space-y-4 text-sm font-medium">
               <li>
-                <Link href="/sustainability" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
+                <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
                   Sustainability Impact
                 </Link>
               </li>
               <li>
-                <Link href="/sellers" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
+                <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
                   Trusted Sellers
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
+                <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline transition-all">
                   Help & FAQs
                 </Link>
               </li>
@@ -121,13 +121,13 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} EverTrade. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs font-bold">
-            <Link href="/privacy" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Terms of Service
             </Link>
-            <Link href="/cookies" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+            <Link href="/" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Cookie Settings
             </Link>
           </div>
