@@ -30,8 +30,8 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={`${inter.className} min-h-full flex flex-col bg-gray-50 dark:bg-[#060e20] text-gray-900 dark:text-[#e2e8f0] transition-colors duration-300`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+      <body className={`${inter.className} min-h-full flex flex-col bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors duration-300`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <CartProvider>
             <Navbar />
             <main className="flex-grow flex flex-col">
@@ -42,7 +42,13 @@ export default function RootLayout({ children }) {
             <Footer />
           </CartProvider>
         </ThemeProvider>
-        <Toast.Provider />
+        <Toast.Provider 
+          toastProps={{
+            classNames: {
+              base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white shadow-xl rounded-xl",
+            }
+          }} 
+        />
       </body>
     </html>
   );

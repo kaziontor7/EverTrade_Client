@@ -47,43 +47,40 @@ export default async function CheckoutSuccessPage({ searchParams }) {
   }
 
   return (
-    <div className="flex-grow flex flex-col items-center justify-center min-h-[80vh] text-center px-6 relative overflow-hidden">
+    <div className="flex flex-col items-center pt-20 pb-20 min-h-[calc(100vh-100px)] text-center px-6 relative overflow-hidden">
       {/* Background Ambient Orbs */}
       <div className="absolute inset-0 grid-pattern pointer-events-none opacity-40"></div>
-      <div className="orb orb-emerald w-[500px] h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 blur-[100px]"></div>
 
-      <div className="relative z-10 glass-card p-12 rounded-3xl max-w-lg w-full flex flex-col items-center border border-emerald-500/20">
+      <div className="relative z-10 bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 p-12 rounded-2xl max-w-lg w-full flex flex-col items-center">
         
-        {/* Success Icon */}
         <div className="relative w-24 h-24 mb-8">
-          <div className="absolute inset-0 bg-emerald-500/20 rounded-full animate-ping"></div>
-          <div className="relative bg-emerald-500 text-white w-full h-full rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+          <div className="relative bg-zinc-900 dark:bg-white text-white dark:text-black w-full h-full rounded-full flex items-center justify-center shadow-lg">
             <span className="material-symbols-outlined text-5xl">check</span>
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-[#e2e8f0] mb-4">
+        <h1 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter mb-4">
           Payment Successful!
         </h1>
-        <p className="text-gray-600 dark:text-[#94a3b8] mb-6 leading-relaxed">
+        <p className="text-zinc-500 font-medium mb-6 leading-relaxed">
           We appreciate your business! A confirmation email will be sent to <strong>{customerEmail}</strong>.
         </p>
 
-        <div className="w-full bg-white/50 dark:bg-black/20 border border-gray-200 dark:border-white/5 rounded-2xl p-6 mb-8 text-left shadow-sm">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-white/5 pb-2">Receipt & Order Details</h3>
+        <div className="w-full bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 mb-8 text-left shadow-sm">
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-4 border-b border-zinc-200 dark:border-zinc-800 pb-2">Receipt & Order Details</h3>
           
           <div className="space-y-4">
             {/* Products List (No images) */}
             {orders.length > 0 && (
-              <div className="space-y-3 pb-4 border-b border-gray-200 dark:border-white/5">
-                <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Items Purchased</span>
+              <div className="space-y-3 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider">Items Purchased</span>
                 {orders.map((order) => (
                   <div key={order._id} className="flex justify-between items-center text-sm">
                     <div className="flex flex-col">
-                      <span className="font-medium text-gray-900 dark:text-white truncate max-w-[200px]">{order.title}</span>
-                      <span className="text-gray-500 dark:text-gray-400 text-xs">Qty: {order.quantity || 1}</span>
+                      <span className="font-bold text-zinc-900 dark:text-white truncate max-w-[200px]">{order.title}</span>
+                      <span className="text-zinc-500 font-medium text-xs">Qty: {order.quantity || 1}</span>
                     </div>
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="font-black text-zinc-900 dark:text-white">
                       ${((order.price * (order.quantity || 1))).toLocaleString()}
                     </span>
                   </div>
@@ -93,18 +90,18 @@ export default async function CheckoutSuccessPage({ searchParams }) {
 
             {/* Payment Summary */}
             <div className="space-y-3 text-sm">
-              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-2">Payment Info</span>
+              <span className="text-sm font-bold text-zinc-500 uppercase tracking-wider block mb-2">Payment Info</span>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">Transaction ID</span>
-                <span className="font-medium text-gray-900 dark:text-white truncate max-w-[150px]">{typeof payment_intent === 'string' ? payment_intent : (payment_intent?.id || session_id)}</span>
+                <span className="text-zinc-500 font-medium">Transaction ID</span>
+                <span className="font-bold text-zinc-900 dark:text-white truncate max-w-[150px]">{typeof payment_intent === 'string' ? payment_intent : (payment_intent?.id || session_id)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">Payment Date</span>
-                <span className="font-medium text-gray-900 dark:text-white">{new Date().toLocaleDateString()}</span>
+                <span className="text-zinc-500 font-medium">Payment Date</span>
+                <span className="font-bold text-zinc-900 dark:text-white">{new Date().toLocaleDateString()}</span>
               </div>
-              <div className="flex justify-between pt-2 border-t border-gray-200 dark:border-white/5">
-                <span className="font-bold text-gray-900 dark:text-white">Total Amount</span>
-                <span className="font-bold text-emerald-600 dark:text-emerald-400 text-base">${(amount_total / 100).toLocaleString()}</span>
+              <div className="flex justify-between pt-2 border-t border-zinc-200 dark:border-zinc-800">
+                <span className="font-bold text-zinc-900 dark:text-white">Total Amount</span>
+                <span className="font-black text-zinc-900 dark:text-white text-base">${(amount_total / 100).toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -114,12 +111,12 @@ export default async function CheckoutSuccessPage({ searchParams }) {
 
         <div className="w-full space-y-4">
           <Link href="/dashboard/buyer/orders">
-            <button className="btn-primary w-full py-4 shadow-[0_0_20px_rgba(16,185,129,0.15)] mb-4">
+            <button className="w-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black font-bold py-4 rounded-xl transition-colors mb-4">
               View Order History
             </button>
           </Link>
           <Link href="/products">
-            <button className="btn-secondary w-full py-4 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+            <button className="w-full bg-transparent border-2 border-zinc-900 dark:border-white text-zinc-900 dark:text-white font-bold py-4 rounded-xl hover:bg-zinc-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
               Continue Shopping
             </button>
           </Link>

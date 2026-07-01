@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }) {
   if (isPending) {
     return (
       <div className="min-h-[80vh] flex justify-center items-center">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -43,18 +43,18 @@ export default function DashboardLayout({ children }) {
   const getLinkClasses = (path) => {
     const isActive = pathname === path;
     return isActive
-      ? "flex items-center space-x-3 px-4 py-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500/20 transition-all font-medium border border-emerald-500/20"
-      : "flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-400 rounded-xl hover:bg-white/5 hover:text-gray-900 dark:text-white transition-all font-medium";
+      ? "flex items-center space-x-3 px-4 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-xl font-bold transition-all"
+      : "flex items-center space-x-3 px-4 py-3 text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/50 rounded-xl transition-all font-medium";
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200">
+    <div className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] font-inter">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
         
         {/* Sidebar */}
         <aside className="w-full md:w-64 flex-shrink-0">
-          <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 sticky top-24 shadow-2xl">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 font-outfit">
+          <div className="sticky top-24 pr-4">
+            <h2 className="text-2xl font-black text-zinc-900 dark:text-white mb-6 tracking-tight">
               Dashboard
             </h2>
             <nav className="space-y-2">
@@ -131,14 +131,14 @@ export default function DashboardLayout({ children }) {
               </Link>
             </nav>
             
-            <div className="mt-8 pt-8 border-t border-gray-200 dark:border-white/10">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold uppercase border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+            <div className="mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center space-x-3 px-4">
+                <div className="w-10 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black flex items-center justify-center font-bold uppercase">
                   {session?.user?.name?.charAt(0) || "U"}
                 </div>
                 <div>
-                  <p className="text-gray-900 dark:text-white font-medium text-sm">{session?.user?.name}</p>
-                  <p className="text-gray-600 dark:text-gray-400 text-xs capitalize">{role}</p>
+                  <p className="text-zinc-900 dark:text-white font-bold text-sm leading-none">{session?.user?.name}</p>
+                  <p className="text-zinc-500 text-xs capitalize mt-1">{role}</p>
                 </div>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function DashboardLayout({ children }) {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1">
+        <main className="flex-1 min-w-0">
           {children}
         </main>
       </div>

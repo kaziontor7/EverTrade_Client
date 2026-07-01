@@ -8,7 +8,7 @@ import {
 } from "recharts";
 import { getSellerOrders } from "@/lib/api/orders";
 
-const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
+const COLORS = ['#18181b', '#3f3f46', '#71717a', '#a1a1aa', '#e4e4e7'];
 
 export default function SalesAnalyticsPage() {
   const { data: session } = useSession();
@@ -84,48 +84,48 @@ export default function SalesAnalyticsPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-zinc-900 dark:border-white"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-emerald-900/40 to-gray-900 border border-emerald-500/20 rounded-3xl p-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit">Sales Analytics</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">Visual representation of your seller performance.</p>
+    <div className="space-y-8">
+      <div className="border-b border-zinc-200 dark:border-zinc-800 pb-8">
+        <h1 className="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">Sales Analytics</h1>
+        <p className="text-zinc-500 font-medium mt-2 text-lg">Visual representation of your seller performance.</p>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-          <div className="bg-white/10 p-6 rounded-2xl border border-white/10">
-            <p className="text-gray-400 text-sm mb-1">Total Revenue</p>
-            <p className="text-3xl font-bold text-emerald-400">${totalRevenue.toLocaleString()}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+          <div className="bg-zinc-50 dark:bg-zinc-900/30 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800/50">
+            <p className="text-zinc-500 font-medium text-sm mb-1">Total Revenue</p>
+            <p className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">${totalRevenue.toLocaleString()}</p>
           </div>
-          <div className="bg-white/10 p-6 rounded-2xl border border-white/10">
-            <p className="text-gray-400 text-sm mb-1">Total Orders</p>
-            <p className="text-3xl font-bold text-white">{totalOrders}</p>
+          <div className="bg-zinc-50 dark:bg-zinc-900/30 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800/50">
+            <p className="text-zinc-500 font-medium text-sm mb-1">Total Orders</p>
+            <p className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">{totalOrders}</p>
           </div>
         </div>
       </div>
       
       {orders.length === 0 ? (
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-12 text-center">
-          <p className="text-gray-500 dark:text-gray-400">You don&apos;t have any orders yet to show analytics.</p>
+        <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-12 text-center">
+          <p className="text-zinc-500 font-medium">You don&apos;t have any orders yet to show analytics.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
           {/* Revenue Over Time Chart */}
-          <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Revenue Over Time</h3>
+          <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6">
+            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight mb-6">Revenue Over Time</h3>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={revenueData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                  <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 8 }} />
+                  <Line type="monotone" dataKey="revenue" stroke="#18181b" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 8 }} />
                   <CartesianGrid stroke="#ccc" strokeDasharray="3 3" opacity={0.2} />
                   <XAxis dataKey="date" stroke="#888" tick={{ fill: '#888' }} />
                   <YAxis stroke="#888" tick={{ fill: '#888' }} tickFormatter={(val) => `$${val}`} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff', borderRadius: '8px' }}
-                    itemStyle={{ color: '#10b981' }}
+                    contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', color: '#fff', borderRadius: '8px' }}
+                    itemStyle={{ color: '#fff' }}
                     formatter={(value) => [`$${value}`, 'Revenue']}
                   />
                 </LineChart>
@@ -134,8 +134,8 @@ export default function SalesAnalyticsPage() {
           </div>
 
           {/* Order Status Breakdown */}
-          <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Status Breakdown</h3>
+          <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6">
+            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight mb-6">Order Status Breakdown</h3>
             <div className="h-[300px] w-full flex justify-center items-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -155,7 +155,7 @@ export default function SalesAnalyticsPage() {
                     ))}
                   </Pie>
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff', borderRadius: '8px' }}
+                    contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', color: '#fff', borderRadius: '8px' }}
                   />
                   <Legend />
                 </PieChart>
@@ -164,8 +164,8 @@ export default function SalesAnalyticsPage() {
           </div>
 
           {/* Top Selling Products */}
-          <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:col-span-2">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Top Selling Products</h3>
+          <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 lg:col-span-2">
+            <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight mb-6">Top Selling Products</h3>
             <div className="h-[350px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={topProducts} layout="vertical" margin={{ top: 5, right: 30, left: 100, bottom: 5 }}>
@@ -173,11 +173,11 @@ export default function SalesAnalyticsPage() {
                   <XAxis type="number" stroke="#888" tickFormatter={(val) => `$${val}`} />
                   <YAxis dataKey="name" type="category" stroke="#888" tick={{ fill: '#888' }} width={150} />
                   <Tooltip 
-                    cursor={{fill: 'rgba(255, 255, 255, 0.05)'}}
-                    contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff', borderRadius: '8px' }}
+                    cursor={{fill: 'rgba(113, 113, 122, 0.1)'}}
+                    contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', color: '#fff', borderRadius: '8px' }}
                     formatter={(value) => [`$${value}`, 'Revenue generated']}
                   />
-                  <Bar dataKey="revenue" fill="#3b82f6" radius={[0, 4, 4, 0]}>
+                  <Bar dataKey="revenue" fill="#18181b" radius={[0, 4, 4, 0]}>
                     {topProducts.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}

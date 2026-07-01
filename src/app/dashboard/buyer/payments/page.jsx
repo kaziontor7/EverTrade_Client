@@ -30,44 +30,43 @@ export default function PaymentHistoryPage() {
   }, [session]);
 
   return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-emerald-900/40 to-gray-900 border border-emerald-500/20 rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit">Payment History</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">View all your past transactions and payment statuses.</p>
+    <div className="space-y-8">
+      <div className="border-b border-zinc-200 dark:border-zinc-800 pb-8">
+        <h1 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">Payment History</h1>
+        <p className="text-zinc-500 font-medium mt-2 text-lg">View all your past transactions and payment statuses.</p>
       </div>
 
-      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
+      <div className="pt-2">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
-                <th className="pb-4 font-medium px-4 whitespace-nowrap">Transaction ID</th>
-                <th className="pb-4 font-medium px-4 whitespace-nowrap">Date</th>
-                <th className="pb-4 font-medium px-4 whitespace-nowrap text-right">Amount</th>
-                <th className="pb-4 font-medium px-4 whitespace-nowrap text-center">Status</th>
+              <tr className="border-b-2 border-zinc-900 dark:border-white text-zinc-900 dark:text-white text-sm uppercase tracking-wider font-bold">
+                <th className="pb-4 px-4 whitespace-nowrap">Transaction ID</th>
+                <th className="pb-4 px-4 whitespace-nowrap">Date</th>
+                <th className="pb-4 px-4 whitespace-nowrap text-right">Amount</th>
+                <th className="pb-4 px-4 whitespace-nowrap text-center">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
               {payments.length === 0 && !loading && (
                 <tr>
-                  <td colSpan="4" className="py-8 text-center text-gray-500">No payment history found.</td>
+                  <td colSpan="4" className="py-20 text-center text-zinc-500 font-medium">No payment history found.</td>
                 </tr>
               )}
               {loading && (
                 <tr>
-                  <td colSpan="4" className="py-8 text-center text-gray-500">Loading...</td>
+                  <td colSpan="4" className="py-20 text-center">
+                    <div className="w-8 h-8 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  </td>
                 </tr>
               )}
               {payments.map((payment) => (
-                <tr key={payment._id} className="text-gray-800 dark:text-gray-300 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
-                  <td className="py-4 px-4 font-mono text-sm text-gray-500">{payment.transactionId}</td>
-                  <td className="py-4 px-4 text-sm">{new Date(payment.createdAt).toLocaleDateString()}</td>
-                  <td className="py-4 px-4 text-emerald-600 dark:text-emerald-400 font-bold text-right">${payment.amount?.toLocaleString()}</td>
-                  <td className="py-4 px-4 text-center">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium inline-block capitalize ${
-                      payment.paymentStatus === 'success' || payment.paymentStatus === 'paid' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' :
-                      'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20'
-                    }`}>
+                <tr key={payment._id} className="text-zinc-800 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors">
+                  <td className="py-6 px-4 font-mono text-sm text-zinc-500">{payment.transactionId}</td>
+                  <td className="py-6 px-4 text-sm font-medium">{new Date(payment.createdAt).toLocaleDateString()}</td>
+                  <td className="py-6 px-4 text-zinc-900 dark:text-white font-black text-right">${payment.amount?.toLocaleString()}</td>
+                  <td className="py-6 px-4 text-center">
+                    <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-md text-xs font-bold inline-block capitalize tracking-wide">
                       {payment.paymentStatus}
                     </span>
                   </td>

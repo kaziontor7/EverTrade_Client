@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Modal, Button, Spinner, Checkbox, Form, Input, TextArea, Select, Label, ListBox, TextField } from "@heroui/react";
+import { Modal, Button, Spinner, Checkbox, Form, Input, TextArea, Select, Label, ListBox, TextField, toast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { updateProductAction } from "@/lib/actions/products";
 
@@ -31,9 +31,11 @@ export default function EditProductModal({ product }) {
 
       await updateProductAction(product._id, finalData);
       setIsOpen(false);
+      toast.success("Product updated successfully.");
       router.refresh();
     } catch (err) {
       console.error(err);
+      toast.danger("Failed to update product.");
     } finally {
       setIsSubmitting(false);
     }
@@ -41,62 +43,64 @@ export default function EditProductModal({ product }) {
 
   return (
     <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
-      <Button 
-        onPress={() => setIsOpen(true)}
-        isIconOnly size="sm" variant="tertiary"
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="cursor-pointer w-8 h-8 flex items-center justify-center bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+        title="Edit Product"
       >
-        <span className="material-symbols-outlined text-sm">edit</span>
-      </Button>
+        <span className="material-symbols-outlined text-[16px]">edit</span>
+      </button>
       <Modal.Backdrop>
         <Modal.Container>
-          <Modal.Dialog>
+          <Modal.Dialog className="rounded-2xl border border-zinc-200 dark:border-zinc-800/50 shadow-xl max-w-2xl bg-white dark:bg-zinc-900">
             <Modal.CloseTrigger />
-            <Modal.Header>
-              <Modal.Heading className="text-xl font-bold text-gray-900 dark:text-white">Edit Listing</Modal.Heading>
+            <Modal.Header className="border-b border-zinc-200 dark:border-zinc-800/50 pb-4 pt-6">
+              <Modal.Heading className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Edit Listing</Modal.Heading>
             </Modal.Header>
-            <Modal.Body>
-              <Form id={`edit-form-${product._id}`} onSubmit={handleSaveEdit} className="grid grid-cols-1 md:grid-cols-2 gap-4" validationBehavior="native">
-                <TextField isRequired name="title" defaultValue={product.title} className="md:col-span-2">
-                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Product Title</Label>
+            <Modal.Body className="py-6">
+              <Form id={`edit-form-${product._id}`} onSubmit={handleSaveEdit} className="grid grid-cols-1 md:grid-cols-2 gap-6" validationBehavior="native">
+                <TextField isRequired name="title" defaultValue={product.title} className="md:col-span-2 w-full">
+                  <Label className="text-zinc-900 dark:text-white font-medium text-sm pb-1">Product Title</Label>
                   <Input 
                     type="text" 
-                    className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+                    className="w-full bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-2 px-3 focus-within:border-zinc-900 dark:focus-within:border-white transition-colors"
                   />
                 </TextField>
                 
-                <TextField isRequired name="description" defaultValue={product.description} className="md:col-span-2">
-                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Description</Label>
+                <TextField isRequired name="description" defaultValue={product.description} className="md:col-span-2 w-full">
+                  <Label className="text-zinc-900 dark:text-white font-medium text-sm pb-1">Description</Label>
                   <TextArea 
                     minRows={3}
-                    className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+                    className="w-full bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-2 px-3 focus-within:border-zinc-900 dark:focus-within:border-white transition-colors"
                   />
                 </TextField>
 
-                <TextField isRequired name="price" defaultValue={product.price?.toString()}>
-                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Price ($)</Label>
-                  <div className="relative flex items-center">
-                    <span className="absolute left-3 text-gray-500 text-sm">$</span>
+                <TextField isRequired name="price" defaultValue={product.price?.toString()} className="w-full">
+                  <Label className="text-zinc-900 dark:text-white font-medium text-sm pb-1">Price ($)</Label>
+                  <div className="relative flex items-center w-full">
+                    <span className="absolute left-3 text-zinc-500">$</span>
                     <Input 
                       type="number" 
-                      className="pl-8 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                      className="pl-7 w-full bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-2 focus-within:border-zinc-900 dark:focus-within:border-white transition-colors"
                     />
                   </div>
                 </TextField>
 
-                <TextField isRequired name="stock" defaultValue={product.stock?.toString()}>
-                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Stock</Label>
+                <TextField isRequired name="stock" defaultValue={product.stock?.toString()} className="w-full">
+                  <Label className="text-zinc-900 dark:text-white font-medium text-sm pb-1">Stock</Label>
                   <Input 
                     type="number" 
-                    className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+                    className="w-full bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-2 px-3 focus-within:border-zinc-900 dark:focus-within:border-white transition-colors"
                   />
                 </TextField>
 
                 <Select 
                   name="category"
                   defaultSelectedKey={product.category || "Electronics"}
+                  className="w-full"
                 >
-                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Category</Label>
-                  <Select.Trigger className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3 flex justify-between items-center">
+                  <Label className="text-zinc-900 dark:text-white font-medium text-sm pb-1">Category</Label>
+                  <Select.Trigger className="w-full bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-2 px-3 flex justify-between items-center focus-within:border-zinc-900 dark:focus-within:border-white transition-colors">
                     <Select.Value />
                     <Select.Indicator />
                   </Select.Trigger>
@@ -115,9 +119,10 @@ export default function EditProductModal({ product }) {
                 <Select 
                   name="condition"
                   defaultSelectedKey={product.condition || "New"}
+                  className="w-full"
                 >
-                  <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Condition</Label>
-                  <Select.Trigger className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3 flex justify-between items-center">
+                  <Label className="text-zinc-900 dark:text-white font-medium text-sm pb-1">Condition</Label>
+                  <Select.Trigger className="w-full bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-2 px-3 flex justify-between items-center focus-within:border-zinc-900 dark:focus-within:border-white transition-colors">
                     <Select.Value />
                     <Select.Indicator />
                   </Select.Trigger>
@@ -137,15 +142,15 @@ export default function EditProductModal({ product }) {
                   name="isSold"
                   value="true"
                   defaultSelected={product.isSold}
-                  color="success"
-                  className="md:col-span-2 mt-2"
+                  color="default"
+                  className="md:col-span-2 mt-2 font-medium"
                 >
-                  Mark as Sold
+                  Mark as Sold Out (Resets stock to 0)
                 </Checkbox>
               </Form>
             </Modal.Body>
-            <Modal.Footer>
-              <Button form={`edit-form-${product._id}`} type="submit" color="success" className="bg-emerald-500 text-white" disabled={isSubmitting}>
+            <Modal.Footer className="border-t border-zinc-200 dark:border-zinc-800/50 pt-4 pb-6">
+              <Button form={`edit-form-${product._id}`} type="submit" className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl font-medium w-full py-4 shadow-sm" disabled={isSubmitting}>
                 {isSubmitting ? <Spinner size="sm" color="white" /> : "Save Changes"}
               </Button>
             </Modal.Footer>

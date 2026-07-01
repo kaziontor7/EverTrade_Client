@@ -34,7 +34,7 @@ export default function OnboardingGuard({ children }) {
   if (!isPending && session?.user && !hasCompletedProfile && pathname !== "/onboarding") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 flex-grow">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }

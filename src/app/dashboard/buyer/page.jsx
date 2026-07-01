@@ -43,70 +43,70 @@ export default function BuyerDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-emerald-900/40 to-gray-900 border border-emerald-500/20 rounded-2xl p-8 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit">
-          Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-lime-400">{session?.user?.name || "Shopper"}</span>
+      <div className="border-b border-zinc-200 dark:border-zinc-800 pb-8">
+        <h1 className="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">
+          Welcome back, {session?.user?.name || "Shopper"}.
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">Here is a summary of your recent shopping activity.</p>
+        <p className="text-zinc-500 font-medium mt-2 text-lg">Here is a summary of your recent shopping activity.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex items-center justify-between shadow-sm">
+        <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 flex items-center justify-between">
           <div>
-            <p className="text-gray-500 dark:text-gray-400 font-medium">Total Orders</p>
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mt-1 font-outfit">{loading ? "..." : orders.length}</h3>
+            <p className="text-zinc-500 font-medium">Total Orders</p>
+            <h3 className="text-4xl font-black text-zinc-900 dark:text-white mt-1 tracking-tighter">{loading ? "..." : orders.length}</h3>
           </div>
-          <div className="w-14 h-14 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center border border-emerald-500/20">
+          <div className="w-14 h-14 bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-xl flex items-center justify-center">
             <span className="material-symbols-outlined text-3xl">shopping_bag</span>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex items-center justify-between shadow-sm">
+        <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 flex items-center justify-between">
           <div>
-            <p className="text-gray-500 dark:text-gray-400 font-medium">Wishlist Items</p>
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mt-1 font-outfit">{loading ? "..." : wishlistCount}</h3>
+            <p className="text-zinc-500 font-medium">Wishlist Items</p>
+            <h3 className="text-4xl font-black text-zinc-900 dark:text-white mt-1 tracking-tighter">{loading ? "..." : wishlistCount}</h3>
           </div>
-          <div className="w-14 h-14 bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center border border-rose-500/20">
+          <div className="w-14 h-14 bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-xl flex items-center justify-center">
             <span className="material-symbols-outlined text-3xl">favorite</span>
           </div>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white font-outfit">Recent Purchases</h2>
-          <Link href="/dashboard/buyer/orders" className="text-emerald-600 dark:text-emerald-400 font-medium text-sm hover:underline">
+      <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 lg:p-8">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">Recent Purchases</h2>
+          <Link href="/dashboard/buyer/orders" className="text-zinc-900 dark:text-white font-bold text-sm hover:underline">
             View All
           </Link>
         </div>
         
         {loading ? (
           <div className="flex justify-center py-8">
-            <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : recentPurchases.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-600 dark:text-gray-400">You haven't placed any orders yet.</p>
-            <Link href="/products" className="mt-4 inline-block btn-primary py-2 px-6 rounded-xl">
+          <div className="text-center py-12">
+            <p className="text-zinc-500 font-medium mb-6">You haven't placed any orders yet.</p>
+            <Link href="/products" className="inline-block px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold rounded-xl hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors">
               Start Shopping
             </Link>
           </div>
         ) : (
           <div className="space-y-4">
             {recentPurchases.map((order) => (
-              <div key={order._id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-black/20 rounded-2xl border border-gray-200 dark:border-white/5">
+              <div key={order._id} className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-200 dark:bg-gray-800 rounded-xl overflow-hidden flex items-center justify-center text-gray-500">
+                  <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500">
                     <span className="material-symbols-outlined">inventory_2</span>
                   </div>
                   <div>
-                    <p className="text-gray-900 dark:text-white font-medium">{order.title}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</p>
+                    <p className="text-zinc-900 dark:text-white font-bold">{order.title}</p>
+                    <p className="text-xs text-zinc-500">{new Date(order.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-emerald-600 dark:text-emerald-400 font-bold">${order.price?.toLocaleString()}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{order.orderStatus}</p>
+                  <p className="text-zinc-900 dark:text-white font-black">${order.price?.toLocaleString()}</p>
+                  <p className="text-xs font-medium text-zinc-500">{order.orderStatus}</p>
                 </div>
               </div>
             ))}

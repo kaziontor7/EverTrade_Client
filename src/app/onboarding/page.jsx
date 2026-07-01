@@ -49,103 +49,81 @@ export default function OnboardingPage() {
   if (isPending) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative bg-gray-50 dark:bg-[#060e20]">
-      <div className="absolute inset-0 grid-pattern pointer-events-none opacity-40"></div>
+    <div className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative bg-transparent">
       
-      <div className="w-full max-w-xl glass-card rounded-3xl p-8 sm:p-12 relative z-10 animate-fade-in">
+      <div className="w-full max-w-xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50 shadow-xl rounded-3xl p-8 sm:p-12 relative z-10">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Welcome to EverTrade! 🎉</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <h1 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tight uppercase mb-3">Welcome to EverTrade!</h1>
+          <p className="text-zinc-600 dark:text-zinc-400 font-medium">
             Let's get your profile set up so you can start {role === 'buyer' ? 'shopping' : 'selling'}.
           </p>
         </div>
 
         <Form onSubmit={handleSubmit} className="space-y-8" validationBehavior="native">
-          <div className="space-y-4">
-            <label className="text-sm font-semibold text-gray-900 dark:text-gray-200">What brings you here today?</label>
-            <div className="grid grid-cols-2 gap-4">
-              <label 
-                className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-2xl cursor-pointer transition-all ${
-                  role === 'buyer' 
-                    ? 'border-emerald-500 bg-emerald-500/10' 
-                    : 'border-gray-200 dark:border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/5'
+          <div className="space-y-4 w-full mb-6">
+            <label className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-wider">What brings you here today?</label>
+            <div className="flex bg-zinc-100 dark:bg-zinc-800/50 p-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 w-full">
+              <button
+                type="button"
+                onClick={() => setRole('buyer')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-bold transition-all uppercase tracking-wider ${
+                  role === "buyer" 
+                    ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm border border-zinc-900 dark:border-white" 
+                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white border border-transparent"
                 }`}
               >
-                <input 
-                  type="radio" 
-                  name="role" 
-                  value="buyer" 
-                  checked={role === 'buyer'} 
-                  onChange={() => setRole('buyer')}
-                  className="sr-only" 
-                />
-                <span className={`material-symbols-outlined text-4xl mb-2 ${role === 'buyer' ? 'text-emerald-500' : 'text-gray-400'}`}>
-                  shopping_cart
-                </span>
-                <span className={`font-semibold ${role === 'buyer' ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                  I want to Buy
-                </span>
-              </label>
-
-              <label 
-                className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-2xl cursor-pointer transition-all ${
-                  role === 'seller' 
-                    ? 'border-emerald-500 bg-emerald-500/10' 
-                    : 'border-gray-200 dark:border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/5'
+                <span className="material-symbols-outlined text-[1.1rem]">shopping_cart</span>
+                I want to Buy
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('seller')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-bold transition-all uppercase tracking-wider ${
+                  role === "seller" 
+                    ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm border border-zinc-900 dark:border-white" 
+                    : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white border border-transparent"
                 }`}
               >
-                <input 
-                  type="radio" 
-                  name="role" 
-                  value="seller" 
-                  checked={role === 'seller'} 
-                  onChange={() => setRole('seller')}
-                  className="sr-only" 
-                />
-                <span className={`material-symbols-outlined text-4xl mb-2 ${role === 'seller' ? 'text-emerald-500' : 'text-gray-400'}`}>
-                  storefront
-                </span>
-                <span className={`font-semibold ${role === 'seller' ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                  I want to Sell
-                </span>
-              </label>
+                <span className="material-symbols-outlined text-[1.1rem]">storefront</span>
+                I want to Sell
+              </button>
             </div>
           </div>
 
-          <div className="space-y-5 animate-fade-in w-full">
-            <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-sm text-blue-700 dark:text-blue-300 flex items-start gap-3">
+          <div className="space-y-6 w-full">
+            <div className="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm text-zinc-900 dark:text-white flex items-start gap-3 font-medium">
                <span className="material-symbols-outlined text-[20px]">info</span>
                <p>To keep our marketplace safe and ensure smooth deliveries, all users must provide their contact details.</p>
             </div>
 
-            <TextField isRequired name="phone" value={phone} onChange={setPhone}>
-              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Phone Number</Label>
-              <div className="relative flex items-center">
-                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">call</span>
+            <TextField isRequired name="phone" value={phone} onChange={setPhone} className="w-full">
+              <Label className="text-zinc-900 dark:text-white font-bold uppercase tracking-wider text-xs pb-1">Phone Number</Label>
+              <div className="relative flex items-center w-full">
+                <span className="material-symbols-outlined text-zinc-400 dark:text-zinc-500 text-lg absolute left-3 pointer-events-none">call</span>
                 <Input
                   id="phone"
                   type="tel"
                   placeholder="+8801XXXXXXXXX"
-                  className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                  className="pl-10 w-full bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-3 font-bold focus-within:border-zinc-900 dark:focus-within:border-white transition-colors"
                 />
               </div>
             </TextField>
             
-            <TextField isRequired name="location" value={location} onChange={setLocation}>
-              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">{role === 'seller' ? 'Store Location' : 'Delivery Location'}</Label>
-              <div className="relative flex items-center">
-                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">location_on</span>
+            <TextField isRequired name="location" value={location} onChange={setLocation} className="w-full">
+              <Label className="text-zinc-900 dark:text-white font-bold uppercase tracking-wider text-xs pb-1">{role === 'seller' ? 'Store Location' : 'Delivery Location'}</Label>
+              <div className="relative flex items-center w-full">
+                <span className="material-symbols-outlined text-zinc-400 dark:text-zinc-500 text-lg absolute left-3 pointer-events-none">location_on</span>
                 <Input
                   id="location"
                   type="text"
                   placeholder="Dhaka, Bangladesh"
-                  className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                  className="pl-10 w-full bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl py-3 font-bold focus-within:border-zinc-900 dark:focus-within:border-white transition-colors"
                 />
               </div>
             </TextField>
@@ -154,7 +132,7 @@ export default function OnboardingPage() {
           <Button
             type="submit"
             isLoading={loading}
-            className="w-full py-4 text-lg mt-6 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 font-medium h-14"
+            className="w-full py-6 text-lg mt-8 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl font-bold uppercase tracking-widest shadow-sm transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-200"
             endContent={!loading && <span className="material-symbols-outlined">arrow_forward</span>}
           >
             Complete Profile

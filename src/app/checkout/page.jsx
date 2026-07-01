@@ -24,7 +24,7 @@ export default function GlobalCheckoutPage() {
   if (isPending || !isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -35,7 +35,7 @@ export default function GlobalCheckoutPage() {
         <span className="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-700 mb-4">shopping_bag</span>
         <h2 className="text-2xl font-bold font-outfit mb-2">Your Cart is Empty</h2>
         <p className="text-gray-500 mb-6 text-center max-w-md">You need to add some products to your cart before you can checkout.</p>
-        <Link href="/products" className="btn-primary py-3 px-8 rounded-xl font-medium">
+        <Link href="/products" className="bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black font-bold py-3 px-8 rounded-xl transition-colors">
           Start Shopping
         </Link>
       </div>
@@ -79,7 +79,7 @@ export default function GlobalCheckoutPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200 py-12 px-4 sm:px-6 lg:px-8 relative">
       <div className="absolute inset-0 grid-pattern pointer-events-none opacity-40"></div>
       <div className="max-w-6xl mx-auto relative z-10">
-        <Link href="/cart" className="inline-flex items-center text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 font-medium mb-8 transition-colors">
+        <Link href="/cart" className="inline-flex items-center text-zinc-500 hover:text-zinc-900 dark:hover:text-white font-medium mb-8 transition-colors">
           <span className="material-symbols-outlined mr-1">arrow_back</span>
           Back to Cart
         </Link>
@@ -92,14 +92,14 @@ export default function GlobalCheckoutPage() {
             
             <Form onSubmit={handleStripeCheckout} className="space-y-8" validationBehavior="native">
               {/* Shipping Information */}
-              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-sm w-full">
+              <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 lg:p-8 w-full">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Shipping Address</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                   <TextField isDisabled value={session?.user?.name || ""} className="md:col-span-2">
                     <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Full Name</Label>
                     <Input 
                       type="text" 
-                      className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 shadow-sm opacity-70 rounded-lg py-2 px-3"
+                      className="w-full bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 opacity-70 rounded-lg py-3 px-3 cursor-not-allowed"
                     />
                   </TextField>
                   <TextField isRequired name="street" className="md:col-span-2">
@@ -107,7 +107,7 @@ export default function GlobalCheckoutPage() {
                     <Input 
                       type="text" 
                       placeholder="123 Main St"
-                      className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+                      className="w-full bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 focus-within:border-zinc-900 dark:focus-within:border-white transition-colors rounded-lg py-3 px-3"
                     />
                   </TextField>
                   <TextField isRequired name="city">
@@ -115,27 +115,27 @@ export default function GlobalCheckoutPage() {
                     <Input 
                       type="text"
                       placeholder="New York"
-                      className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2 px-3"
+                      className="w-full bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 focus-within:border-zinc-900 dark:focus-within:border-white transition-colors rounded-lg py-3 px-3"
                     />
                   </TextField>
                   <TextField isDisabled value={session?.user?.phone || "N/A"}>
                     <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Phone Number</Label>
                     <Input 
                       type="text" 
-                      className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 shadow-sm opacity-70 rounded-lg py-2 px-3"
+                      className="w-full bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 opacity-70 rounded-lg py-3 px-3 cursor-not-allowed"
                     />
                   </TextField>
                 </div>
               </div>
 
               {/* Stripe Payment Integration Note */}
-              <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 shadow-sm w-full">
+              <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 lg:p-8 w-full">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Payment Method</h2>
                 
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-500/20">
-                    <span className="material-symbols-outlined text-blue-500 dark:text-blue-400">lock</span>
-                    <p className="text-sm text-blue-800 dark:text-blue-300">
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800">
+                    <span className="material-symbols-outlined text-zinc-900 dark:text-white">lock</span>
+                    <p className="text-sm text-zinc-500">
                       You will be redirected to <strong>Stripe</strong> to securely complete your payment.
                     </p>
                   </div>
@@ -145,7 +145,7 @@ export default function GlobalCheckoutPage() {
               <Button 
                 type="submit" 
                 isLoading={isProcessing}
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4 h-14 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+                className="w-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black font-bold text-lg py-4 h-14 rounded-xl transition-colors"
               >
                 {isProcessing ? "Redirecting to Stripe..." : "Proceed to Payment"}
               </Button>
@@ -154,7 +154,7 @@ export default function GlobalCheckoutPage() {
 
           {/* Order Summary (Right side) */}
           <div className="w-full lg:w-1/3">
-            <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-8 sticky top-24 shadow-xl">
+            <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6 lg:p-8 sticky top-24">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Summary</h2>
               
               <div className="space-y-4 mb-6 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
@@ -167,7 +167,7 @@ export default function GlobalCheckoutPage() {
                       <h3 className="font-medium text-gray-900 dark:text-white line-clamp-1 text-sm">{item.title}</h3>
                       <div className="flex justify-between items-center mt-1">
                         <span className="text-xs text-gray-500">Qty: {item.cartQuantity}</span>
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">${(item.price * item.cartQuantity).toLocaleString()}</span>
+                        <span className="text-zinc-900 dark:text-white font-black text-sm">${(item.price * item.cartQuantity).toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
@@ -191,7 +191,7 @@ export default function GlobalCheckoutPage() {
 
               <div className="flex justify-between items-end mt-6">
                 <span className="text-lg font-bold text-gray-900 dark:text-white">Total</span>
-                <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight">${total.toLocaleString()}</span>
+                <span className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">${total.toLocaleString()}</span>
               </div>
             </div>
           </div>

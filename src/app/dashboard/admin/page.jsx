@@ -49,83 +49,79 @@ export default function AdminOverview() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-emerald-900/40 to-gray-900 border border-emerald-500/20 rounded-3xl p-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit">
+    <div className="space-y-8">
+      <div className="border-b border-zinc-200 dark:border-zinc-800 pb-8">
+        <h1 className="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">
           Admin Overview
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">Monitor platform activity, moderate listings, and track revenue.</p>
+        <p className="text-zinc-500 font-medium mt-2 text-lg">Monitor platform activity, moderate listings, and track revenue.</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
-          <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 text-emerald-500 dark:text-emerald-400">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="bg-zinc-900 dark:bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-brutal">
+          <div className="w-12 h-12 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded-xl flex items-center justify-center mb-4">
             <span className="material-symbols-outlined">payments</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">${stats.totalRevenue.toLocaleString()}</p>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Platform Revenue (5%)</p>
+          <p className="text-4xl font-black text-white dark:text-zinc-900 tracking-tighter">${stats.totalRevenue.toLocaleString()}</p>
+          <p className="text-sm text-zinc-400 dark:text-zinc-500 font-medium mt-1">Platform Revenue (5%)</p>
         </div>
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
-          <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mb-4 text-blue-500 dark:text-blue-400">
+        <div className="bg-zinc-900 dark:bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-brutal">
+          <div className="w-12 h-12 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded-xl flex items-center justify-center mb-4">
             <span className="material-symbols-outlined">group</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalUsers}</p>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total Users</p>
+          <p className="text-4xl font-black text-white dark:text-zinc-900 tracking-tighter">{stats.totalUsers}</p>
+          <p className="text-sm text-zinc-400 dark:text-zinc-500 font-medium mt-1">Total Users</p>
         </div>
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
-          <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mb-4 text-purple-500 dark:text-purple-400">
+        <div className="bg-zinc-900 dark:bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-brutal">
+          <div className="w-12 h-12 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded-xl flex items-center justify-center mb-4">
             <span className="material-symbols-outlined">inventory_2</span>
           </div>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalProducts}</p>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Active Listings</p>
+          <p className="text-4xl font-black text-white dark:text-zinc-900 tracking-tighter">{stats.totalProducts}</p>
+          <p className="text-sm text-zinc-400 dark:text-zinc-500 font-medium mt-1">Active Listings</p>
         </div>
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-yellow-500/20 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
-          <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mb-4 text-yellow-500 dark:text-yellow-400">
+        <div className="bg-zinc-900 dark:bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-brutal">
+          <div className="w-12 h-12 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded-xl flex items-center justify-center mb-4">
             <span className="material-symbols-outlined">pending_actions</span>
           </div>
-          <p className="text-3xl font-bold text-yellow-500 dark:text-yellow-400">{stats.pendingSellers}</p>
-          <p className="text-sm text-yellow-500 dark:text-yellow-400 mt-1">Pending Sellers</p>
+          <p className="text-4xl font-black text-white dark:text-zinc-900 tracking-tighter">{stats.pendingSellers}</p>
+          <p className="text-sm text-zinc-400 dark:text-zinc-500 font-medium mt-1">Pending Sellers</p>
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="flex flex-col gap-12 mt-4">
         
         {/* Global Orders Monitor */}
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Global Order Monitor</h2>
+        <div className="pt-2">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">Global Order Monitor</h2>
           
           {loading ? (
             <div className="flex justify-center py-12">
-              <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-8 h-8 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : stats.recentOrders.length === 0 ? (
-            <div className="text-center py-12 text-gray-600 dark:text-gray-400">No orders placed yet.</div>
+            <div className="text-center py-12 text-zinc-500 font-medium">No orders placed yet.</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left min-w-max">
+              <table className="w-full text-left min-w-max border-collapse">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
-                    <th className="pb-4 font-medium px-2">Order ID</th>
-                    <th className="pb-4 font-medium px-2">Amount</th>
-                    <th className="pb-4 font-medium px-2">Fee (5%)</th>
-                    <th className="pb-4 font-medium px-2">Status</th>
+                  <tr className="border-b-2 border-zinc-900 dark:border-white text-zinc-900 dark:text-white text-sm uppercase tracking-wider font-bold">
+                    <th className="pb-4 px-4 whitespace-nowrap">Order ID</th>
+                    <th className="pb-4 px-4 whitespace-nowrap">Amount</th>
+                    <th className="pb-4 px-4 whitespace-nowrap">Fee (5%)</th>
+                    <th className="pb-4 px-4 whitespace-nowrap">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-white/5">
+                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                   {stats.recentOrders.map((order) => (
-                    <tr key={order._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
-                      <td className="py-4 px-2 font-mono text-sm text-gray-500 max-w-[80px] truncate" title={order._id}>{order._id}</td>
-                      <td className="py-4 px-2 font-medium">${order.price?.toLocaleString()}</td>
-                      <td className="py-4 px-2 text-emerald-600 dark:text-emerald-400 font-bold">
+                    <tr key={order._id} className="text-zinc-800 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors">
+                      <td className="py-6 px-4 font-mono text-sm text-zinc-500 max-w-[80px] truncate" title={order._id}>{order._id}</td>
+                      <td className="py-6 px-4 font-black">${order.price?.toLocaleString()}</td>
+                      <td className="py-6 px-4 font-black text-zinc-900 dark:text-white">
                         +${((order.price || 0) * 0.05).toLocaleString()}
                       </td>
-                      <td className="py-4 px-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
-                          order.orderStatus?.toLowerCase() === 'delivered' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
-                          ['cancelled', 'declined', 'canceled'].includes(order.orderStatus?.toLowerCase()) ? 'bg-red-500/10 text-red-600 dark:text-red-400' :
-                          'bg-blue-500/10 text-blue-600 dark:text-blue-400'
-                        }`}>
+                      <td className="py-6 px-4">
+                        <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 rounded-md text-xs font-bold inline-block capitalize tracking-wide">
                           {order.orderStatus || 'Pending'}
                         </span>
                       </td>
@@ -138,31 +134,31 @@ export default function AdminOverview() {
         </div>
 
         {/* Moderation Table */}
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Product Moderation</h2>
+        <div className="pt-2">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">Product Moderation</h2>
           
           {loading ? (
             <div className="flex justify-center py-12">
-              <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-8 h-8 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : stats.recentProducts.length === 0 ? (
-            <div className="text-center py-12 text-gray-600 dark:text-gray-400">No active products to moderate.</div>
+            <div className="text-center py-12 text-zinc-500 font-medium">No active products to moderate.</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left min-w-max">
+              <table className="w-full text-left min-w-max border-collapse">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 text-sm">
-                    <th className="pb-4 font-medium px-2">Product</th>
-                    <th className="pb-4 font-medium px-2">Report Status</th>
-                    <th className="pb-4 font-medium px-2 text-right">Actions</th>
+                  <tr className="border-b-2 border-zinc-900 dark:border-white text-zinc-900 dark:text-white text-sm uppercase tracking-wider font-bold">
+                    <th className="pb-4 px-4 whitespace-nowrap">Product</th>
+                    <th className="pb-4 px-4 whitespace-nowrap text-center">Report Status</th>
+                    <th className="pb-4 px-4 whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-white/5">
+                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                   {stats.recentProducts.map((product) => (
-                    <tr key={product._id} className="text-gray-800 dark:text-gray-300 hover:bg-white/5 transition-colors">
-                      <td className="py-4 px-2">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 relative rounded-md overflow-hidden bg-gray-100/80 dark:bg-black/50">
+                    <tr key={product._id} className="text-zinc-800 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors">
+                      <td className="py-6 px-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 relative rounded-md overflow-hidden bg-zinc-200 dark:bg-zinc-800">
                             {product.images && (
                               <Image 
                                 src={typeof product.images === 'string' ? product.images : (product.images[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80')} 
@@ -172,45 +168,42 @@ export default function AdminOverview() {
                               />
                             )}
                           </div>
-                          <span className="font-medium text-gray-900 dark:text-white max-w-[150px] truncate" title={product.title}>{product.title}</span>
+                          <span className="font-bold text-zinc-900 dark:text-white max-w-[150px] truncate" title={product.title}>{product.title}</span>
                         </div>
                       </td>
-                      <td className="py-4 px-2">
+                      <td className="py-6 px-4 text-center">
                         {product.reported ? (
-                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.3)]">
+                          <span className="px-3 py-1 rounded-md text-xs font-bold tracking-wide bg-zinc-900 text-white dark:bg-white dark:text-black">
                             Reported
                           </span>
                         ) : (
-                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20">
+                          <span className="px-3 py-1 rounded-md text-xs font-bold tracking-wide bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
                             Clean
                           </span>
                         )}
                       </td>
-                      <td className="py-4 px-2 text-right">
+                      <td className="py-6 px-4 text-right">
                         <AlertDialog>
                           <Button 
-                            variant="flat"
-                            color="danger"
-                            size="sm"
+                            className="cursor-pointer px-4 py-2 bg-zinc-900 hover:bg-red-600 text-white font-bold text-xs rounded transition-colors uppercase tracking-wider"
                           >
                             Delete
                           </Button>
                           <AlertDialog.Backdrop>
                             <AlertDialog.Container>
-                              <AlertDialog.Dialog className="sm:max-w-[400px]">
+                              <AlertDialog.Dialog className="rounded-2xl border border-zinc-200 dark:border-zinc-800/50 shadow-xl bg-white dark:bg-zinc-900 sm:max-w-[400px]">
                                 <AlertDialog.CloseTrigger />
-                                <AlertDialog.Header>
-                                  <AlertDialog.Icon status="danger" />
-                                  <AlertDialog.Heading>Delete Listing?</AlertDialog.Heading>
+                                <AlertDialog.Header className="border-b border-zinc-200 dark:border-zinc-800/50 pb-4 pt-6">
+                                  <AlertDialog.Heading className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Delete Listing?</AlertDialog.Heading>
                                 </AlertDialog.Header>
-                                <AlertDialog.Body>
-                                  <p>
-                                    This will permanently remove <strong>{product.title}</strong> from the platform.
+                                <AlertDialog.Body className="py-6">
+                                  <p className="text-zinc-600 dark:text-zinc-400 font-medium">
+                                    This will permanently remove <strong className="text-zinc-900 dark:text-white">{product.title}</strong> from the platform.
                                   </p>
                                 </AlertDialog.Body>
-                                <AlertDialog.Footer>
-                                  <Button slot="close" variant="tertiary">Cancel</Button>
-                                  <Button slot="close" variant="danger" onPress={() => handleDeleteProduct(product._id)}>
+                                <AlertDialog.Footer className="border-t border-zinc-200 dark:border-zinc-800/50 pt-4 pb-6">
+                                  <Button slot="close" variant="flat" className="rounded-xl font-medium cursor-pointer">Cancel</Button>
+                                  <Button slot="close" className="bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium shadow-sm transition-colors cursor-pointer" onPress={() => handleDeleteProduct(product._id)}>
                                     Yes, Delete
                                   </Button>
                                 </AlertDialog.Footer>

@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import { getAdminAnalytics } from "@/lib/api/admin";
 
-const COLORS = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'];
+const COLORS = ['#18181b', '#3f3f46', '#71717a', '#a1a1aa', '#e4e4e7'];
 
 export default function AdminAnalyticsPage() {
   const [data, setData] = useState({
@@ -36,23 +36,23 @@ export default function AdminAnalyticsPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit mb-2">Platform Analytics</h2>
-        <p className="text-gray-600 dark:text-gray-400">Comprehensive insights into platform growth and performance.</p>
+    <div className="space-y-8">
+      <div className="border-b border-zinc-200 dark:border-zinc-800 pb-8">
+        <h1 className="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">Platform Analytics</h1>
+        <p className="text-zinc-500 font-medium mt-2 text-lg">Comprehensive insights into platform growth and performance.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
         
         {/* User Growth Chart */}
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">User Growth</h3>
+        <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6">
+          <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight mb-6">User Growth</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data.userGrowth}>
@@ -60,45 +60,45 @@ export default function AdminAnalyticsPage() {
                 <XAxis dataKey="month" stroke="#6b7280" fontSize={12} />
                 <YAxis stroke="#6b7280" fontSize={12} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '12px', color: '#fff' }}
-                  itemStyle={{ color: '#10b981' }}
+                  contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', borderRadius: '8px', color: '#fff' }}
+                  itemStyle={{ color: '#fff' }}
                 />
                 <Legend />
-                <Line type="monotone" dataKey="users" name="New Users" stroke="#10b981" strokeWidth={3} dot={{ r: 4, fill: '#10b981' }} activeDot={{ r: 6 }} />
+                <Line type="monotone" dataKey="users" name="New Users" stroke="#18181b" strokeWidth={3} dot={{ r: 4, fill: '#18181b' }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Monthly Orders & Revenue Chart */}
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Monthly Revenue ($)</h3>
+        <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6">
+          <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight mb-6">Monthly Revenue ($)</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data.monthlyOrders}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#18181b" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#18181b" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.2} />
                 <XAxis dataKey="month" stroke="#6b7280" fontSize={12} />
                 <YAxis stroke="#6b7280" fontSize={12} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '12px', color: '#fff' }}
-                  itemStyle={{ color: '#3b82f6' }}
+                  contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', borderRadius: '8px', color: '#fff' }}
+                  itemStyle={{ color: '#fff' }}
                 />
                 <Legend />
-                <Area type="monotone" dataKey="revenue" name="Platform Revenue" stroke="#3b82f6" fillOpacity={1} fill="url(#colorRevenue)" />
+                <Area type="monotone" dataKey="revenue" name="Platform Revenue" stroke="#18181b" fillOpacity={1} fill="url(#colorRevenue)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Category Performance Chart */}
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Products by Category</h3>
+        <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6">
+          <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight mb-6">Products by Category</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.categoryStats}>
@@ -106,19 +106,19 @@ export default function AdminAnalyticsPage() {
                 <XAxis dataKey="name" stroke="#6b7280" fontSize={12} />
                 <YAxis stroke="#6b7280" fontSize={12} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '12px', color: '#fff' }}
-                  cursor={{ fill: '#374151', opacity: 0.1 }}
+                  contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', borderRadius: '8px', color: '#fff' }}
+                  cursor={{ fill: 'rgba(113, 113, 122, 0.1)' }}
                 />
                 <Legend />
-                <Bar dataKey="value" name="Total Products" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="value" name="Total Products" fill="#18181b" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Top Categories Distribution */}
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Category Distribution</h3>
+        <div className="bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-800/50 rounded-2xl p-6">
+          <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight mb-6">Category Distribution</h3>
           <div className="h-[300px] w-full flex justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -136,7 +136,7 @@ export default function AdminAnalyticsPage() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '12px', color: '#fff' }}
+                  contentStyle={{ backgroundColor: '#18181b', borderColor: '#3f3f46', borderRadius: '8px', color: '#fff' }}
                 />
                 <Legend />
               </PieChart>

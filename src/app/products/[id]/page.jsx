@@ -88,7 +88,7 @@ export default function ProductDetailsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex justify-center items-center">
-        <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-zinc-900 dark:border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -96,63 +96,20 @@ export default function ProductDetailsPage() {
   if (!product) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <Link href="/products" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium mb-8 transition-colors">
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
+    <div className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1200px] mx-auto">
+        <Link href="/products" className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white font-medium mb-12 transition-colors">
+          <span className="material-symbols-outlined text-[20px]">arrow_back</span>
           Back to Marketplace
         </Link>
 
-        <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 relative">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 relative">
           
-          {/* Report Button */}
-          {!product.reported ? (
-            <div className="absolute top-6 right-6">
-              <AlertDialog>
-                <Button 
-                  variant="light"
-                  className="min-w-0 p-0 bg-transparent data-[hover=true]:bg-transparent text-gray-500 dark:text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-medium"
-                  title="Report this listing"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
-                  Report
-                </Button>
-                <AlertDialog.Backdrop>
-                  <AlertDialog.Container>
-                    <AlertDialog.Dialog className="sm:max-w-[400px]">
-                      <AlertDialog.CloseTrigger />
-                      <AlertDialog.Header>
-                        <AlertDialog.Icon status="danger" />
-                        <AlertDialog.Heading>Report Listing?</AlertDialog.Heading>
-                      </AlertDialog.Header>
-                      <AlertDialog.Body>
-                        <p>
-                          Are you sure you want to report <strong>{product.title}</strong>? Our admins will review this listing shortly.
-                        </p>
-                      </AlertDialog.Body>
-                      <AlertDialog.Footer>
-                        <Button slot="close" variant="tertiary">Cancel</Button>
-                        <Button slot="close" variant="danger" onPress={handleReport}>
-                          Yes, Report
-                        </Button>
-                      </AlertDialog.Footer>
-                    </AlertDialog.Dialog>
-                  </AlertDialog.Container>
-                </AlertDialog.Backdrop>
-              </AlertDialog>
-            </div>
-          ) : (
-            <div className="absolute top-6 right-6 text-red-500 flex items-center gap-1 text-sm font-medium">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-              Reported
-            </div>
-          )}
+          {/* Empty Report Button Placeholder (Moved to Right Column) */}
 
           {/* Image Gallery */}
-          <div className="w-full lg:w-1/2 flex-shrink-0">
-            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gray-100/80 dark:bg-black/50 border border-gray-200 dark:border-white/10">
+          <div className="w-full lg:w-1/2 flex-shrink-0 flex flex-col gap-4">
+            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
               <Image 
                 src={typeof product.images === 'string' ? product.images : (product.images?.[0] || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80")} 
                 alt={product.title}
@@ -163,9 +120,9 @@ export default function ProductDetailsPage() {
             </div>
             {/* Thumbnails placeholder for multiple images */}
             {Array.isArray(product.images) && product.images.length > 1 && (
-              <div className="flex gap-4 mt-4">
+              <div className="flex gap-4 overflow-x-auto pb-2">
                 {product.images.map((img, idx) => (
-                  <div key={idx} className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 cursor-pointer ${idx === 0 ? 'border-emerald-500' : 'border-transparent opacity-50 hover:opacity-100'}`}>
+                  <div key={idx} className={`relative w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${idx === 0 ? 'border-zinc-900 dark:border-white' : 'border-transparent opacity-50 hover:opacity-100'}`}>
                     <Image src={img} alt={`${product.title} ${idx}`} fill className="object-cover" />
                   </div>
                 ))}
@@ -174,85 +131,129 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Product Info */}
-          <div className="w-full flex flex-col">
+          <div className="w-full flex flex-col py-4">
             <div className="flex justify-between items-start gap-4">
-              <div>
-                <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white font-outfit mb-2">{product.title}</h1>
+              <div className="w-full">
+                <div className="flex justify-between items-start w-full mb-4">
+                  <h1 className="text-3xl lg:text-5xl font-black text-zinc-900 dark:text-white tracking-tight">{product.title}</h1>
+                  
+                  {/* Report Button */}
+                  {!product.reported ? (
+                    <AlertDialog>
+                      <Button 
+                        variant="light"
+                        className="cursor-pointer min-w-0 p-0 h-auto bg-transparent data-[hover=true]:bg-transparent text-zinc-400 hover:text-red-500 transition-colors flex items-center gap-1 text-sm font-medium shrink-0 mt-2"
+                        title="Report this listing"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">flag</span>
+                        Report
+                      </Button>
+                      <AlertDialog.Backdrop>
+                        <AlertDialog.Container>
+                          <AlertDialog.Dialog className="rounded-2xl border border-zinc-200 dark:border-zinc-800/50 shadow-xl bg-white dark:bg-zinc-900 sm:max-w-[400px]">
+                            <AlertDialog.CloseTrigger />
+                            <AlertDialog.Header className="border-b border-zinc-200 dark:border-zinc-800/50 pb-4 pt-6">
+                              <AlertDialog.Heading className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">Report Listing?</AlertDialog.Heading>
+                            </AlertDialog.Header>
+                            <AlertDialog.Body className="py-6">
+                              <p className="text-zinc-600 dark:text-zinc-400 font-medium">
+                                Are you sure you want to report <strong className="text-zinc-900 dark:text-white">{product.title}</strong>? Our admins will review this listing shortly.
+                              </p>
+                            </AlertDialog.Body>
+                            <AlertDialog.Footer className="border-t border-zinc-200 dark:border-zinc-800/50 pt-4 pb-6">
+                              <Button slot="close" variant="flat" className="rounded-xl font-medium cursor-pointer">Cancel</Button>
+                              <Button slot="close" className="bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium shadow-sm transition-colors cursor-pointer" onPress={handleReport}>
+                                Yes, Report
+                              </Button>
+                            </AlertDialog.Footer>
+                          </AlertDialog.Dialog>
+                        </AlertDialog.Container>
+                      </AlertDialog.Backdrop>
+                    </AlertDialog>
+                  ) : (
+                    <div className="text-red-500 flex items-center gap-1 text-sm font-medium shrink-0 mt-2">
+                      <span className="material-symbols-outlined text-[18px]">error</span>
+                      Reported
+                    </div>
+                  )}
+                </div>
                 
-                {product.averageRating > 0 && (
-                  <div className="flex items-center gap-1.5 mb-4">
-                    <span className="material-symbols-outlined text-[18px] text-yellow-400" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                    <span className="text-base font-bold text-gray-800 dark:text-gray-200">{product.averageRating.toFixed(1)}</span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">({product.reviewCount} {product.reviewCount === 1 ? 'review' : 'reviews'})</span>
-                  </div>
-                )}
-
-                <div className="flex items-center gap-4 text-sm">
-                  <span className="bg-white/5 text-gray-800 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10">
+                <div className="flex items-center gap-4 text-sm font-semibold mb-6">
+                  <span className="px-3 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 capitalize">
                     {product.category}
                   </span>
-                  <span className="bg-white/5 text-gray-800 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-white/10">
+                  <span className="px-3 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 capitalize">
                     Condition: {product.condition}
                   </span>
+                  {product.averageRating > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-[16px] text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                      <span className="font-bold text-zinc-900 dark:text-white">{product.averageRating.toFixed(1)}</span>
+                      <span className="text-zinc-500">({product.reviewCount})</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            <div className="mt-8">
-              <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-lime-400">
-                ${product.price}
+            <div className="mb-8">
+              <p className="text-4xl lg:text-5xl font-black text-zinc-900 dark:text-white">
+                ${product.price.toLocaleString()}
               </p>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-gray-200 dark:border-white/10 flex-1">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Description</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">
+            <div className="flex-1 min-h-[150px]">
+              <h3 className="text-sm font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-3">Description</h3>
+              <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap text-lg">
                 {product.description}
               </p>
             </div>
 
-            <div className="mt-8 bg-gray-100/60 dark:bg-black/40 rounded-2xl p-6 border border-gray-200 dark:border-white/5 flex items-center justify-between">
+            {/* Seller Card - Integrated */}
+            <div className="mt-8 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-tr from-emerald-500 to-lime-400 rounded-full flex items-center justify-center text-gray-950 font-bold text-lg">
+                <div className="w-12 h-12 bg-zinc-900 dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-bold text-lg">
                   {product.sellerName.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Listed by</p>
-                  <p className="text-gray-900 dark:text-white font-medium flex items-center gap-1.5">
+                  <p className="text-sm text-zinc-500 font-medium">Listed by</p>
+                  <p className="text-zinc-900 dark:text-white font-bold flex items-center gap-1.5">
                     {product.sellerName}
                     {product.sellerVerified && (
-                      <span className="flex items-center text-blue-500" title="Verified Seller">
-                        <span className="material-symbols-outlined text-[16px]">verified</span>
+                      <span className="flex items-center justify-center w-4 h-4 rounded-full bg-blue-600 text-white shadow-sm" title="Verified Seller">
+                        <span className="material-symbols-outlined text-[10px] font-bold">check</span>
                       </span>
                     )}
                   </p>
                 </div>
               </div>
-              <button className="px-4 py-2 border border-emerald-500/30 text-emerald-400 rounded-xl hover:bg-emerald-500/10 transition-colors font-medium text-sm">
+              <button className="px-5 py-2.5 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors font-bold text-sm">
                 Contact Seller
               </button>
             </div>
 
+            {/* Action Buttons */}
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <button 
                 onClick={handleAddToCart}
-                className="w-full sm:w-1/2 py-4 bg-white dark:bg-[#1a2340] border-2 border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-lg"
+                className="w-full sm:w-1/2 py-4 bg-transparent border-2 border-zinc-300 dark:border-zinc-700 hover:border-zinc-900 dark:hover:border-white text-zinc-900 dark:text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-2 text-lg"
               >
                 <span className="material-symbols-outlined">add_shopping_cart</span>
                 Add to Cart
               </button>
               <button 
                 onClick={handleCheckout}
-                className="w-full sm:w-1/2 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2 text-lg"
+                className="w-full sm:w-1/2 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 text-lg"
               >
                 <span className="material-symbols-outlined">shopping_bag</span>
                 Buy Now
               </button>
             </div>
-            <p className="text-center text-xs text-gray-500 dark:text-gray-500 mt-4">Protected by Stripe Payments</p>
+            <p className="text-center text-xs font-semibold text-zinc-400 mt-6 flex justify-center items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">lock</span> Protected by Stripe Payments
+            </p>
           </div>
         </div>
-
         {/* Product Reviews */}
         <ProductReviews product={product} />
       </div>

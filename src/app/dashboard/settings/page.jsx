@@ -101,17 +101,17 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-3xl">
-      <div className="bg-gradient-to-r from-emerald-900/40 to-gray-900 border border-emerald-500/20 rounded-2xl p-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white font-outfit">Account Settings</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your personal information and preferences.</p>
+    <div className="space-y-8 max-w-3xl">
+      <div className="border-b border-zinc-200 dark:border-zinc-800 pb-8">
+        <h1 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tighter">Account Settings</h1>
+        <p className="text-zinc-500 font-medium mt-2 text-lg">Manage your personal information and preferences.</p>
       </div>
 
-      <div className="bg-white dark:bg-gray-900/50 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 lg:p-8">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Profile Information</h2>
+      <div className="pt-2">
+        <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">Profile Information</h2>
         
-        <div className="flex items-center gap-6 mb-8 pb-8 border-b border-gray-200 dark:border-white/10">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-500 to-lime-400 flex items-center justify-center text-gray-950 font-bold text-3xl uppercase overflow-hidden relative group">
+        <div className="flex items-center gap-6 mb-8 pb-8 border-b border-zinc-200 dark:border-zinc-800">
+          <div className="w-20 h-20 rounded-full bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-black font-bold text-3xl uppercase overflow-hidden relative group">
             {formData.image ? (
               <img src={formData.image} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
@@ -135,46 +135,46 @@ export default function SettingsPage() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-900 dark:text-white rounded-xl text-sm font-medium transition-colors border border-gray-200 dark:border-white/10 disabled:opacity-50"
+              className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
             >
               {isUploading ? "Uploading..." : "Change Avatar"}
             </button>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">JPG, GIF or PNG. Max size 2MB.</p>
+            <p className="text-xs text-zinc-500 font-medium mt-2">JPG, GIF or PNG. Max size 2MB.</p>
           </div>
         </div>
 
         <Form onSubmit={handleSave} className="space-y-6" validationBehavior="native">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
             <TextField name="name" value={formData.name} onChange={(val) => setFormData({...formData, name: val})}>
-              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Full Name</Label>
+              <Label className="text-zinc-900 dark:text-white font-bold pb-2">Full Name</Label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">person</span>
+                <span className="material-symbols-outlined text-zinc-400 text-lg absolute left-3 pointer-events-none">person</span>
                 <Input
                   id="name"
                   type="text"
-                  className="pl-10 w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 hover:border-emerald-500/50 focus-within:border-emerald-500 transition-colors shadow-sm rounded-lg py-2"
+                  className="pl-10 w-full bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 focus-within:border-zinc-900 dark:focus-within:border-white transition-colors rounded-lg py-3"
                 />
               </div>
             </TextField>
             <TextField name="email" value={formData.email} isDisabled>
-              <Label className="text-gray-900 dark:text-gray-200 font-medium pb-1">Email Address</Label>
+              <Label className="text-zinc-900 dark:text-white font-bold pb-2">Email Address</Label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined text-gray-400 dark:text-[#94a3b8] text-lg absolute left-3 pointer-events-none">mail</span>
+                <span className="material-symbols-outlined text-zinc-400 text-lg absolute left-3 pointer-events-none">mail</span>
                 <Input
                   id="email"
                   type="email"
-                  className="pl-10 w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 shadow-sm opacity-70 rounded-lg py-2"
+                  className="pl-10 w-full bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 rounded-lg py-3 opacity-70"
                 />
               </div>
               <Description>Email cannot be changed directly.</Description>
             </TextField>
           </div>
 
-          <div className="pt-4 flex items-center gap-4">
+          <div className="pt-6 flex items-center gap-4">
             <Button
               type="submit"
               isLoading={isSaving}
-              className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-xl shadow-lg shadow-emerald-500/20"
+              className="px-8 py-4 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black font-bold rounded-xl transition-colors"
               endContent={!isSaving && <span className="material-symbols-outlined text-sm">save</span>}
             >
               Save Changes
