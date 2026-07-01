@@ -3,7 +3,7 @@
 import { MongoClient, ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 
-const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/evertrade_dummy";
+const mongoUri = process.env.MONGODB_URI
 const dbName = process.env.MONGODB_DB || "evertrade";
 
 let cachedClient = null;
@@ -39,8 +39,7 @@ export async function completeOnboarding(userId, data) {
       // Ignore invalid object id errors
     }
 
-    console.log("SERVER ACTION: userId is", userId);
-    console.log("SERVER ACTION: queryId is", queryId);
+
 
     const result = await db.collection("user").updateOne(
       { $or: [{ _id: userId }, { _id: queryId }] },
@@ -53,7 +52,7 @@ export async function completeOnboarding(userId, data) {
 
     // Revalidate paths to ensure fresh data
     revalidatePath("/", "layout");
-    
+
     return { success: true };
   } catch (error) {
     console.error("Error completing onboarding:", error);

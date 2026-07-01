@@ -13,7 +13,7 @@ export default function OnboardingGuard({ children }) {
     if (isPending) return;
 
     if (session?.user) {
-      console.log("CURRENT USER SESSION DATA:", session.user);
+
       const hasCompletedProfile = session.user.onboarded === true || (Boolean(session.user.phone) && Boolean(session.user.location));
 
       // If user is logged in but hasn't onboarded, and they aren't already on the onboarding page
