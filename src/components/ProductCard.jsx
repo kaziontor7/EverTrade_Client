@@ -35,6 +35,7 @@ export function ProductCard({ product, index = 0, user, wishList }) {
       const deleteWishList = await deleteWish(checkExist._id);
       if (deleteWishList.acknowledged) {
         toast("Product removed from wishlist");
+        await revalidate('/');
         await revalidate('/products');
         await revalidate('/dashboard/buyer/wishlist');
       }
@@ -59,6 +60,7 @@ export function ProductCard({ product, index = 0, user, wishList }) {
 
     if (res.acknowledged) {
       toast.success("Product added to wishlist");
+      await revalidate('/');
       await revalidate('/products');
       await revalidate('/dashboard/buyer/wishlist');
     } else {

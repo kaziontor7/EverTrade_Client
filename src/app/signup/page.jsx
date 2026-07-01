@@ -26,12 +26,17 @@ export default function SignUpPage() {
       name,
       email,
       password,
-      role,
-      phone,
-      location,
-      onboarded: true,
       fetchOptions: {
-        onSuccess: () => {
+        onSuccess: async (ctx) => {
+          try {
+            // Import completeOnboarding dynamically or we can just import it at the top
+            const { completeOnboarding } = await import('@/lib/actions/user');
+            await completeOnboarding(ctx.data.user.id, { role, phone, location });
+            // Refresh session to get updated role
+            await authClient.updateUser({ name: ctx.data.user.name });
+          } catch (err) {
+            console.error("Failed to complete onboarding", err);
+          }
           setLoading(false);
           // Redirect dynamically based on role
           router.push(role === "seller" ? "/dashboard/seller" : "/dashboard/buyer");

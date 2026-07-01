@@ -7,8 +7,16 @@ export const getProductsBySellerId = async (sellerId) => {
     return res;
 }
 
-export const getProducts = async () => {
-    const res = await serverFetch(`products`)
+export const getProducts = async (params = {}) => {
+    const query = new URLSearchParams();
+    if (params.search) query.append('search', params.search);
+    if (params.category) query.append('category', params.category);
+    if (params.sort) query.append('sort', params.sort);
+    if (params.page) query.append('page', params.page);
+    if (params.limit) query.append('limit', params.limit);
+    
+    const qs = query.toString();
+    const res = await serverFetch(`products${qs ? `?${qs}` : ''}`)
     return res;
 }
 

@@ -5,44 +5,72 @@ import { ProductCard } from "@/components/ProductCard";
 import { motion, AnimatePresence } from "framer-motion";
 import { TextField, Input, Select, ListBox } from "@heroui/react";
 
-export default function ProductsClient({ initialProducts = [], wishList = [], user }) {
+import { getProducts } from "@/lib/api/products";
+
+export default function ProductsClient({ initialData = {}, wishList = [], user, initialCategory = "All" }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState("newest");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initialData?.currentPage || 1);
+  
+  const [products, setProducts] = useState(initialData?.products || []);
+  const [totalPages, setTotalPages] = useState(initialData?.totalPages || 1);
+  const [totalItems, setTotalItems] = useState(initialData?.totalItems || 0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const categories = ["All", "Electronics", "Mobile Phones", "Fashion", "Automotive", "Furniture"];
 
-  // Reset page to 1 when filters change
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setPage(1); // Reset page on new search
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Reset page when category or sort changes
   useEffect(() => {
     setPage(1);
-  }, [searchTerm, selectedCategory, sortBy]);
+  }, [selectedCategory, sortBy]);
 
-  // Synchronous filtering and sorting
-  let filtered = [...initialProducts];
+  // Fetch data from API
+  useEffect(() => {
+    let isMounted = true;
+    
+    const fetchFilteredProducts = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getProducts({
+          search: debouncedSearch,
+          category: selectedCategory,
+          sort: sortBy,
+          page,
+          limit: 8
+        });
+        
+        if (isMounted && data) {
+          setProducts(data.products || []);
+          setTotalPages(data.totalPages || 1);
+          setTotalItems(data.totalItems || 0);
+        }
+      } catch (err) {
+        console.error("Failed to fetch filtered products:", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
 
-  if (selectedCategory !== "All") {
-    filtered = filtered.filter(p => p.category === selectedCategory);
-  }
-  if (searchTerm) {
-    filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
-
-  filtered.sort((a, b) => {
-    if (sortBy === "price_asc") return a.price - b.price;
-    if (sortBy === "price_desc") return b.price - a.price;
-
-    const dateA = a.createdAt?.$date || a.createdAt || 0;
-    const dateB = b.createdAt?.$date || b.createdAt || 0;
-    return new Date(dateB).getTime() - new Date(dateA).getTime();
-  });
-
-  const totalItems = filtered.length;
-  const totalPages = Math.ceil(totalItems / 8) || 1;
+    // If it's the exact same as initialData on first render, we could skip it, 
+    // but fetching ensures freshness if client mounts late.
+    fetchFilteredProducts();
+    
+    return () => { isMounted = false; };
+  }, [debouncedSearch, selectedCategory, sortBy, page]);
 
   const currentPage = Math.min(page, totalPages);
-  const startIndex = (currentPage - 1) * 8;
-  const paginatedProducts = filtered.slice(startIndex, startIndex + 8);
+  const paginatedProducts = products;
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
